@@ -1,0 +1,20 @@
+language: php
+
+php:
+    - 7.2
+    - 7.3
+    - 7.4
+
+env:
+  matrix:
+    - PREFER_LOWEST="--prefer-lowest"
+    - PREFER_LOWEST=""
+
+before_script:
+    - composer update $PREFER_LOWEST
+
+script:
+    - php vendor/bin/simple-phpunit --debug
+
+notifications:
+    email: false
