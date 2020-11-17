@@ -10,19 +10,19 @@
         <service id="Siganushka\RegionBundle\Controller\RegionController" autowire="true">
             <tag name="controller.service_arguments" />
         </service>
-        <service id="Siganushka\RegionBundle\Serializer\Normalizer\RegionNormalizer">
+        <service id="Siganushka\RegionBundle\Serializer\Normalizer\RegionNormalizer" autowire="true">
             <tag name="serializer.normalizer" />
         </service>
         <service id="Siganushka\RegionBundle\Form\Type\RegionProvinceType" autowire="true">
             <tag name="form.type" />
         </service>
-        <service id="Siganushka\RegionBundle\Form\Type\RegionCityType">
+        <service id="Siganushka\RegionBundle\Form\Type\RegionCityType" autowire="true">
             <tag name="form.type" />
         </service>
-        <service id="Siganushka\RegionBundle\Form\Type\RegionDistrictType">
+        <service id="Siganushka\RegionBundle\Form\Type\RegionDistrictType" autowire="true">
             <tag name="form.type" />
         </service>
-        <service id="Siganushka\RegionBundle\Form\Type\RegionSubjectType">
+        <service id="Siganushka\RegionBundle\Form\Type\RegionSubjectType" autowire="true">
             <tag name="form.type" />
         </service>
     </services>
