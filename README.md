@@ -40,8 +40,6 @@ siganushka_region:
     resource: "@SiganushkaRegionBundle/Resources/config/routing/routes.xml"
 ```
 
-##### 关联实体
-
 为实体添字段，默认为省 `province`、市 `city`、区 `district` 三级。
 
 ```php
@@ -58,7 +56,7 @@ class Foo implements RegionSubjectInterface
 }
 ```
 
-##### 表单字段
+添加表单字段。
 
 ```php
 // src/Form/FooType.php
@@ -93,8 +91,6 @@ class FooType extends AbstractType
 }
 ```
 
-##### 前端联动
-
 客户端实现联动效果，以 `jquery` 获取为例：
 
 ```javascript
@@ -122,8 +118,6 @@ $(function() {
   })
 })
 ```
-
-##### 数据过滤
 
 获取数据时如果想排除某些数据，可以使用 `RegionFilterEvent` 事件过滤，比如过滤掉直辖市：
 
