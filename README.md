@@ -5,7 +5,9 @@
 [![Latest Unstable Version](https://poser.pugx.org/siganushka/region-bundle/v/unstable)](https://packagist.org/packages/siganushka/region-bundle)
 [![License](https://poser.pugx.org/siganushka/region-bundle/license)](https://packagist.org/packages/siganushka/region-bundle)
 
-国内行政区划 Bundle。
+国内行政区划（省、市、区选择） [Bundle](https://symfony.com/doc/current/bundles.html)。
+
+[演示项目](https://github.com/siganushka/region-bundle-demo)
 
 ### 安装
 
@@ -15,19 +17,21 @@ $ composer require siganushka/region-bundle
 
 ### 使用
 
-##### 更新实体
+更新数据库映射信息。
 
 ```bash
 $ php bin/console doctrine:schema:update --force
 ```
 
-##### 导入数据
+导入行政区划数据。
 
 ```bash
 $ php bin/console siganushka:region:update
 ```
 
-默认情况下由 `Symfony Flex` 自动导入路由，导入文件为 `./config/routes/siganushka_region.yaml`，如果未正常导入，可选择手动导入，路由名称为 `siganushka_region`。
+导入控制器。
+
+> 默认情况下由 `Symfony Flex` 自动导入路由，导入文件为 `./config/routes/siganushka_region.yaml`，如果未正常导入，可选择手动导入，路由名称为 `siganushka_region`。
 
 ```yaml
 # ./config/routes.yaml
