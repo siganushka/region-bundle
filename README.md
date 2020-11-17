@@ -7,8 +7,6 @@
 
 国内行政区划（省、市、区选择） [Bundle](https://symfony.com/doc/current/bundles.html)。
 
-[演示项目](https://github.com/siganushka/region-bundle-demo)
-
 ### 安装
 
 ```bash
@@ -70,7 +68,6 @@ class FooType extends AbstractType
         $builder
             // region 为虚拟名称，可随便填写
             ->add('region', RegionSubjectType::class, [
-                // 也可以添加其它参数，比如占位提示和必填
                 // 'province_options' => [
                 //     'placeholder' => '--- 请选择 ---',
                 //     'constraints' => new NotBlank(),
@@ -78,7 +75,7 @@ class FooType extends AbstractType
                 // 'city_options' => [
                 //     'placeholder' => '--- 请选择 ---',
                 //     'constraints' => new NotBlank(),
-                //  ],
+                // ],
                 // 'district_options' => [
                 //     'placeholder' => '--- 请选择 ---',
                 //     'constraints' => new NotBlank(),
