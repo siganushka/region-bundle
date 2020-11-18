@@ -1,6 +1,6 @@
 # Region bundle for symfony
 
-[![Build Status](https://travis-ci.org/siganushka/region-bundle.svg?branch=master)](https://travis-ci.org/siganushka/region-bundle)
+[![Build Status](https://travis-ci.org/siganushka/region-bundle.svg?branch=main)](https://travis-ci.org/siganushka/region-bundle)
 [![Latest Stable Version](https://poser.pugx.org/siganushka/region-bundle/v/stable)](https://packagist.org/packages/siganushka/region-bundle)
 [![Latest Unstable Version](https://poser.pugx.org/siganushka/region-bundle/v/unstable)](https://packagist.org/packages/siganushka/region-bundle)
 [![License](https://poser.pugx.org/siganushka/region-bundle/license)](https://packagist.org/packages/siganushka/region-bundle)
