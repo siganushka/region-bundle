@@ -14,6 +14,7 @@ class RegionDistrictTypeTest extends AbstractRegionTypeTest
 
         $this->assertSame([], $form->getConfig()->getOption('choices'));
         $this->assertNull($form->getConfig()->getOption('parent'));
+        $this->assertFalse($form->getConfig()->getOption('choice_translation_domain'));
     }
 
     public function testRegionDistrictTypeWithOptions()

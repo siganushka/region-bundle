@@ -15,6 +15,7 @@ class RegionDistrictType extends AbstractType
         $resolver->setDefaults([
             'choice_value' => 'code',
             'choice_label' => 'name',
+            'choice_translation_domain' => false,
             'parent' => null,
         ]);
 

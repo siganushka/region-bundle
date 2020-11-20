@@ -46,8 +46,9 @@ class RegionCityType extends AbstractType
         $resolver->setDefaults([
             'choice_value' => 'code',
             'choice_label' => 'name',
-            'parent' => null,
+            'choice_translation_domain' => false,
             'district_options' => [],
+            'parent' => null,
         ]);
 
         $resolver->setAllowedTypes('parent', ['null', RegionInterface::class]);

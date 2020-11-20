@@ -14,6 +14,7 @@ class RegionProvinceTypeTest extends AbstractRegionTypeTest
         $this->assertSame([$this->province], $form->getConfig()->getOption('choices'));
         $this->assertSame([], $form->getConfig()->getOption('city_options'));
         $this->assertSame([], $form->getConfig()->getOption('district_options'));
+        $this->assertFalse($form->getConfig()->getOption('choice_translation_domain'));
 
         $this->assertNull($form->getData());
         $this->assertFalse($form->isSubmitted());

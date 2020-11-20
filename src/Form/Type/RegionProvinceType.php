@@ -59,6 +59,7 @@ class RegionProvinceType extends AbstractType
             'choices' => $choices,
             'choice_value' => 'code',
             'choice_label' => 'name',
+            'choice_translation_domain' => false,
             'city_options' => [],
             'district_options' => [],
         ]);
