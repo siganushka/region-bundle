@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Siganushka\RegionBundle\Command;
 
 use Doctrine\ORM\Mapping\ClassMetadata;
@@ -24,7 +26,7 @@ class RegionUpdateCommand extends Command
         parent::__construct();
     }
 
-    protected function configure()
+    protected function configure(): void
     {
         $this->setDescription('更新行政区划数据（来原 Github）');
     }
@@ -55,12 +57,12 @@ class RegionUpdateCommand extends Command
         // Compatible symfony <=5.1
         if (\defined('Symfony\Component\Console\Command\Command::SUCCESS')) {
             return Command::SUCCESS;
-        } else {
-            return 0;
         }
+
+        return 0;
     }
 
-    protected function import(OutputInterface $output, array $data, ?RegionInterface $parent = null)
+    protected function import(OutputInterface $output, array $data, ?RegionInterface $parent = null): void
     {
         foreach ($data as $value) {
             $region = new Region();
