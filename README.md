@@ -29,8 +29,6 @@ $ php bin/console siganushka:region:update
 
 导入控制器。
 
-> 默认情况下由 `Symfony Flex` 自动导入路由，导入文件为 `./config/routes/siganushka_region.yaml`，如果未正常导入，可选择手动导入，路由名称为 `siganushka_region`。
-
 ```yaml
 # ./config/routes.yaml
 
