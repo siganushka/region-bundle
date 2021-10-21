@@ -56,7 +56,7 @@ class Region implements ResourceInterface, RegionInterface
         return $this;
     }
 
-    public function getCode(): ?string
+    public function getCode(): ?int
     {
         return $this->id;
     }
