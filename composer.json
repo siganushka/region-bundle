@@ -16,7 +16,7 @@
         "symfony/form": "^4.4|^5.0",
         "symfony/framework-bundle": "^4.4|^5.0",
         "symfony/serializer": "^4.4|^5.0",
-        "siganushka/generic-bundle": "^0.3"
+        "siganushka/generic-bundle": "^0.4"
     },
     "require-dev": {
         "friendsofphp/php-cs-fixer": "^3.0",
