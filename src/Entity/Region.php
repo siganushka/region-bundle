@@ -7,10 +7,10 @@ namespace Siganushka\RegionBundle\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Siganushka\GenericBundle\DataStructure\TreeNodeInterface;
 use Siganushka\GenericBundle\Entity\ResourceInterface;
 use Siganushka\GenericBundle\Entity\ResourceTrait;
-use Siganushka\GenericBundle\Exception\TreeDescendantConflictException;
+use Siganushka\GenericBundle\Tree\Exception\DescendantConflictException;
+use Siganushka\GenericBundle\Tree\TreeNodeInterface;
 
 /**
  * @ORM\Entity
@@ -48,7 +48,7 @@ class Region implements ResourceInterface, RegionInterface
     public function setParent(?TreeNodeInterface $parent): TreeNodeInterface
     {
         if ($parent && \in_array($parent, $this->getDescendants(), true)) {
-            throw new TreeDescendantConflictException($this, $parent);
+            throw new DescendantConflictException($this, $parent);
         }
 
         $this->parent = $parent;

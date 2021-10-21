@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Siganushka\RegionBundle\Tests\Entity;
 
-use Siganushka\GenericBundle\Exception\TreeDescendantConflictException;
+use Siganushka\GenericBundle\Tree\Exception\DescendantConflictException;
 use Siganushka\RegionBundle\Entity\Region;
 use Siganushka\RegionBundle\Entity\RegionInterface;
 
@@ -29,9 +29,9 @@ final class RegionTest extends AbstractRegionTest
         static::assertSame('abcabcabcabcabcabcabcabcabcabcab', $region->getName());
     }
 
-    public function testTreeDescendantConflictException(): void
+    public function testDescendantConflictException(): void
     {
-        $this->expectException(TreeDescendantConflictException::class);
+        $this->expectException(DescendantConflictException::class);
 
         $this->province->setParent($this->city);
     }

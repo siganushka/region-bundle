@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Siganushka\RegionBundle\Entity;
 
-use Siganushka\GenericBundle\DataStructure\TreeNodeInterface;
+use Siganushka\GenericBundle\Tree\TreeNodeInterface;
 
 interface RegionInterface extends TreeNodeInterface
 {
