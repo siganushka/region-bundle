@@ -58,7 +58,11 @@ class Region implements ResourceInterface, RegionInterface
 
     public function getCode(): ?string
     {
-        return (string) $this->id;
+        if ($this->id) {
+            return (string) $this->id;
+        }
+
+        return null;
     }
 
     public function setCode(string $code): RegionInterface
