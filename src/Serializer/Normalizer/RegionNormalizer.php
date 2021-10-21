@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Siganushka\RegionBundle\Serializer\Normalizer;
 
 use Siganushka\RegionBundle\Entity\RegionInterface;

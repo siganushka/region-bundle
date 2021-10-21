@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Siganushka\RegionBundle\Tests\Form\Type;
 
 use Siganushka\RegionBundle\Form\Type\RegionProvinceType;
@@ -13,9 +15,8 @@ abstract class AbstractRegionTypeTest extends AbstractRegionTest
         $formFactoryBuilder = new FormFactoryBuilder();
         $formFactoryBuilder->addType(new RegionProvinceType($this->managerRegistry));
 
-        $formBuilder = $formFactoryBuilder->getFormFactory()
-            ->createBuilder($type, $data, $options);
-
-        return $formBuilder;
+        return $formFactoryBuilder->getFormFactory()
+            ->createBuilder($type, $data, $options)
+        ;
     }
 }

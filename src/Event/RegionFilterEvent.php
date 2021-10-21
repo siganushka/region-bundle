@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Siganushka\RegionBundle\Event;
 
 use Siganushka\RegionBundle\Entity\RegionInterface;
@@ -19,7 +21,7 @@ class RegionFilterEvent extends Event
                 throw new \InvalidArgumentException(sprintf('Array of regions must be type of %s', RegionInterface::class));
             }
 
-            array_push($this->regions, $region);
+            $this->regions[] = $region;
         }
     }
 

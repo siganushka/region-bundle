@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Siganushka\RegionBundle\Form\Type;
 
 use Doctrine\Persistence\ManagerRegistry;
@@ -22,9 +24,9 @@ class RegionProvinceType extends AbstractType
         $this->managerRegistry = $managerRegistry;
     }
 
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $formModifier = function (?FormInterface $form, ?RegionInterface $parent = null) use ($options) {
+        $formModifier = function (?FormInterface $form, ?RegionInterface $parent = null) use ($options): void {
             if (null === $form) {
                 return;
             }
@@ -35,14 +37,14 @@ class RegionProvinceType extends AbstractType
             ], $options['city_options']));
         };
 
-        $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) use ($formModifier) {
+        $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) use ($formModifier): void {
             $form = $event->getForm()->getParent();
             $data = $event->getData();
 
             $formModifier($form, $data);
         });
 
-        $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) use ($formModifier) {
+        $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) use ($formModifier): void {
             $form = $event->getForm()->getParent();
             $data = $event->getForm()->getData();
 
@@ -50,7 +52,7 @@ class RegionProvinceType extends AbstractType
         });
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $repository = $this->managerRegistry->getRepository(Region::class);
         $choices = $repository->findBy(['parent' => null], ['parent' => 'ASC', 'id' => 'ASC']);

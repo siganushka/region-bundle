@@ -1,31 +1,38 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Siganushka\RegionBundle\Tests\Form\Type;
 
 use Siganushka\RegionBundle\Form\Type\RegionProvinceType;
 
-class RegionProvinceTypeTest extends AbstractRegionTypeTest
+/**
+ * @internal
+ * @coversNothing
+ */
+final class RegionProvinceTypeTest extends AbstractRegionTypeTest
 {
-    public function testRegionProvinceType()
+    public function testRegionProvinceType(): void
     {
         $form = $this->createFormBuilder(RegionProvinceType::class)
-            ->getForm();
+            ->getForm()
+        ;
 
-        $this->assertSame([$this->province], $form->getConfig()->getOption('choices'));
-        $this->assertSame([], $form->getConfig()->getOption('city_options'));
-        $this->assertSame([], $form->getConfig()->getOption('district_options'));
-        $this->assertFalse($form->getConfig()->getOption('choice_translation_domain'));
+        static::assertSame([$this->province], $form->getConfig()->getOption('choices'));
+        static::assertSame([], $form->getConfig()->getOption('city_options'));
+        static::assertSame([], $form->getConfig()->getOption('district_options'));
+        static::assertFalse($form->getConfig()->getOption('choice_translation_domain'));
 
-        $this->assertNull($form->getData());
-        $this->assertFalse($form->isSubmitted());
+        static::assertNull($form->getData());
+        static::assertFalse($form->isSubmitted());
 
         $form->submit('100000');
 
-        $this->assertSame($this->province, $form->getData());
-        $this->assertTrue($form->isSubmitted());
+        static::assertSame($this->province, $form->getData());
+        static::assertTrue($form->isSubmitted());
     }
 
-    public function testRegionProvinceTypeWithOptions()
+    public function testRegionProvinceTypeWithOptions(): void
     {
         $options = [
             'city_options' => ['placeholder' => 'bar'],
@@ -33,9 +40,10 @@ class RegionProvinceTypeTest extends AbstractRegionTypeTest
         ];
 
         $form = $this->createFormBuilder(RegionProvinceType::class, null, $options)
-            ->getForm();
+            ->getForm()
+        ;
 
-        $this->assertSame($options['city_options'], $form->getConfig()->getOption('city_options'));
-        $this->assertSame($options['district_options'], $form->getConfig()->getOption('district_options'));
+        static::assertSame($options['city_options'], $form->getConfig()->getOption('city_options'));
+        static::assertSame($options['district_options'], $form->getConfig()->getOption('district_options'));
     }
 }

@@ -1,29 +1,35 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Siganushka\RegionBundle\Tests\Entity;
 
 use Siganushka\GenericBundle\Exception\TreeDescendantConflictException;
 use Siganushka\RegionBundle\Entity\Region;
 use Siganushka\RegionBundle\Entity\RegionInterface;
 
-class RegionTest extends AbstractRegionTest
+/**
+ * @internal
+ * @coversNothing
+ */
+final class RegionTest extends AbstractRegionTest
 {
-    public function testRegion()
+    public function testRegion(): void
     {
         $region = new Region();
 
-        $this->assertNull($region->getCode());
-        $this->assertNull($region->getName());
-        $this->assertInstanceOf(RegionInterface::class, $region);
+        static::assertNull($region->getCode());
+        static::assertNull($region->getName());
+        static::assertInstanceOf(RegionInterface::class, $region);
 
         $region->setCode('1');
         $region->setName('abcabcabcabcabcabcabcabcabcabcabcabcabc');
 
-        $this->assertSame('100000', $region->getCode());
-        $this->assertSame('abcabcabcabcabcabcabcabcabcabcab', $region->getName());
+        static::assertSame('100000', $region->getCode());
+        static::assertSame('abcabcabcabcabcabcabcabcabcabcab', $region->getName());
     }
 
-    public function testTreeDescendantConflictException()
+    public function testTreeDescendantConflictException(): void
     {
         $this->expectException(TreeDescendantConflictException::class);
 

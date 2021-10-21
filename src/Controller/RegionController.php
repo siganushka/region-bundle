@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Siganushka\RegionBundle\Controller;
 
 use Doctrine\Persistence\ManagerRegistry;

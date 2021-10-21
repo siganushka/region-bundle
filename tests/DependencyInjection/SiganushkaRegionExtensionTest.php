@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Siganushka\RegionBundle\Tests\DependencyInjection;
 
 use PHPUnit\Framework\TestCase;
@@ -13,21 +15,25 @@ use Siganushka\RegionBundle\Form\Type\RegionSubjectType;
 use Siganushka\RegionBundle\Serializer\Normalizer\RegionNormalizer;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
-class SiganushkaRegionExtensionTest extends TestCase
+/**
+ * @internal
+ * @coversNothing
+ */
+final class SiganushkaRegionExtensionTest extends TestCase
 {
-    public function testLoadDefaultConfig()
+    public function testLoadDefaultConfig(): void
     {
         $container = $this->createContainer();
         $container->loadFromExtension('siganushka_region');
         $container->compile();
 
-        $this->assertTrue($container->has(RegionUpdateCommand::class));
-        $this->assertTrue($container->has(RegionController::class));
-        $this->assertTrue($container->has(RegionNormalizer::class));
-        $this->assertTrue($container->has(RegionProvinceType::class));
-        $this->assertTrue($container->has(RegionCityType::class));
-        $this->assertTrue($container->has(RegionDistrictType::class));
-        $this->assertTrue($container->has(RegionSubjectType::class));
+        static::assertTrue($container->has(RegionUpdateCommand::class));
+        static::assertTrue($container->has(RegionController::class));
+        static::assertTrue($container->has(RegionNormalizer::class));
+        static::assertTrue($container->has(RegionProvinceType::class));
+        static::assertTrue($container->has(RegionCityType::class));
+        static::assertTrue($container->has(RegionDistrictType::class));
+        static::assertTrue($container->has(RegionSubjectType::class));
     }
 
     protected function createContainer()

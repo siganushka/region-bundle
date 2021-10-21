@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Siganushka\RegionBundle\Tests\Controller;
 
 use Siganushka\RegionBundle\Controller\RegionController;
@@ -10,7 +12,11 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
-class RegionControllerTest extends AbstractRegionTest
+/**
+ * @internal
+ * @coversNothing
+ */
+final class RegionControllerTest extends AbstractRegionTest
 {
     protected $controller;
 
@@ -31,20 +37,20 @@ class RegionControllerTest extends AbstractRegionTest
         $this->controller = null;
     }
 
-    public function testInvoke()
+    public function testInvoke(): void
     {
         $request = new Request();
         $response = $this->controller->__invoke($request);
 
-        $this->assertSame('[{"code":"100000","name":"foo"}]', $response->getContent());
+        static::assertSame('[{"code":"100000","name":"foo"}]', $response->getContent());
 
         $request = new Request(['parent' => '100000']);
         $response = $this->controller->__invoke($request);
 
-        $this->assertSame('[{"code":"200000","name":"bar"}]', $response->getContent());
+        static::assertSame('[{"code":"200000","name":"bar"}]', $response->getContent());
     }
 
-    public function testGetRegions()
+    public function testGetRegions(): void
     {
         $method = new \ReflectionMethod($this->controller, 'getRegions');
         $method->setAccessible(true);
@@ -52,15 +58,15 @@ class RegionControllerTest extends AbstractRegionTest
         $request = new Request();
         $regions = $method->invokeArgs($this->controller, [$request]);
 
-        $this->assertSame([$this->province], $regions);
+        static::assertSame([$this->province], $regions);
 
         $request = new Request(['parent' => '100000']);
         $regions = $method->invokeArgs($this->controller, [$request]);
 
-        $this->assertSame($this->province->getChildren(), $regions);
+        static::assertSame($this->province->getChildren(), $regions);
     }
 
-    public function testGetRegionsException()
+    public function testGetRegionsException(): void
     {
         $this->expectException(NotFoundHttpException::class);
         $this->expectExceptionMessage('The parent "123" could not be found.');

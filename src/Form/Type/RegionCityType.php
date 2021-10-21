@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Siganushka\RegionBundle\Form\Type;
 
 use Siganushka\RegionBundle\Entity\RegionInterface;
@@ -14,9 +16,9 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class RegionCityType extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $formModifier = function (?FormInterface $form, ?RegionInterface $parent = null) use ($options) {
+        $formModifier = function (?FormInterface $form, ?RegionInterface $parent = null) use ($options): void {
             if (null === $form) {
                 return;
             }
@@ -26,14 +28,14 @@ class RegionCityType extends AbstractType
             ], $options['district_options']));
         };
 
-        $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) use ($formModifier) {
+        $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) use ($formModifier): void {
             $form = $event->getForm()->getParent();
             $data = $event->getData();
 
             $formModifier($form, $data);
         });
 
-        $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) use ($formModifier) {
+        $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) use ($formModifier): void {
             $form = $event->getForm()->getParent();
             $data = $event->getForm()->getData();
 
@@ -41,7 +43,7 @@ class RegionCityType extends AbstractType
         });
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'choice_value' => 'code',

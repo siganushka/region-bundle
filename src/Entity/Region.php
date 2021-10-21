@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Siganushka\RegionBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
@@ -61,7 +63,7 @@ class Region implements ResourceInterface, RegionInterface
 
     public function setCode(string $code): RegionInterface
     {
-        $this->id = str_pad($code, 6, 0);
+        $this->id = str_pad($code, 6, '0');
 
         return $this;
     }

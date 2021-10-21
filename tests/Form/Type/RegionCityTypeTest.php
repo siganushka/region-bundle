@@ -1,23 +1,30 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Siganushka\RegionBundle\Tests\Form\Type;
 
 use Siganushka\RegionBundle\Form\Type\RegionCityType;
 use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
 
-class RegionCityTypeTest extends AbstractRegionTypeTest
+/**
+ * @internal
+ * @coversNothing
+ */
+final class RegionCityTypeTest extends AbstractRegionTypeTest
 {
-    public function testRegionCityType()
+    public function testRegionCityType(): void
     {
         $form = $this->createFormBuilder(RegionCityType::class)
-            ->getForm();
+            ->getForm()
+        ;
 
-        $this->assertSame([], $form->getConfig()->getOption('choices'));
-        $this->assertSame([], $form->getConfig()->getOption('district_options'));
-        $this->assertNull($form->getConfig()->getOption('parent'));
+        static::assertSame([], $form->getConfig()->getOption('choices'));
+        static::assertSame([], $form->getConfig()->getOption('district_options'));
+        static::assertNull($form->getConfig()->getOption('parent'));
     }
 
-    public function testRegionCityTypeWithOptions()
+    public function testRegionCityTypeWithOptions(): void
     {
         $options = [
             'parent' => $this->province,
@@ -25,23 +32,24 @@ class RegionCityTypeTest extends AbstractRegionTypeTest
         ];
 
         $form = $this->createFormBuilder(RegionCityType::class, null, $options)
-            ->getForm();
+            ->getForm()
+        ;
 
-        $this->assertSame([$this->city], $form->getConfig()->getOption('choices'));
-        $this->assertSame($options['district_options'], $form->getConfig()->getOption('district_options'));
-        $this->assertSame($this->province, $form->getConfig()->getOption('parent'));
-        $this->assertFalse($form->getConfig()->getOption('choice_translation_domain'));
+        static::assertSame([$this->city], $form->getConfig()->getOption('choices'));
+        static::assertSame($options['district_options'], $form->getConfig()->getOption('district_options'));
+        static::assertSame($this->province, $form->getConfig()->getOption('parent'));
+        static::assertFalse($form->getConfig()->getOption('choice_translation_domain'));
 
-        $this->assertNull($form->getData());
-        $this->assertFalse($form->isSubmitted());
+        static::assertNull($form->getData());
+        static::assertFalse($form->isSubmitted());
 
         $form->submit('200000');
 
-        $this->assertSame($this->city, $form->getData());
-        $this->assertTrue($form->isSubmitted());
+        static::assertSame($this->city, $form->getData());
+        static::assertTrue($form->isSubmitted());
     }
 
-    public function testRegionCityTypeParentException()
+    public function testRegionCityTypeParentException(): void
     {
         $this->expectException(InvalidOptionsException::class);
 

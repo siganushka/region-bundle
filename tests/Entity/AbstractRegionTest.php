@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Siganushka\RegionBundle\Tests\Entity;
 
 use Doctrine\Persistence\ManagerRegistry;
@@ -32,21 +34,24 @@ abstract class AbstractRegionTest extends TestCase
 
         $objectRepository = $this->createMock(ObjectRepository::class);
 
-        $objectRepository->expects($this->any())
+        $objectRepository->expects(static::any())
             ->method('findBy')
-            ->willReturn([$province]);
+            ->willReturn([$province])
+        ;
 
-        $objectRepository->expects($this->any())
+        $objectRepository->expects(static::any())
             ->method('find')
             ->willReturnCallback(function ($value) use ($province) {
-                return ('100000' == $value) ? $province : null;
-            });
+                return ('100000' === $value) ? $province : null;
+            })
+        ;
 
         $managerRegistry = $this->createMock(ManagerRegistry::class);
 
-        $managerRegistry->expects($this->any())
+        $managerRegistry->expects(static::any())
             ->method('getRepository')
-            ->willReturn($objectRepository);
+            ->willReturn($objectRepository)
+        ;
 
         $this->managerRegistry = $managerRegistry;
         $this->province = $province;
