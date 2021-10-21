@@ -65,6 +65,6 @@ trait RegionSubjectTrait
             return $region->getName();
         }, array_filter([$this->province, $this->city, $this->district]));
 
-        return implode(' » ', $names);
+        return implode('/', $names);
     }
 }
