@@ -26,7 +26,7 @@ class RegionProvinceType extends AbstractType
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $formModifier = function (?FormInterface $form, ?RegionInterface $parent = null) use ($options): void {
+        $formModifier = function (?FormInterface $form, RegionInterface $parent = null) use ($options): void {
             if (null === $form) {
                 return;
             }

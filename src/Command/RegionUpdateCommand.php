@@ -46,7 +46,7 @@ class RegionUpdateCommand extends Command
         $json = file_get_contents($json);
         $data = json_decode($json, true);
 
-        if (JSON_ERROR_NONE !== json_last_error()) {
+        if (\JSON_ERROR_NONE !== json_last_error()) {
             throw new \UnexpectedValueException(json_last_error_msg());
         }
 
@@ -65,7 +65,7 @@ class RegionUpdateCommand extends Command
         return 0;
     }
 
-    protected function import(OutputInterface $output, array $data, ?RegionInterface $parent = null): void
+    protected function import(OutputInterface $output, array $data, RegionInterface $parent = null): void
     {
         foreach ($data as $value) {
             $region = new Region();
