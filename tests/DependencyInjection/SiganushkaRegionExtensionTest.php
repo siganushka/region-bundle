@@ -5,14 +5,8 @@ declare(strict_types=1);
 namespace Siganushka\RegionBundle\Tests\DependencyInjection;
 
 use PHPUnit\Framework\TestCase;
-use Siganushka\RegionBundle\Command\RegionUpdateCommand;
 use Siganushka\RegionBundle\Controller\RegionController;
 use Siganushka\RegionBundle\DependencyInjection\SiganushkaRegionExtension;
-use Siganushka\RegionBundle\Form\Type\RegionCityType;
-use Siganushka\RegionBundle\Form\Type\RegionDistrictType;
-use Siganushka\RegionBundle\Form\Type\RegionProvinceType;
-use Siganushka\RegionBundle\Form\Type\RegionSubjectType;
-use Siganushka\RegionBundle\Serializer\Normalizer\RegionNormalizer;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 /**
@@ -27,13 +21,13 @@ final class SiganushkaRegionExtensionTest extends TestCase
         $container->loadFromExtension('siganushka_region');
         $container->compile();
 
-        static::assertTrue($container->has(RegionUpdateCommand::class));
-        static::assertTrue($container->has(RegionController::class));
-        static::assertTrue($container->has(RegionNormalizer::class));
-        static::assertTrue($container->has(RegionProvinceType::class));
-        static::assertTrue($container->has(RegionCityType::class));
-        static::assertTrue($container->has(RegionDistrictType::class));
-        static::assertTrue($container->has(RegionSubjectType::class));
+        static::assertTrue($container->hasDefinition(RegionController::class));
+        static::assertTrue($container->hasDefinition('siganushka_region.command.region_update'));
+        static::assertTrue($container->hasDefinition('siganushka_region.serializer.normalizer.region'));
+        static::assertTrue($container->hasDefinition('siganushka_region.form.type.region_province'));
+        static::assertTrue($container->hasDefinition('siganushka_region.form.type.region_city'));
+        static::assertTrue($container->hasDefinition('siganushka_region.form.type.region_district'));
+        static::assertTrue($container->hasDefinition('siganushka_region.form.type.region_subject'));
     }
 
     protected function createContainer()

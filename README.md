@@ -33,7 +33,7 @@ $ php bin/console siganushka:region:update
 # ./config/routes.yaml
 
 siganushka_region:
-    resource: "@SiganushkaRegionBundle/Resources/config/routing/routes.xml"
+    resource: "@SiganushkaRegionBundle/Resources/config/routes.php"
 ```
 
 为实体添字段，默认为省 `province`、市 `city`、区 `district` 三级。
@@ -117,17 +117,17 @@ $(function() {
 获取数据时如果想排除某些数据，可以使用 `RegionFilterEvent` 事件过滤，比如过滤掉直辖市：
 
 ```php
-// src/EventSubscriber/RemoveDirectlyRegionSubscriber.php
+// src/EventListener/RemoveDirectlyRegionListener.php
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Siganushka\RegionBundle\Event\RegionFilterEvent;
 use Siganushka\RegionBundle\Entity\RegionInterface;
 
-class RemoveDirectlyRegionSubscriber implements EventSubscriberInterface
+class RemoveDirectlyRegionListener implements EventSubscriberInterface
 {
     const DIRECTLY_CODES = [110000, 120000, 310000, 500000];
 
-    public function onRegionFilterEvent(RegionFilterEvent $event)
+    public function onRegionFilter(RegionFilterEvent $event)
     {
         $regions = array_filter($event->getRegions(), function(RegionInterface $region) {
             return !in_array($region->getCode(), self::DIRECTLY_CODES);
@@ -139,7 +139,7 @@ class RemoveDirectlyRegionSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            RegionFilterEvent::class => 'onRegionFilterEvent',
+            RegionFilterEvent::class => 'onRegionFilter',
         ];
     }
 }

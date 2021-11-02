@@ -15,15 +15,15 @@ use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class RegionController
 {
-    private $dispatcher;
+    private $eventDispatcher;
+    private $managerRegistry;
     private $normalizer;
-    private $repository;
 
-    public function __construct(EventDispatcherInterface $dispatcher, NormalizerInterface $normalizer, ManagerRegistry $managerRegistry)
+    public function __construct(EventDispatcherInterface $eventDispatcher, ManagerRegistry $managerRegistry, NormalizerInterface $normalizer)
     {
-        $this->dispatcher = $dispatcher;
+        $this->eventDispatcher = $eventDispatcher;
+        $this->managerRegistry = $managerRegistry;
         $this->normalizer = $normalizer;
-        $this->repository = $managerRegistry->getRepository(Region::class);
     }
 
     public function __invoke(Request $request)
@@ -31,7 +31,7 @@ class RegionController
         $regions = $this->getRegions($request);
 
         $event = new RegionFilterEvent($regions);
-        $this->dispatcher->dispatch($event);
+        $this->eventDispatcher->dispatch($event);
 
         $data = $this->normalizer->normalize($event->getRegions());
 
@@ -40,12 +40,14 @@ class RegionController
 
     private function getRegions(Request $request): iterable
     {
+        $repository = $this->managerRegistry->getRepository(Region::class);
+
         if (!$request->query->has('parent')) {
-            return $this->repository->findBy(['parent' => null], ['parent' => 'ASC', 'id' => 'ASC']);
+            return $repository->findBy(['parent' => null], ['parent' => 'ASC', 'id' => 'ASC']);
         }
 
         $parent = $request->query->get('parent');
-        if (!$region = $this->repository->find($parent)) {
+        if (!$region = $repository->find($parent)) {
             throw new NotFoundHttpException(sprintf('The parent "%s" could not be found.', $parent));
         }
 

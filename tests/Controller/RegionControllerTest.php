@@ -24,10 +24,10 @@ final class RegionControllerTest extends AbstractRegionTest
     {
         parent::setUp();
 
-        $dispatcher = $this->createMock(EventDispatcherInterface::class);
-        $serializer = new Serializer([new RegionNormalizer()]);
+        $eventDispatcher = $this->createMock(EventDispatcherInterface::class);
+        $normalizer = new Serializer([new RegionNormalizer()]);
 
-        $this->controller = new RegionController($dispatcher, $serializer, $this->managerRegistry);
+        $this->controller = new RegionController($eventDispatcher, $this->managerRegistry, $normalizer);
     }
 
     protected function tearDown(): void
