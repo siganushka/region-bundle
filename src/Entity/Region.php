@@ -58,7 +58,11 @@ class Region implements ResourceInterface, RegionInterface
 
     public function getCode(): ?string
     {
-        return $this->id ?: null;
+        if ($this->id) {
+            return (string) $this->id;
+        }
+
+        return null;
     }
 
     public function setCode(string $code): RegionInterface
@@ -128,7 +132,7 @@ class Region implements ResourceInterface, RegionInterface
 
         $siblings = [];
         foreach ($this->getParent()->getChildren() as $child) {
-            if ($includeSelf || !$this->isEqualTo($child)) {
+            if ($includeSelf || !$this->equals($child)) {
                 $siblings[] = $child;
             }
         }

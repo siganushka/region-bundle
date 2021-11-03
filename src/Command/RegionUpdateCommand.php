@@ -57,12 +57,7 @@ class RegionUpdateCommand extends Command
         $this->import($output, $data);
         $this->objectManager->flush();
 
-        // Compatible symfony <=5.1
-        if (\defined('Symfony\Component\Console\Command\Command::SUCCESS')) {
-            return Command::SUCCESS;
-        }
-
-        return 0;
+        return Command::SUCCESS;
     }
 
     protected function import(OutputInterface $output, array $data, RegionInterface $parent = null): void
