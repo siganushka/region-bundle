@@ -30,7 +30,7 @@ class Region implements ResourceInterface, RegionInterface
     /**
      * @ORM\Column(type="string", length=32)
      *
-     * @Groups({"trait_region_name"})
+     * @Groups({"trait_region"})
      */
     private $name;
 

@@ -12,21 +12,21 @@ trait RegionSubjectTrait
     /**
      * @ORM\ManyToOne(targetEntity="Siganushka\RegionBundle\Entity\Region")
      *
-     * @Groups({"trait_region_subject_province"})
+     * @Groups({"trait_region_subject"})
      */
     private $province;
 
     /**
      * @ORM\ManyToOne(targetEntity="Siganushka\RegionBundle\Entity\Region")
      *
-     * @Groups({"trait_region_subject_city"})
+     * @Groups({"trait_region_subject"})
      */
     private $city;
 
     /**
      * @ORM\ManyToOne(targetEntity="Siganushka\RegionBundle\Entity\Region")
      *
-     * @Groups({"trait_region_subject_district"})
+     * @Groups({"trait_region_subject"})
      */
     private $district;
 
