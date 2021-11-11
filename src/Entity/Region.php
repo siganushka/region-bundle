@@ -11,6 +11,7 @@ use Siganushka\GenericBundle\Entity\ResourceInterface;
 use Siganushka\GenericBundle\Entity\ResourceTrait;
 use Siganushka\GenericBundle\Tree\Exception\DescendantConflictException;
 use Siganushka\GenericBundle\Tree\TreeNodeInterface;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity
@@ -21,17 +22,23 @@ class Region implements ResourceInterface, RegionInterface
 
     /**
      * @ORM\ManyToOne(targetEntity=Region::class, inversedBy="children", cascade={"all"})
+     *
+     * @Groups({"trait_region_parent"})
      */
     private $parent;
 
     /**
      * @ORM\Column(type="string", length=32)
+     *
+     * @Groups({"trait_region_name"})
      */
     private $name;
 
     /**
      * @ORM\OneToMany(targetEntity=Region::class, mappedBy="parent", cascade={"all"})
      * @ORM\OrderBy({"parent": "ASC", "id": "ASC"})
+     *
+     * @Groups({"trait_region_children"})
      */
     private $children;
 
