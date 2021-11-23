@@ -9,14 +9,17 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Siganushka\Contracts\Doctrine\ResourceInterface;
 use Siganushka\Contracts\Doctrine\ResourceTrait;
+use Siganushka\Contracts\Doctrine\TimestampableInterface;
+use Siganushka\Contracts\Doctrine\TimestampableTrait;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity
  */
-class Region implements ResourceInterface, RegionInterface
+class Region implements ResourceInterface, TimestampableInterface, RegionInterface
 {
     use ResourceTrait;
+    use TimestampableTrait;
 
     /**
      * @ORM\ManyToOne(targetEntity=Region::class, inversedBy="children", cascade={"all"})
