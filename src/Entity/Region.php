@@ -7,10 +7,8 @@ namespace Siganushka\RegionBundle\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Siganushka\GenericBundle\Entity\ResourceInterface;
-use Siganushka\GenericBundle\Entity\ResourceTrait;
-use Siganushka\GenericBundle\Tree\Exception\DescendantConflictException;
-use Siganushka\GenericBundle\Tree\TreeNodeInterface;
+use Siganushka\Contracts\Doctrine\ResourceInterface;
+use Siganushka\Contracts\Doctrine\ResourceTrait;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
@@ -47,15 +45,15 @@ class Region implements ResourceInterface, RegionInterface
         $this->children = new ArrayCollection();
     }
 
-    public function getParent(): ?TreeNodeInterface
+    public function getParent(): ?self
     {
         return $this->parent;
     }
 
-    public function setParent(?TreeNodeInterface $parent): TreeNodeInterface
+    public function setParent(?self $parent): self
     {
         if ($parent && \in_array($parent, $this->getDescendants(), true)) {
-            throw new DescendantConflictException($this, $parent);
+            throw new \InvalidArgumentException('The tree node descendants conflict has been detected.');
         }
 
         $this->parent = $parent;
@@ -96,7 +94,7 @@ class Region implements ResourceInterface, RegionInterface
         return $this->children;
     }
 
-    public function addChild(TreeNodeInterface $child): TreeNodeInterface
+    public function addChild(self $child): self
     {
         if (!$this->children->contains($child)) {
             $this->children[] = $child;
@@ -106,7 +104,7 @@ class Region implements ResourceInterface, RegionInterface
         return $this;
     }
 
-    public function removeChild(TreeNodeInterface $child): TreeNodeInterface
+    public function removeChild(self $child): self
     {
         if ($this->children->contains($child)) {
             $this->children->removeElement($child);
@@ -138,7 +136,7 @@ class Region implements ResourceInterface, RegionInterface
         }
 
         $siblings = [];
-        foreach ($this->getParent()->getChildren() as $child) {
+        foreach ($this->parent->getChildren() as $child) {
             if ($includeSelf || !$this->equals($child)) {
                 $siblings[] = $child;
             }
@@ -161,7 +159,7 @@ class Region implements ResourceInterface, RegionInterface
         return $descendants;
     }
 
-    public function getRoot(): TreeNodeInterface
+    public function getRoot(): self
     {
         $node = $this;
 
@@ -174,7 +172,7 @@ class Region implements ResourceInterface, RegionInterface
 
     public function isRoot(): bool
     {
-        return null === $this->getParent();
+        return null === $this->parent;
     }
 
     public function isLeaf(): bool
@@ -188,6 +186,6 @@ class Region implements ResourceInterface, RegionInterface
             return 0;
         }
 
-        return $this->getParent()->getDepth() + 1;
+        return $this->parent->getDepth() + 1;
     }
 }

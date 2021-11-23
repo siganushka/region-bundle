@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Siganushka\RegionBundle\Tests\Entity;
 
-use Siganushka\GenericBundle\Tree\Exception\DescendantConflictException;
 use Siganushka\RegionBundle\Entity\Region;
 use Siganushka\RegionBundle\Entity\RegionInterface;
 
@@ -31,7 +30,8 @@ final class RegionTest extends AbstractRegionTest
 
     public function testDescendantConflictException(): void
     {
-        $this->expectException(DescendantConflictException::class);
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('The tree node descendants conflict has been detected.');
 
         $this->province->setParent($this->city);
     }
