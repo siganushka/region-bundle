@@ -109,8 +109,8 @@ class Region implements ResourceInterface, TimestampableInterface, RegionInterfa
 
     public function removeChild(self $child): self
     {
-        if ($this->children->contains($child)) {
-            $this->children->removeElement($child);
+        if ($this->children->removeElement($child)) {
+            // set the owning side to null (unless already changed)
             if ($child->getParent() === $this) {
                 $child->setParent(null);
             }
@@ -140,7 +140,7 @@ class Region implements ResourceInterface, TimestampableInterface, RegionInterfa
 
         $siblings = [];
         foreach ($this->parent->getChildren() as $child) {
-            if ($includeSelf || !$this->equals($child)) {
+            if ($includeSelf || $child !== $this) {
                 $siblings[] = $child;
             }
         }
