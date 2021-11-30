@@ -1,6 +1,6 @@
 # Region bundle for symfony
 
-[![Build Status](https://travis-ci.org/siganushka/region-bundle.svg?branch=main)](https://travis-ci.org/siganushka/region-bundle)
+[![Build Status](https://github.com/siganushka/region-bundle/actions/workflows/ci.yaml/badge.svg)](https://github.com/siganushka/region-bundle/actions/workflows/ci.yaml)
 [![Latest Stable Version](https://poser.pugx.org/siganushka/region-bundle/v/stable)](https://packagist.org/packages/siganushka/region-bundle)
 [![Latest Unstable Version](https://poser.pugx.org/siganushka/region-bundle/v/unstable)](https://packagist.org/packages/siganushka/region-bundle)
 [![License](https://poser.pugx.org/siganushka/region-bundle/license)](https://packagist.org/packages/siganushka/region-bundle)
@@ -136,7 +136,7 @@ class RemoveDirectlyRegionListener implements EventSubscriberInterface
         $event->setRegions($regions);
     }
 
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             RegionFilterEvent::class => 'onRegionFilter',
