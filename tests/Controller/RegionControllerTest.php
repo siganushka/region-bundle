@@ -12,10 +12,6 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
-/**
- * @internal
- * @coversNothing
- */
 final class RegionControllerTest extends AbstractRegionTest
 {
     protected $controller;

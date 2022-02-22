@@ -9,10 +9,6 @@ use Siganushka\RegionBundle\Controller\RegionController;
 use Siganushka\RegionBundle\DependencyInjection\SiganushkaRegionExtension;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
-/**
- * @internal
- * @coversNothing
- */
 final class SiganushkaRegionExtensionTest extends TestCase
 {
     public function testLoadDefaultConfig(): void

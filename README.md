@@ -10,7 +10,7 @@
 ### 安装
 
 ```bash
-$ composer require siganushka/region-bundle
+$ composer require siganushka/region-bundle:dev-main
 ```
 
 ### 使用

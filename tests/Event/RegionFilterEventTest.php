@@ -10,10 +10,6 @@ use Siganushka\RegionBundle\Entity\Region;
 use Siganushka\RegionBundle\Entity\RegionInterface;
 use Siganushka\RegionBundle\Event\RegionFilterEvent;
 
-/**
- * @internal
- * @coversNothing
- */
 final class RegionFilterEventTest extends TestCase
 {
     public function testRegionFilterEvent(): void

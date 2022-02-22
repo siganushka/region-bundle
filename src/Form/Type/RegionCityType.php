@@ -18,7 +18,7 @@ class RegionCityType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $formModifier = function (?FormInterface $form, RegionInterface $parent = null) use ($options): void {
+        $formModifier = function (?FormInterface $form, ?RegionInterface $parent) use ($options): void {
             if (null === $form) {
                 return;
             }
@@ -30,6 +30,7 @@ class RegionCityType extends AbstractType
 
         $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) use ($formModifier): void {
             $form = $event->getForm()->getParent();
+            /** @var RegionInterface */
             $data = $event->getData();
 
             $formModifier($form, $data);
@@ -37,6 +38,7 @@ class RegionCityType extends AbstractType
 
         $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) use ($formModifier): void {
             $form = $event->getForm()->getParent();
+            /** @var RegionInterface */
             $data = $event->getForm()->getData();
 
             $formModifier($form, $data);

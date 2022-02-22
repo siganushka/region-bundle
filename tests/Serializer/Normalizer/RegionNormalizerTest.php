@@ -8,10 +8,6 @@ use PHPUnit\Framework\TestCase;
 use Siganushka\RegionBundle\Entity\Region;
 use Siganushka\RegionBundle\Serializer\Normalizer\RegionNormalizer;
 
-/**
- * @internal
- * @coversNothing
- */
 final class RegionNormalizerTest extends TestCase
 {
     public function testNormalize(): void

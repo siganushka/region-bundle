@@ -26,34 +26,36 @@ class Region implements ResourceInterface, TimestampableInterface, RegionInterfa
      *
      * @Groups({"trait_region_parent"})
      */
-    private $parent;
+    private ?RegionInterface $parent = null;
 
     /**
      * @ORM\Column(type="string", length=32)
      *
      * @Groups({"trait_region"})
      */
-    private $name;
+    private ?string $name = null;
 
     /**
      * @ORM\OneToMany(targetEntity=Region::class, mappedBy="parent", cascade={"all"})
      * @ORM\OrderBy({"parent": "ASC", "id": "ASC"})
      *
      * @Groups({"trait_region_children"})
+     *
+     * @var Collection<int, RegionInterface>
      */
-    private $children;
+    private Collection $children;
 
     public function __construct()
     {
         $this->children = new ArrayCollection();
     }
 
-    public function getParent(): ?self
+    public function getParent(): ?RegionInterface
     {
         return $this->parent;
     }
 
-    public function setParent(?self $parent): self
+    public function setParent(?RegionInterface $parent): RegionInterface
     {
         if ($parent && \in_array($parent, $this->getDescendants(), true)) {
             throw new \InvalidArgumentException('The tree node descendants conflict has been detected.');
@@ -97,7 +99,7 @@ class Region implements ResourceInterface, TimestampableInterface, RegionInterfa
         return $this->children;
     }
 
-    public function addChild(self $child): self
+    public function addChild(RegionInterface $child): RegionInterface
     {
         if (!$this->children->contains($child)) {
             $this->children[] = $child;
@@ -107,7 +109,7 @@ class Region implements ResourceInterface, TimestampableInterface, RegionInterfa
         return $this;
     }
 
-    public function removeChild(self $child): self
+    public function removeChild(RegionInterface $child): RegionInterface
     {
         if ($this->children->removeElement($child)) {
             // set the owning side to null (unless already changed)
@@ -134,7 +136,7 @@ class Region implements ResourceInterface, TimestampableInterface, RegionInterfa
 
     public function getSiblings(bool $includeSelf = false): array
     {
-        if ($this->isRoot()) {
+        if (null === $this->parent) {
             return [];
         }
 
@@ -162,7 +164,7 @@ class Region implements ResourceInterface, TimestampableInterface, RegionInterfa
         return $descendants;
     }
 
-    public function getRoot(): self
+    public function getRoot(): RegionInterface
     {
         $node = $this;
 
@@ -185,7 +187,7 @@ class Region implements ResourceInterface, TimestampableInterface, RegionInterfa
 
     public function getDepth(): int
     {
-        if ($this->isRoot()) {
+        if (null === $this->parent) {
             return 0;
         }
 

@@ -12,8 +12,11 @@ class RegionFilterEvent extends Event
     /**
      * @var RegionInterface[]
      */
-    private $regions = [];
+    private array $regions = [];
 
+    /**
+     * @param RegionInterface[] $regions
+     */
     public function __construct(iterable $regions)
     {
         foreach ($regions as $region) {
@@ -25,11 +28,17 @@ class RegionFilterEvent extends Event
         }
     }
 
+    /**
+     * @return RegionInterface[]
+     */
     public function getRegions(): array
     {
         return $this->regions;
     }
 
+    /**
+     * @param RegionInterface[] $regions
+     */
     public function setRegions(array $regions): void
     {
         $this->regions = $regions;

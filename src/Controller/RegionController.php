@@ -6,6 +6,7 @@ namespace Siganushka\RegionBundle\Controller;
 
 use Doctrine\Persistence\ManagerRegistry;
 use Siganushka\RegionBundle\Entity\Region;
+use Siganushka\RegionBundle\Entity\RegionInterface;
 use Siganushka\RegionBundle\Event\RegionFilterEvent;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -15,9 +16,9 @@ use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class RegionController
 {
-    private $eventDispatcher;
-    private $managerRegistry;
-    private $normalizer;
+    private EventDispatcherInterface $eventDispatcher;
+    private ManagerRegistry $managerRegistry;
+    private NormalizerInterface $normalizer;
 
     public function __construct(EventDispatcherInterface $eventDispatcher, ManagerRegistry $managerRegistry, NormalizerInterface $normalizer)
     {
@@ -26,7 +27,7 @@ class RegionController
         $this->normalizer = $normalizer;
     }
 
-    public function __invoke(Request $request)
+    public function __invoke(Request $request): JsonResponse
     {
         $regions = $this->getRegions($request);
 
@@ -38,6 +39,9 @@ class RegionController
         return new JsonResponse($data);
     }
 
+    /**
+     * @return iterable<int, RegionInterface>
+     */
     private function getRegions(Request $request): iterable
     {
         $repository = $this->managerRegistry->getRepository(Region::class);

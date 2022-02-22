@@ -7,10 +7,6 @@ namespace Siganushka\RegionBundle\Tests\Form\Type;
 use Siganushka\RegionBundle\Form\Type\RegionCityType;
 use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
 
-/**
- * @internal
- * @coversNothing
- */
 final class RegionCityTypeTest extends AbstractRegionTypeTest
 {
     public function testRegionCityType(): void

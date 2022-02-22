@@ -6,10 +6,6 @@ namespace Siganushka\RegionBundle\Tests\Form\Type;
 
 use Siganushka\RegionBundle\Form\Type\RegionSubjectType;
 
-/**
- * @internal
- * @coversNothing
- */
 final class RegionSubjectTypeTest extends AbstractRegionTypeTest
 {
     public function testRegionSubjectType(): void

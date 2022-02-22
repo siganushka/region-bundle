@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace Siganushka\RegionBundle\Command;
 
 use Doctrine\ORM\Mapping\ClassMetadata;
+use Doctrine\ORM\Mapping\ClassMetadataInfo;
 use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ObjectManager;
 use Siganushka\RegionBundle\Entity\Region;
 use Siganushka\RegionBundle\Entity\RegionInterface;
 use Siganushka\RegionBundle\SiganushkaRegionBundle;
@@ -20,11 +22,16 @@ class RegionUpdateCommand extends Command
 {
     protected static $defaultName = 'siganushka:region:update';
 
-    private $objectManager;
+    private ObjectManager $objectManager;
 
     public function __construct(ManagerRegistry $managerRegistry)
     {
-        $this->objectManager = $managerRegistry->getManagerForClass(Region::class);
+        $objectManager = $managerRegistry->getManagerForClass(Region::class);
+        if (null === $objectManager) {
+            throw new \InvalidArgumentException(sprintf('Invalid entity class "%s" for object manager.', Region::class));
+        }
+
+        $this->objectManager = $objectManager;
 
         parent::__construct();
     }
@@ -37,22 +44,32 @@ class RegionUpdateCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $reflection = new \ReflectionClass(SiganushkaRegionBundle::class);
-
-        $json = \dirname($reflection->getFileName()).'/Resources/data/pca-code.json';
-        if (!file_exists($json)) {
-            throw new \InvalidArgumentException(sprintf('File "%s" is not found', $json));
+        $fileName = $reflection->getFileName();
+        if (false === $fileName) {
+            throw new \RuntimeException('Unable to access file.');
         }
 
-        $json = file_get_contents($json);
-        $data = json_decode($json, true);
+        $jsonFile = \dirname($fileName).'/Resources/data/pca-code.json';
+        if (!file_exists($jsonFile)) {
+            throw new \InvalidArgumentException(sprintf('File "%s" is not found', $jsonFile));
+        }
 
+        $json = file_get_contents($jsonFile);
+        if (false === $json) {
+            throw new \RuntimeException('Unable to access file.');
+        }
+
+        /** @var array */
+        $data = json_decode($json, true);
         if (\JSON_ERROR_NONE !== json_last_error()) {
             throw new \UnexpectedValueException(json_last_error_msg());
         }
 
         // Manually assign id
         $metadata = $this->objectManager->getClassMetadata(Region::class);
-        $metadata->setIdGeneratorType(ClassMetadata::GENERATOR_TYPE_NONE);
+        if ($metadata instanceof ClassMetadataInfo) {
+            $metadata->setIdGeneratorType(ClassMetadata::GENERATOR_TYPE_NONE);
+        }
 
         $this->import($output, $data);
         $this->objectManager->flush();
