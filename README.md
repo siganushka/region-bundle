@@ -95,7 +95,7 @@ $(function() {
   var $district = $('#{{ form.region.district.vars.id }}')
 
   var update = function(parent, $target) {
-    $.getJSON('{{ path("siganushka_region") }}', { parent: parent }, function(r) {
+    $.getJSON('{{ path("siganushka_region_collection_get") }}', { parent: parent }, function(r) {
       var options = []
       $.each(r, function(idx, el) {
         options.push('<option value="'+ el.code +'">'+ el.name +'</option>')

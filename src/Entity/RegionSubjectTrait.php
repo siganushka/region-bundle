@@ -5,28 +5,27 @@ declare(strict_types=1);
 namespace Siganushka\RegionBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Serializer\Annotation\Groups;
 
 trait RegionSubjectTrait
 {
     /**
      * @ORM\ManyToOne(targetEntity="Siganushka\RegionBundle\Entity\Region")
      *
-     * @Groups({"trait_region_subject"})
+     * @Groups({"region_subject"})
      */
     private $province;
 
     /**
      * @ORM\ManyToOne(targetEntity="Siganushka\RegionBundle\Entity\Region")
      *
-     * @Groups({"trait_region_subject"})
+     * @Groups({"region_subject"})
      */
     private $city;
 
     /**
      * @ORM\ManyToOne(targetEntity="Siganushka\RegionBundle\Entity\Region")
      *
-     * @Groups({"trait_region_subject"})
+     * @Groups({"region_subject"})
      */
     private $district;
 

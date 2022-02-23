@@ -11,20 +11,21 @@ use Siganushka\RegionBundle\Event\RegionFilterEvent;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
+use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class RegionController
 {
     private EventDispatcherInterface $eventDispatcher;
     private ManagerRegistry $managerRegistry;
-    private NormalizerInterface $normalizer;
+    private SerializerInterface $serializer;
 
-    public function __construct(EventDispatcherInterface $eventDispatcher, ManagerRegistry $managerRegistry, NormalizerInterface $normalizer)
+    public function __construct(EventDispatcherInterface $eventDispatcher, ManagerRegistry $managerRegistry, SerializerInterface $serializer)
     {
         $this->eventDispatcher = $eventDispatcher;
         $this->managerRegistry = $managerRegistry;
-        $this->normalizer = $normalizer;
+        $this->serializer = $serializer;
     }
 
     public function __invoke(Request $request): JsonResponse
@@ -34,9 +35,15 @@ class RegionController
         $event = new RegionFilterEvent($regions);
         $this->eventDispatcher->dispatch($event);
 
-        $data = $this->normalizer->normalize($event->getRegions());
+        $attributes = (string) $request->query->get('attributes');
+        $attributes = empty($attributes) ? [] : explode(',', $attributes);
+        $attributes = array_map('trim', $attributes);
 
-        return new JsonResponse($data);
+        $json = $this->serializer->serialize($event->getRegions(), 'json', [
+            AbstractNormalizer::ATTRIBUTES => ['code', 'name', ...$attributes],
+        ]);
+
+        return new JsonResponse($json, 200, [], true);
     }
 
     /**

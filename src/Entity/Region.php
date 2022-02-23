@@ -11,7 +11,6 @@ use Siganushka\Contracts\Doctrine\ResourceInterface;
 use Siganushka\Contracts\Doctrine\ResourceTrait;
 use Siganushka\Contracts\Doctrine\TimestampableInterface;
 use Siganushka\Contracts\Doctrine\TimestampableTrait;
-use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity
@@ -23,23 +22,17 @@ class Region implements ResourceInterface, TimestampableInterface, RegionInterfa
 
     /**
      * @ORM\ManyToOne(targetEntity=Region::class, inversedBy="children", cascade={"all"})
-     *
-     * @Groups({"trait_region_parent"})
      */
     private ?RegionInterface $parent = null;
 
     /**
      * @ORM\Column(type="string", length=32)
-     *
-     * @Groups({"trait_region"})
      */
     private ?string $name = null;
 
     /**
      * @ORM\OneToMany(targetEntity=Region::class, mappedBy="parent", cascade={"all"})
      * @ORM\OrderBy({"parent": "ASC", "id": "ASC"})
-     *
-     * @Groups({"trait_region_children"})
      *
      * @var Collection<int, RegionInterface>
      */

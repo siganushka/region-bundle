@@ -8,7 +8,7 @@ use Siganushka\RegionBundle\Controller\RegionController;
 use Symfony\Component\Routing\Loader\Configurator\RoutingConfigurator;
 
 return static function (RoutingConfigurator $routes) {
-    $routes->add('siganushka_region', '/regions')
+    $routes->add('siganushka_region_collection_get', '/regions')
         ->controller(RegionController::class)
         ->methods(['GET'])
     ;
