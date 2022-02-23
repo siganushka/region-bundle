@@ -40,8 +40,6 @@ interface RegionInterface
      */
     public function getDescendants(bool $includeSelf = false): array;
 
-    public function getRoot(): self;
-
     public function isRoot(): bool;
 
     public function isLeaf(): bool;

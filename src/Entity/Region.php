@@ -157,17 +157,6 @@ class Region implements ResourceInterface, TimestampableInterface, RegionInterfa
         return $descendants;
     }
 
-    public function getRoot(): RegionInterface
-    {
-        $node = $this;
-
-        while ($parent = $node->getParent()) {
-            $node = $parent;
-        }
-
-        return $node;
-    }
-
     public function isRoot(): bool
     {
         return null === $this->parent;
