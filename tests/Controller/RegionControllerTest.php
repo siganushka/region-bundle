@@ -44,10 +44,10 @@ final class RegionControllerTest extends AbstractRegionTest
 
         static::assertSame('[{"code":"100000","name":"foo"}]', $response->getContent());
 
-        $request = new Request(['parent' => '100000', 'attributes' => 'leaf,depth']);
+        $request = new Request(['parent' => '100000', 'attributes' => 'root,leaf,depth,foo']);
         $response = $this->controller->__invoke($request);
 
-        static::assertSame('[{"code":"200000","name":"bar","leaf":false,"depth":1}]', $response->getContent());
+        static::assertSame('[{"code":"200000","name":"bar","root":false,"leaf":false,"depth":1}]', $response->getContent());
     }
 
     public function testGetRegions(): void

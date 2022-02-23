@@ -38,6 +38,7 @@ class RegionController
         $attributes = (string) $request->query->get('attributes');
         $attributes = empty($attributes) ? [] : explode(',', $attributes);
         $attributes = array_map('trim', $attributes);
+        $attributes = array_filter($attributes, fn ($attr) => \in_array($attr, ['root', 'leaf', 'depth']));
 
         $json = $this->serializer->serialize($event->getRegions(), 'json', [
             AbstractNormalizer::ATTRIBUTES => ['code', 'name', ...$attributes],
