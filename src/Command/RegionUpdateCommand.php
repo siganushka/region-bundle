@@ -84,6 +84,7 @@ class RegionUpdateCommand extends Command
             $region->setParent($parent);
             $region->setCode($value['code']);
             $region->setName($value['name']);
+            $region->setCreatedAt(new \DateTimeImmutable());
 
             $messages = sprintf('[%d] %s', $region->getCode(), $region->getName());
 
