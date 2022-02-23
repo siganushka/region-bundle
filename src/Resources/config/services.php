@@ -6,7 +6,6 @@ namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
 use Siganushka\RegionBundle\Command\RegionUpdateCommand;
 use Siganushka\RegionBundle\Controller\RegionController;
-use Siganushka\RegionBundle\Doctrine\EventListener\EntityToSuperclassListener;
 use Siganushka\RegionBundle\Form\Type\RegionCityType;
 use Siganushka\RegionBundle\Form\Type\RegionDistrictType;
 use Siganushka\RegionBundle\Form\Type\RegionProvinceType;
@@ -36,8 +35,5 @@ return static function (ContainerConfigurator $container) {
 
         ->set('siganushka_region.form.type.region_district', RegionDistrictType::class)
             ->tag('form.type')
-
-        ->set('siganushka_region.doctrine.listener.entity_to_superclass', EntityToSuperclassListener::class)
-            ->tag('doctrine.event_listener', ['event' => 'loadClassMetadata', 'lazy' => true])
     ;
 };
