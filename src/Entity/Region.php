@@ -77,7 +77,7 @@ class Region implements ResourceInterface, TimestampableInterface, RegionInterfa
 
     public function setCode(string $code): RegionInterface
     {
-        $this->id = str_pad($code, 6, '0');
+        $this->id = (int) str_pad($code, 6, '0');
 
         return $this;
     }

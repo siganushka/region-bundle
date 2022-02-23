@@ -24,6 +24,9 @@ class RegionProvinceType extends AbstractType
         $this->managerRegistry = $managerRegistry;
     }
 
+    /**
+     * @param array{ city_options: array<mixed>, district_options: array<mixed> } $options
+     */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $formModifier = function (?FormInterface $form, ?RegionInterface $parent) use ($options): void {

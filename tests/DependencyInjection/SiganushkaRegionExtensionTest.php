@@ -26,7 +26,7 @@ final class SiganushkaRegionExtensionTest extends TestCase
         static::assertTrue($container->hasDefinition('siganushka_region.form.type.region_subject'));
     }
 
-    protected function createContainer()
+    protected function createContainer(): ContainerBuilder
     {
         $container = new ContainerBuilder();
         $container->registerExtension(new SiganushkaRegionExtension());

@@ -14,7 +14,7 @@ use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 final class RegionControllerTest extends AbstractRegionTest
 {
-    protected $controller;
+    protected ?RegionController $controller = null;
 
     protected function setUp(): void
     {

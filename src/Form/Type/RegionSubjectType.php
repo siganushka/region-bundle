@@ -10,6 +10,9 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class RegionSubjectType extends AbstractType
 {
+    /**
+     * @param array{ province_options: array<mixed>, city_options: array<mixed>, district_options: array<mixed> } $options
+     */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder->add('province', RegionProvinceType::class, array_merge([

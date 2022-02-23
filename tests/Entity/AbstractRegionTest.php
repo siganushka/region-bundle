@@ -8,13 +8,14 @@ use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\Persistence\ObjectRepository;
 use PHPUnit\Framework\TestCase;
 use Siganushka\RegionBundle\Entity\Region;
+use Siganushka\RegionBundle\Entity\RegionInterface;
 
 abstract class AbstractRegionTest extends TestCase
 {
-    protected $managerRegistry;
-    protected $province;
-    protected $city;
-    protected $district;
+    protected ?ManagerRegistry $managerRegistry = null;
+    protected ?RegionInterface $province = null;
+    protected ?RegionInterface $city = null;
+    protected ?RegionInterface $district = null;
 
     protected function setUp(): void
     {

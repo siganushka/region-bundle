@@ -51,7 +51,7 @@ class RegionUpdateCommand extends Command
 
         $jsonFile = \dirname($fileName).'/Resources/data/pca-code.json';
         if (!file_exists($jsonFile)) {
-            throw new \InvalidArgumentException(sprintf('File "%s" is not found', $jsonFile));
+            throw new \RuntimeException('Unable to access file.');
         }
 
         $json = file_get_contents($jsonFile);
