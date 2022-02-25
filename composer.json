@@ -10,7 +10,7 @@
         }
     ],
     "require": {
-        "php": ">=7.2.5",
+        "php": ">=7.4",
         "doctrine/doctrine-bundle": "^2.0",
         "doctrine/orm": "^2.8",
         "siganushka/doctrine-contracts": "dev-main",
