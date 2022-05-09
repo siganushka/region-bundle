@@ -13,7 +13,7 @@
         "php": ">=7.4",
         "doctrine/doctrine-bundle": "^2.0",
         "doctrine/orm": "^2.8",
-        "siganushka/doctrine-contracts": "dev-main",
+        "siganushka/doctrine-contracts": "^0.1",
         "symfony/form": "^5.4|^6.0",
         "symfony/framework-bundle": "^5.4|^6.0",
         "symfony/serializer": "^5.4|^6.0"
