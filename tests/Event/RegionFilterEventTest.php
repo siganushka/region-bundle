@@ -28,6 +28,9 @@ final class RegionFilterEventTest extends TestCase
         static::assertSame($array, $event2->getRegions());
     }
 
+    /**
+     * @psalm-suppress InvalidArgument
+     */
     public function testRegionFilterEventException(): void
     {
         $this->expectException(\InvalidArgumentException::class);

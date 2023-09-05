@@ -15,7 +15,7 @@ class RegionFilterEvent extends Event
     private array $regions = [];
 
     /**
-     * @param RegionInterface[] $regions
+     * @param array<int, RegionInterface>|\Traversable<int, RegionInterface> $regions
      */
     public function __construct(iterable $regions)
     {

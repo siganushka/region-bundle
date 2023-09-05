@@ -42,7 +42,7 @@ abstract class AbstractRegionTest extends TestCase
 
         $objectRepository->expects(static::any())
             ->method('find')
-            ->willReturnCallback(function ($value) use ($province) {
+            ->willReturnCallback(function (string $value) use ($province) {
                 return ('100000' === $value) ? $province : null;
             })
         ;

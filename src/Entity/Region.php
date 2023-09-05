@@ -32,6 +32,7 @@ class Region implements ResourceInterface, TimestampableInterface, RegionInterfa
 
     /**
      * @ORM\OneToMany(targetEntity=Region::class, mappedBy="parent", cascade={"all"})
+     *
      * @ORM\OrderBy({"parent": "ASC", "id": "ASC"})
      *
      * @var Collection<int, RegionInterface>

@@ -12,6 +12,9 @@ use Symfony\Component\Form\FormFactoryBuilder;
 
 abstract class AbstractRegionTypeTest extends AbstractRegionTest
 {
+    /**
+     * @param mixed $data
+     */
     protected function createFormBuilder(string $type = FormType::class, $data = null, array $options = []): FormBuilderInterface
     {
         $formFactoryBuilder = new FormFactoryBuilder();

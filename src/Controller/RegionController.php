@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Siganushka\RegionBundle\Controller;
 
+use Doctrine\Common\Collections\Collection;
 use Doctrine\Persistence\ManagerRegistry;
 use Siganushka\RegionBundle\Entity\Region;
 use Siganushka\RegionBundle\Entity\RegionInterface;
@@ -48,7 +49,7 @@ class RegionController
     }
 
     /**
-     * @return iterable<int, RegionInterface>
+     * @return array<int, RegionInterface>|Collection<int, RegionInterface>
      */
     private function getRegions(Request $request): iterable
     {
@@ -60,7 +61,7 @@ class RegionController
 
         $parent = $request->query->get('parent');
         if (!$region = $repository->find($parent)) {
-            throw new NotFoundHttpException(sprintf('The parent "%s" could not be found.', $parent));
+            throw new NotFoundHttpException(sprintf('The parent "%s" could not be found.', (string) $parent));
         }
 
         return $region->getChildren();
