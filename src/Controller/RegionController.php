@@ -4,66 +4,58 @@ declare(strict_types=1);
 
 namespace Siganushka\RegionBundle\Controller;
 
-use Doctrine\Common\Collections\Collection;
-use Doctrine\Persistence\ManagerRegistry;
-use Siganushka\RegionBundle\Entity\Region;
-use Siganushka\RegionBundle\Entity\RegionInterface;
-use Siganushka\RegionBundle\Event\RegionFilterEvent;
+use Siganushka\RegionBundle\Repository\RegionRepository;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\SerializerInterface;
-use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
-class RegionController
+class RegionController extends AbstractController
 {
-    private EventDispatcherInterface $eventDispatcher;
-    private ManagerRegistry $managerRegistry;
-    private SerializerInterface $serializer;
+    protected SerializerInterface $serializer;
+    protected RegionRepository $regionRepository;
 
-    public function __construct(EventDispatcherInterface $eventDispatcher, ManagerRegistry $managerRegistry, SerializerInterface $serializer)
+    public function __construct(SerializerInterface $serializer, RegionRepository $regionRepository)
     {
-        $this->eventDispatcher = $eventDispatcher;
-        $this->managerRegistry = $managerRegistry;
         $this->serializer = $serializer;
-    }
-
-    public function __invoke(Request $request): JsonResponse
-    {
-        $regions = $this->getRegions($request);
-
-        $event = new RegionFilterEvent($regions);
-        $this->eventDispatcher->dispatch($event);
-
-        $attributes = (string) $request->query->get('attributes');
-        $attributes = empty($attributes) ? [] : explode(',', $attributes);
-        $attributes = array_map('trim', $attributes);
-        $attributes = array_filter($attributes, fn ($attr) => \in_array($attr, ['root', 'leaf', 'depth']));
-
-        $json = $this->serializer->serialize($event->getRegions(), 'json', [
-            AbstractNormalizer::ATTRIBUTES => ['code', 'name', ...$attributes],
-        ]);
-
-        return new JsonResponse($json, 200, [], true);
+        $this->regionRepository = $regionRepository;
     }
 
     /**
-     * @return array<int, RegionInterface>|Collection<int, RegionInterface>
+     * @Route("/region", methods={"GET"})
      */
-    private function getRegions(Request $request): iterable
+    public function getCollection(Request $request): Response
     {
-        $repository = $this->managerRegistry->getRepository(Region::class);
-
-        if (!$request->query->has('parent')) {
-            return $repository->findBy(['parent' => null], ['parent' => 'ASC', 'id' => 'ASC']);
-        }
-
         $parent = $request->query->get('parent');
-        if (!$region = $repository->find($parent)) {
-            throw new NotFoundHttpException(sprintf('The parent "%s" could not be found.', (string) $parent));
+
+        $criteria = compact('parent');
+        $orderBy = ['parent' => 'ASC', 'id' => 'ASC'];
+
+        $regions = $this->regionRepository->findBy($criteria, $orderBy);
+
+        return $this->createResponse($regions);
+    }
+
+    /**
+     * @Route("/region/{code}", methods={"GET"})
+     */
+    public function getItem(string $code): Response
+    {
+        $entity = $this->regionRepository->find($code);
+        if (!$entity) {
+            throw $this->createNotFoundException(sprintf('Resource #%s not found.', $code));
         }
 
-        return $region->getChildren();
+        return $this->createResponse($entity);
+    }
+
+    protected function createResponse($data = null, int $statusCode = Response::HTTP_OK, array $headers = []): Response
+    {
+        $attributes = ['code', 'name', 'root', 'leaf', 'depth'];
+        $json = $this->serializer->serialize($data, 'json', compact('attributes'));
+
+        return JsonResponse::fromJsonString($json, $statusCode, $headers);
     }
 }

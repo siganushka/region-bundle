@@ -4,10 +4,9 @@ declare(strict_types=1);
 
 namespace Siganushka\RegionBundle\Command;
 
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
-use Doctrine\Persistence\ManagerRegistry;
-use Doctrine\Persistence\ObjectManager;
 use Siganushka\RegionBundle\Entity\Region;
 use Siganushka\RegionBundle\Entity\RegionInterface;
 use Siganushka\RegionBundle\SiganushkaRegionBundle;
@@ -22,16 +21,11 @@ class RegionUpdateCommand extends Command
 {
     protected static $defaultName = 'siganushka:region:update';
 
-    private ObjectManager $objectManager;
+    private EntityManagerInterface $entityManager;
 
-    public function __construct(ManagerRegistry $managerRegistry)
+    public function __construct(EntityManagerInterface $entityManager)
     {
-        $objectManager = $managerRegistry->getManagerForClass(Region::class);
-        if (null === $objectManager) {
-            throw new \InvalidArgumentException(sprintf('Invalid entity class "%s" for object manager.', Region::class));
-        }
-
-        $this->objectManager = $objectManager;
+        $this->entityManager = $entityManager;
 
         parent::__construct();
     }
@@ -66,13 +60,13 @@ class RegionUpdateCommand extends Command
         }
 
         // Manually assign id
-        $metadata = $this->objectManager->getClassMetadata(Region::class);
+        $metadata = $this->entityManager->getClassMetadata(Region::class);
         if ($metadata instanceof ClassMetadataInfo) {
             $metadata->setIdGeneratorType(ClassMetadata::GENERATOR_TYPE_NONE);
         }
 
         $this->import($output, $data);
-        $this->objectManager->flush();
+        $this->entityManager->flush();
 
         return Command::SUCCESS;
     }
@@ -88,12 +82,12 @@ class RegionUpdateCommand extends Command
 
             $messages = sprintf('[%d] %s', $region->getCode(), $region->getName());
 
-            $newParent = $this->objectManager->find(Region::class, $region->getCode());
+            $newParent = $this->entityManager->find(Region::class, $region->getCode());
             if ($newParent) {
                 $output->writeln("<comment>{$messages} 存在，已跳过！</comment>");
             } else {
                 $output->writeln("<info>{$messages} 添加成功！</info>");
-                $this->objectManager->persist($region);
+                $this->entityManager->persist($region);
             }
 
             if (isset($value['children'])) {

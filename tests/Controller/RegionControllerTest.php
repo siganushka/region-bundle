@@ -11,7 +11,6 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\Serializer;
-use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 final class RegionControllerTest extends AbstractRegionTest
 {
@@ -21,13 +20,11 @@ final class RegionControllerTest extends AbstractRegionTest
     {
         parent::setUp();
 
-        $eventDispatcher = $this->createMock(EventDispatcherInterface::class);
-
         $encoders = [new JsonEncoder()];
         $normalizers = [new ObjectNormalizer()];
         $serializer = new Serializer($normalizers, $encoders);
 
-        $this->controller = new RegionController($eventDispatcher, $this->managerRegistry, $serializer);
+        $this->controller = new RegionController($serializer, $this->regionRepository);
     }
 
     protected function tearDown(): void
@@ -37,44 +34,41 @@ final class RegionControllerTest extends AbstractRegionTest
         $this->controller = null;
     }
 
-    public function testInvoke(): void
+    public function testGetCollection(): void
     {
-        $request = new Request();
-        $response = $this->controller->__invoke($request);
+        $response = $this->controller->getCollection(new Request());
+        static::assertSame('[{"code":"100000","name":"foo","root":true,"leaf":false,"depth":0}]', $response->getContent());
 
-        static::assertSame('[{"code":"100000","name":"foo"}]', $response->getContent());
+        $response = $this->controller->getCollection(new Request(['parent' => '100000']));
+        static::assertSame('[{"code":"110000","name":"bar","root":false,"leaf":false,"depth":1}]', $response->getContent());
 
-        $request = new Request(['parent' => '100000', 'attributes' => 'root,leaf,depth,foo']);
-        $response = $this->controller->__invoke($request);
+        $response = $this->controller->getCollection(new Request(['parent' => '110000']));
+        static::assertSame('[{"code":"111000","name":"baz","root":false,"leaf":true,"depth":2}]', $response->getContent());
 
-        static::assertSame('[{"code":"200000","name":"bar","root":false,"leaf":false,"depth":1}]', $response->getContent());
+        $response = $this->controller->getCollection(new Request(['parent' => 'invalid']));
+        static::assertSame('[]', $response->getContent());
+
+        $response = $this->controller->getCollection(new Request(['parent' => '']));
+        static::assertSame('[]', $response->getContent());
     }
 
-    public function testGetRegions(): void
+    public function testGetItem(): void
     {
-        $method = new \ReflectionMethod($this->controller, 'getRegions');
-        $method->setAccessible(true);
+        $response = $this->controller->getItem('100000');
+        static::assertSame('{"code":"100000","name":"foo","root":true,"leaf":false,"depth":0}', $response->getContent());
 
-        $request = new Request();
-        $regions = $method->invokeArgs($this->controller, [$request]);
+        $response = $this->controller->getItem('110000');
+        static::assertSame('{"code":"110000","name":"bar","root":false,"leaf":false,"depth":1}', $response->getContent());
 
-        static::assertSame([$this->province], $regions);
-
-        $request = new Request(['parent' => '100000']);
-        $regions = $method->invokeArgs($this->controller, [$request]);
-
-        static::assertSame($this->province->getChildren(), $regions);
+        $response = $this->controller->getItem('111000');
+        static::assertSame('{"code":"111000","name":"baz","root":false,"leaf":true,"depth":2}', $response->getContent());
     }
 
-    public function testGetRegionsException(): void
+    public function testGetItemNotFoundHttpException(): void
     {
         $this->expectException(NotFoundHttpException::class);
-        $this->expectExceptionMessage('The parent "123" could not be found.');
+        $this->expectExceptionMessage('Resource #invalid_code not found.');
 
-        $method = new \ReflectionMethod($this->controller, 'getRegions');
-        $method->setAccessible(true);
-
-        $request = new Request(['parent' => '123']);
-        $method->invokeArgs($this->controller, [$request]);
+        $this->controller->getItem('invalid_code');
     }
 }

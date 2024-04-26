@@ -13,7 +13,7 @@ use Siganushka\Contracts\Doctrine\TimestampableInterface;
 use Siganushka\Contracts\Doctrine\TimestampableTrait;
 
 /**
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass=RegionRepository::class)
  */
 class Region implements ResourceInterface, TimestampableInterface, RegionInterface
 {
@@ -32,7 +32,6 @@ class Region implements ResourceInterface, TimestampableInterface, RegionInterfa
 
     /**
      * @ORM\OneToMany(targetEntity=Region::class, mappedBy="parent", cascade={"all"})
-     *
      * @ORM\OrderBy({"parent": "ASC", "id": "ASC"})
      *
      * @var Collection<int, RegionInterface>
@@ -51,8 +50,12 @@ class Region implements ResourceInterface, TimestampableInterface, RegionInterfa
 
     public function setParent(?RegionInterface $parent): RegionInterface
     {
+        if ($parent && $parent === $this) {
+            throw new \InvalidArgumentException('The parent conflict has been detected.');
+        }
+
         if ($parent && \in_array($parent, $this->getDescendants(), true)) {
-            throw new \InvalidArgumentException('The tree node descendants conflict has been detected.');
+            throw new \InvalidArgumentException('The descendants conflict has been detected.');
         }
 
         $this->parent = $parent;
@@ -106,7 +109,6 @@ class Region implements ResourceInterface, TimestampableInterface, RegionInterfa
     public function removeChild(RegionInterface $child): RegionInterface
     {
         if ($this->children->removeElement($child)) {
-            // set the owning side to null (unless already changed)
             if ($child->getParent() === $this) {
                 $child->setParent(null);
             }

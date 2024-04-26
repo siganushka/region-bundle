@@ -24,10 +24,18 @@ final class RegionTest extends AbstractRegionTest
         static::assertSame('abcabcabcabcabcabcabcabcabcabcab', $region->getName());
     }
 
+    public function testParentConflictException(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('The parent conflict has been detected.');
+
+        $this->city->setParent($this->city);
+    }
+
     public function testDescendantConflictException(): void
     {
         $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage('The tree node descendants conflict has been detected.');
+        $this->expectExceptionMessage('The descendants conflict has been detected.');
 
         $this->province->setParent($this->city);
     }

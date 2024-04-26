@@ -4,9 +4,8 @@ declare(strict_types=1);
 
 namespace Siganushka\RegionBundle\Form\Type;
 
-use Doctrine\Persistence\ManagerRegistry;
-use Siganushka\RegionBundle\Entity\Region;
 use Siganushka\RegionBundle\Entity\RegionInterface;
+use Siganushka\RegionBundle\Repository\RegionRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -17,11 +16,11 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class RegionProvinceType extends AbstractType
 {
-    private ManagerRegistry $managerRegistry;
+    private RegionRepository $regionRepository;
 
-    public function __construct(ManagerRegistry $managerRegistry)
+    public function __construct(RegionRepository $regionRepository)
     {
-        $this->managerRegistry = $managerRegistry;
+        $this->regionRepository = $regionRepository;
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
@@ -56,8 +55,7 @@ class RegionProvinceType extends AbstractType
 
     public function configureOptions(OptionsResolver $resolver): void
     {
-        $repository = $this->managerRegistry->getRepository(Region::class);
-        $choices = $repository->findBy(['parent' => null], ['parent' => 'ASC', 'id' => 'ASC']);
+        $choices = $this->regionRepository->findBy(['parent' => null], ['parent' => 'ASC', 'id' => 'ASC']);
 
         $resolver->setDefaults([
             'choices' => $choices,

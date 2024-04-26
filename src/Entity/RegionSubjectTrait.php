@@ -10,24 +10,18 @@ trait RegionSubjectTrait
 {
     /**
      * @ORM\ManyToOne(targetEntity="Siganushka\RegionBundle\Entity\Region")
-     *
-     * @Groups({"region_subject"})
      */
-    private $province;
+    private ?Region $province = null;
 
     /**
      * @ORM\ManyToOne(targetEntity="Siganushka\RegionBundle\Entity\Region")
-     *
-     * @Groups({"region_subject"})
      */
-    private $city;
+    private ?Region $city = null;
 
     /**
      * @ORM\ManyToOne(targetEntity="Siganushka\RegionBundle\Entity\Region")
-     *
-     * @Groups({"region_subject"})
      */
-    private $district;
+    private ?Region $district = null;
 
     public function getProvince(): ?RegionInterface
     {
@@ -67,9 +61,7 @@ trait RegionSubjectTrait
 
     public function getRegionAsString(): string
     {
-        $names = array_map(function (RegionInterface $region) {
-            return $region->getName();
-        }, array_filter([$this->province, $this->city, $this->district]));
+        $names = array_map(fn (RegionInterface $region) => $region->getName(), array_filter([$this->province, $this->city, $this->district]));
 
         return implode('/', $names);
     }

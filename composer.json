@@ -1,6 +1,8 @@
 {
     "name": "siganushka/region-bundle",
     "description": "Region bundle for symfony.",
+    "keywords": ["region-bundle"],
+    "homepage": "https://github.com/siganushka/region-bundle",
     "type": "symfony-bundle",
     "license": "MIT",
     "authors": [
@@ -11,15 +13,16 @@
     ],
     "require": {
         "php": ">=7.4",
-        "doctrine/doctrine-bundle": "^2.0",
-        "doctrine/orm": "^2.8",
+        "doctrine/doctrine-bundle": "^2.8",
+        "doctrine/orm": "^2.11",
         "siganushka/doctrine-contracts": "dev-main",
+        "siganushka/generic-bundle": "dev-main",
         "symfony/form": "^5.4|^6.0",
         "symfony/framework-bundle": "^5.4|^6.0",
         "symfony/serializer": "^5.4|^6.0"
     },
     "require-dev": {
-        "symfony/phpunit-bridge": "^5.4|^6.0",
+        "symfony/phpunit-bridge": "^6.0",
         "vimeo/psalm": "^5.0"
     },
     "autoload": {
@@ -30,11 +33,6 @@
     "autoload-dev": {
         "psr-4": {
             "Siganushka\\RegionBundle\\Tests\\": "tests/"
-        }
-    },
-    "extra": {
-        "symfony": {
-            "allow-contrib": "true"
         }
     },
     "config": {

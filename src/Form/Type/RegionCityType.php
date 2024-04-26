@@ -57,9 +57,7 @@ class RegionCityType extends AbstractType
 
         $resolver->setAllowedTypes('parent', ['null', RegionInterface::class]);
 
-        $resolver->setNormalizer('choices', function (Options $options) {
-            return $options['parent'] ? $options['parent']->getChildren()->toArray() : [];
-        });
+        $resolver->setNormalizer('choices', fn (Options $options) => $options['parent'] ? $options['parent']->getChildren()->toArray() : []);
     }
 
     public function getParent(): ?string

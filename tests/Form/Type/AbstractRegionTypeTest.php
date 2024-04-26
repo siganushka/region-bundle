@@ -18,7 +18,7 @@ abstract class AbstractRegionTypeTest extends AbstractRegionTest
     protected function createFormBuilder(string $type = FormType::class, $data = null, array $options = []): FormBuilderInterface
     {
         $formFactoryBuilder = new FormFactoryBuilder();
-        $formFactoryBuilder->addType(new RegionProvinceType($this->managerRegistry));
+        $formFactoryBuilder->addType(new RegionProvinceType($this->regionRepository));
 
         return $formFactoryBuilder->getFormFactory()
             ->createBuilder($type, $data, $options)
