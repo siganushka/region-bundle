@@ -9,10 +9,7 @@ use Siganushka\RegionBundle\Command\RegionUpdateCommand;
 use Siganushka\RegionBundle\Controller\RegionController;
 use Siganushka\RegionBundle\DependencyInjection\SiganushkaRegionExtension;
 use Siganushka\RegionBundle\Entity\Region;
-use Siganushka\RegionBundle\Form\Type\RegionCityType;
-use Siganushka\RegionBundle\Form\Type\RegionDistrictType;
-use Siganushka\RegionBundle\Form\Type\RegionProvinceType;
-use Siganushka\RegionBundle\Form\Type\RegionSubjectType;
+use Siganushka\RegionBundle\Form\Type\RegionType;
 use Siganushka\RegionBundle\Repository\RegionRepository;
 use Siganushka\RegionBundle\Tests\Mock\FooRegion;
 use Symfony\Component\DependencyInjection\Compiler\ResolveChildDefinitionsPass;
@@ -27,10 +24,7 @@ final class SiganushkaRegionExtensionTest extends TestCase
 
         static::assertTrue($container->hasDefinition(RegionUpdateCommand::class));
         static::assertTrue($container->hasDefinition(RegionController::class));
-        static::assertTrue($container->hasDefinition(RegionCityType::class));
-        static::assertTrue($container->hasDefinition(RegionDistrictType::class));
-        static::assertTrue($container->hasDefinition(RegionProvinceType::class));
-        static::assertTrue($container->hasDefinition(RegionSubjectType::class));
+        static::assertTrue($container->hasDefinition(RegionType::class));
         static::assertTrue($container->hasDefinition(RegionRepository::class));
 
         $regionRepositoryDef = $container->getDefinition(RegionRepository::class);

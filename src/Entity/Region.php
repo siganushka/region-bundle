@@ -7,23 +7,30 @@ namespace Siganushka\RegionBundle\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Siganushka\Contracts\Doctrine\ResourceInterface;
-use Siganushka\Contracts\Doctrine\ResourceTrait;
 use Siganushka\Contracts\Doctrine\TimestampableInterface;
 use Siganushka\Contracts\Doctrine\TimestampableTrait;
+use Siganushka\RegionBundle\IdGenerator\RegionIdGenerator;
+use Siganushka\RegionBundle\Repository\RegionRepository;
 
 /**
  * @ORM\Entity(repositoryClass=RegionRepository::class)
  */
-class Region implements ResourceInterface, TimestampableInterface, RegionInterface
+class Region implements TimestampableInterface
 {
-    use ResourceTrait;
     use TimestampableTrait;
+
+    /**
+     * @ORM\Id()
+     * @ORM\GeneratedValue(strategy="CUSTOM")
+     * @ORM\CustomIdGenerator(class=RegionIdGenerator::class)
+     * @ORM\Column(type="string")
+     */
+    private ?string $id = null;
 
     /**
      * @ORM\ManyToOne(targetEntity=Region::class, inversedBy="children", cascade={"all"})
      */
-    private ?RegionInterface $parent = null;
+    private ?Region $parent = null;
 
     /**
      * @ORM\Column(type="string", length=32)
@@ -34,7 +41,7 @@ class Region implements ResourceInterface, TimestampableInterface, RegionInterfa
      * @ORM\OneToMany(targetEntity=Region::class, mappedBy="parent", cascade={"all"})
      * @ORM\OrderBy({"parent": "ASC", "id": "ASC"})
      *
-     * @var Collection<int, RegionInterface>
+     * @var Collection<int, Region>
      */
     private Collection $children;
 
@@ -43,12 +50,12 @@ class Region implements ResourceInterface, TimestampableInterface, RegionInterfa
         $this->children = new ArrayCollection();
     }
 
-    public function getParent(): ?RegionInterface
+    public function getParent(): ?self
     {
         return $this->parent;
     }
 
-    public function setParent(?RegionInterface $parent): RegionInterface
+    public function setParent(?self $parent): self
     {
         if ($parent && $parent === $this) {
             throw new \InvalidArgumentException('The parent conflict has been detected.');
@@ -65,16 +72,12 @@ class Region implements ResourceInterface, TimestampableInterface, RegionInterfa
 
     public function getCode(): ?string
     {
-        if ($this->id) {
-            return (string) $this->id;
-        }
-
-        return null;
+        return $this->id;
     }
 
-    public function setCode(string $code): RegionInterface
+    public function setCode(string $code): self
     {
-        $this->id = (int) str_pad($code, 6, '0');
+        $this->id = $code;
 
         return $this;
     }
@@ -84,9 +87,9 @@ class Region implements ResourceInterface, TimestampableInterface, RegionInterfa
         return $this->name;
     }
 
-    public function setName(string $name): RegionInterface
+    public function setName(string $name): self
     {
-        $this->name = mb_substr($name, 0, 32);
+        $this->name = $name;
 
         return $this;
     }
@@ -96,7 +99,7 @@ class Region implements ResourceInterface, TimestampableInterface, RegionInterfa
         return $this->children;
     }
 
-    public function addChild(RegionInterface $child): RegionInterface
+    public function addChild(self $child): self
     {
         if (!$this->children->contains($child)) {
             $this->children[] = $child;
@@ -106,7 +109,7 @@ class Region implements ResourceInterface, TimestampableInterface, RegionInterfa
         return $this;
     }
 
-    public function removeChild(RegionInterface $child): RegionInterface
+    public function removeChild(self $child): self
     {
         if ($this->children->removeElement($child)) {
             if ($child->getParent() === $this) {

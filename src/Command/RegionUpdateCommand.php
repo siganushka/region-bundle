@@ -5,10 +5,7 @@ declare(strict_types=1);
 namespace Siganushka\RegionBundle\Command;
 
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\Mapping\ClassMetadata;
-use Doctrine\ORM\Mapping\ClassMetadataInfo;
 use Siganushka\RegionBundle\Entity\Region;
-use Siganushka\RegionBundle\Entity\RegionInterface;
 use Siganushka\RegionBundle\SiganushkaRegionBundle;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -37,6 +34,8 @@ class RegionUpdateCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
+        ini_set('memory_limit', '1024M');
+
         $reflection = new \ReflectionClass(SiganushkaRegionBundle::class);
         $fileName = $reflection->getFileName();
         if (false === $fileName) {
@@ -45,12 +44,12 @@ class RegionUpdateCommand extends Command
 
         $jsonFile = \dirname($fileName).'/Resources/data/pca-code.json';
         if (!file_exists($jsonFile)) {
-            throw new \RuntimeException('Unable to access file.');
+            throw new \RuntimeException(sprintf('Unable to access file(%s).', $jsonFile));
         }
 
         $json = file_get_contents($jsonFile);
         if (false === $json) {
-            throw new \RuntimeException('Unable to access file.');
+            throw new \RuntimeException(sprintf('Unable to access file(%s).', $jsonFile));
         }
 
         /** @var array */
@@ -59,26 +58,19 @@ class RegionUpdateCommand extends Command
             throw new \UnexpectedValueException(json_last_error_msg());
         }
 
-        // Manually assign id
-        $metadata = $this->entityManager->getClassMetadata(Region::class);
-        if ($metadata instanceof ClassMetadataInfo) {
-            $metadata->setIdGeneratorType(ClassMetadata::GENERATOR_TYPE_NONE);
-        }
-
         $this->import($output, $data);
         $this->entityManager->flush();
 
         return Command::SUCCESS;
     }
 
-    protected function import(OutputInterface $output, array $data, RegionInterface $parent = null): void
+    protected function import(OutputInterface $output, array $data, Region $parent = null): void
     {
         foreach ($data as $value) {
             $region = new Region();
             $region->setParent($parent);
             $region->setCode($value['code']);
             $region->setName($value['name']);
-            $region->setCreatedAt(new \DateTimeImmutable());
 
             $messages = sprintf('[%d] %s', $region->getCode(), $region->getName());
 

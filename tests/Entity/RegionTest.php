@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Siganushka\RegionBundle\Tests\Entity;
 
 use Siganushka\RegionBundle\Entity\Region;
-use Siganushka\RegionBundle\Entity\RegionInterface;
 
 final class RegionTest extends AbstractRegionTest
 {
@@ -15,13 +14,12 @@ final class RegionTest extends AbstractRegionTest
 
         static::assertNull($region->getCode());
         static::assertNull($region->getName());
-        static::assertInstanceOf(RegionInterface::class, $region);
 
         $region->setCode('1');
         $region->setName('abcabcabcabcabcabcabcabcabcabcabcabcabc');
 
-        static::assertSame('100000', $region->getCode());
-        static::assertSame('abcabcabcabcabcabcabcabcabcabcab', $region->getName());
+        static::assertSame('1', $region->getCode());
+        static::assertSame('abcabcabcabcabcabcabcabcabcabcabcabcabc', $region->getName());
     }
 
     public function testParentConflictException(): void

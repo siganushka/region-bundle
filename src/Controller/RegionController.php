@@ -24,7 +24,7 @@ class RegionController extends AbstractController
     }
 
     /**
-     * @Route("/region", methods={"GET"})
+     * @Route("/regions", methods={"GET"})
      */
     public function getCollection(Request $request): Response
     {
@@ -39,7 +39,7 @@ class RegionController extends AbstractController
     }
 
     /**
-     * @Route("/region/{code}", methods={"GET"})
+     * @Route("/regions/{code}", methods={"GET"})
      */
     public function getItem(string $code): Response
     {
@@ -51,6 +51,9 @@ class RegionController extends AbstractController
         return $this->createResponse($entity);
     }
 
+    /**
+     * @param mixed $data
+     */
     protected function createResponse($data = null, int $statusCode = Response::HTTP_OK, array $headers = []): Response
     {
         $attributes = ['code', 'name', 'root', 'leaf', 'depth'];

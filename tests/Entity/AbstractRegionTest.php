@@ -6,15 +6,14 @@ namespace Siganushka\RegionBundle\Tests\Entity;
 
 use PHPUnit\Framework\TestCase;
 use Siganushka\RegionBundle\Entity\Region;
-use Siganushka\RegionBundle\Entity\RegionInterface;
 use Siganushka\RegionBundle\Repository\RegionRepository;
 
 abstract class AbstractRegionTest extends TestCase
 {
     protected ?RegionRepository $regionRepository = null;
-    protected ?RegionInterface $province = null;
-    protected ?RegionInterface $city = null;
-    protected ?RegionInterface $district = null;
+    protected ?Region $province = null;
+    protected ?Region $city = null;
+    protected ?Region $district = null;
 
     protected function setUp(): void
     {
@@ -52,7 +51,7 @@ abstract class AbstractRegionTest extends TestCase
 
         $regionRepository->expects(static::any())
             ->method('find')
-            ->willReturnCallback(function (string $id) use ($province, $city, $district): ?RegionInterface {
+            ->willReturnCallback(function (string $id) use ($province, $city, $district): ?Region {
                 if ('100000' === $id) {
                     return $province;
                 } elseif ('110000' === $id) {
