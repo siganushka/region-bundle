@@ -27,11 +27,7 @@ $ php bin/console doctrine:schema:update --complete --force
 $ php bin/console siganushka:region:update
 ```
 
-默认仅导入省、市、区三级数据，如果需要乡/街道，可指定 `--with-street` 参数
-
-```bash
-$ php bin/console siganushka:region:update --with-street
-```
+> 默认仅导入省、市、区三级，可使用 `--with-street` 参数导入乡/街道四级。
 
 导入路由：
 
