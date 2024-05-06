@@ -19,6 +19,7 @@ return static function (ContainerConfigurator $container): void {
             '../../DependencyInjection/',
             '../../Entity/',
             '../../Event/',
+            '../../IdGenerator/',
             '../../Resources/',
             '../../SiganushkaRegionBundle.php',
         ]);

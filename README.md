@@ -5,7 +5,7 @@
 [![Latest Unstable Version](https://poser.pugx.org/siganushka/region-bundle/v/unstable)](https://packagist.org/packages/siganushka/region-bundle)
 [![License](https://poser.pugx.org/siganushka/region-bundle/license)](https://packagist.org/packages/siganushka/region-bundle)
 
-国内行政区划（省、市、区、乡/街道联动） [Bundle](https://symfony.com/doc/current/bundles.html)，数据来源 https://github.com/modood/Administrative-divisions-of-China
+国内行政区划（省、市、区、乡/街道联动） [Bundle](https://symfony.com/doc/current/bundles.html)，数据来源 [Administrative-divisions-of-China](https://github.com/modood/Administrative-divisions-of-China)
 
 ### 安装
 
@@ -21,15 +21,12 @@ $ composer require siganushka/region-bundle --dev-main
 $ php bin/console doctrine:schema:update --complete --force
 ```
 
-更新行政区划数据，默认仅导入省、市、区三级数据：
+更新行政区划数据：
 
 ```bash
+# 默认仅导入省、市、区三级数据
 $ php bin/console siganushka:region:update
-```
-
-如果需要导入乡/街道四级数据，可以指定参数：
-
-```bash
+# 如果需要乡/街道，可指定 --with-street 参数
 $ php bin/console siganushka:region:update --with-street
 ```
 
