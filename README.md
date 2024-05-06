@@ -47,19 +47,19 @@ siganushka_region:
 
 ### Twig
 
-在 `Twig` 中实现省、市、区、乡/街道四级联动，需要先导出前端资源到项目：
+导出前端资源到项目：
 
 ```bash
 $ php bin/console assets:install
 ```
 
-导入前端资源到页面：
-
-> main.js 依赖 [fetch API](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API)，如果你的浏览器不支持，请使用 [fetch polyfill](https://github.com/JakeChampion/fetch) 。
+页面中引用前端资源：
 
 ```html
 <script src="bundles/siganushkaregion/main.js"></script>
 ```
+
+> main.js 依赖 [fetch API](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API)，如果你的浏览器不支持，请使用 [fetch polyfill](https://github.com/JakeChampion/fetch) 。
 
 ### 示例
 
@@ -96,9 +96,9 @@ class UserAddress
 }
 ```
 
-> 为保证 bundle 的独立、可复用性，你的实体关联到 ``Region::class`` 时必需为单向关系，不要指定 `inversedBy` 参数。
+> 为保证此 bundle 的独立、可复用性，你的实体关联到 ``Region::class`` 时必需为单向关系，不要指定 `inversedBy` 参数。
 
-用户地址实体表单类型：
+表单类型：
 
 ```php
 // src/Form/UserAddressType.php
@@ -127,4 +127,4 @@ class UserAddressType extends AbstractType
 }
 ```
 
-> `cascader_target` 表单选项指定了此字段联动的下一级字段，不管是三级还是四级，只需要指定该参数即可，此联动功能在 `main.js` 中实现，如果你需要自己实现联动，则不需要导入 `main.js`。
+> 表单选项 `cascader_target` 指定了此字段联动的下一级字段，不管是三级还是四级，只需要指定该参数即可，此功能在 `main.js` 中实现，如果你需要自己实现联动，则不需要导入 `main.js`。
