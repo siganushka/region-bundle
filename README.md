@@ -24,9 +24,12 @@ $ php bin/console doctrine:schema:update --complete --force
 更新行政区划数据：
 
 ```bash
-# 默认仅导入省、市、区三级数据
 $ php bin/console siganushka:region:update
-# 如果需要乡/街道，可指定 --with-street 参数
+```
+
+默认仅导入省、市、区三级数据，如果需要乡/街道，可指定 `--with-street` 参数
+
+```bash
 $ php bin/console siganushka:region:update --with-street
 ```
 
