@@ -6,10 +6,11 @@ namespace Siganushka\RegionBundle\Command;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Siganushka\RegionBundle\Entity\Region;
-use Siganushka\RegionBundle\SiganushkaRegionBundle;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 /**
  * @see https://github.com/modood/Administrative-divisions-of-China
@@ -17,11 +18,15 @@ use Symfony\Component\Console\Output\OutputInterface;
 class RegionUpdateCommand extends Command
 {
     protected static $defaultName = 'siganushka:region:update';
+    protected static $defaultDescription = '更新行政区划数据，来源 https://github.com/modood/Administrative-divisions-of-China';
 
+    private HttpClientInterface $httpClient;
     private EntityManagerInterface $entityManager;
+    private array $sourceMapping = ['pc' => '省市', 'pca' => '省市区', 'pcas' => '省市区乡'];
 
-    public function __construct(EntityManagerInterface $entityManager)
+    public function __construct(HttpClientInterface $httpClient, EntityManagerInterface $entityManager)
     {
+        $this->httpClient = $httpClient;
         $this->entityManager = $entityManager;
 
         parent::__construct();
@@ -29,34 +34,26 @@ class RegionUpdateCommand extends Command
 
     protected function configure(): void
     {
-        $this->setDescription('更新行政区划数据（来原 Github）');
+        $mapping = array_map(fn (string $key) => sprintf('%s: %s', $key, $this->sourceMapping[$key]), array_keys($this->sourceMapping));
+
+        $this->addArgument('source', InputArgument::OPTIONAL, sprintf('行政区划数据级别 (%s)', implode('/', $mapping)), 'pc');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         ini_set('memory_limit', '1024M');
 
-        $reflection = new \ReflectionClass(SiganushkaRegionBundle::class);
-        $fileName = $reflection->getFileName();
-        if (false === $fileName) {
-            throw new \RuntimeException('Unable to access file.');
+        $source = $input->getArgument('source');
+        if (!\array_key_exists($source, $this->sourceMapping)) {
+            throw new \InvalidArgumentException(sprintf('参数 source 值无效 (仅能为：%s).', implode('/', array_keys($this->sourceMapping))));
         }
 
-        $jsonFile = \dirname($fileName).'/Resources/data/pca-code.json';
-        if (!file_exists($jsonFile)) {
-            throw new \RuntimeException(sprintf('Unable to access file(%s).', $jsonFile));
-        }
+        $output->writeln('<info>下载数据...</info>');
 
-        $json = file_get_contents($jsonFile);
-        if (false === $json) {
-            throw new \RuntimeException(sprintf('Unable to access file(%s).', $jsonFile));
-        }
+        $response = $this->httpClient->request('GET', "https://raw.githubusercontent.com/modood/Administrative-divisions-of-China/master/dist/{$source}-code.json");
+        $data = $response->toArray();
 
-        /** @var array */
-        $data = json_decode($json, true);
-        if (\JSON_ERROR_NONE !== json_last_error()) {
-            throw new \UnexpectedValueException(json_last_error_msg());
-        }
+        $output->writeln('<info>下载完成，开始导入数据库...</info>');
 
         $this->import($output, $data);
         $this->entityManager->flush();
