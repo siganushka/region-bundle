@@ -43,6 +43,7 @@ class RegionType extends AbstractType
         $resolver->setDefaults([
             'choice_value' => 'code',
             'choice_label' => 'name',
+            'choice_translation_domain' => false,
             'parent' => null,
             // Show root regions on null parent.
             'root_on_null_parent' => true,
