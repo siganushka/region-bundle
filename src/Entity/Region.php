@@ -25,7 +25,7 @@ class Region implements TimestampableInterface
      * @ORM\CustomIdGenerator(class=RegionIdGenerator::class)
      * @ORM\Column(type="string")
      */
-    private ?string $id = null;
+    private string $id;
 
     /**
      * @ORM\ManyToOne(targetEntity=Region::class, inversedBy="children", cascade={"all"})
@@ -35,7 +35,7 @@ class Region implements TimestampableInterface
     /**
      * @ORM\Column(type="string", length=32)
      */
-    private ?string $name = null;
+    private string $name;
 
     /**
      * @ORM\OneToMany(targetEntity=Region::class, mappedBy="parent", cascade={"all"})
@@ -45,8 +45,10 @@ class Region implements TimestampableInterface
      */
     private Collection $children;
 
-    public function __construct()
+    public function __construct(string $code, string $name)
     {
+        $this->id = $code;
+        $this->name = $name;
         $this->children = new ArrayCollection();
     }
 
@@ -70,28 +72,24 @@ class Region implements TimestampableInterface
         return $this;
     }
 
-    public function getCode(): ?string
+    public function getCode(): string
     {
         return $this->id;
     }
 
     public function setCode(string $code): self
     {
-        $this->id = $code;
-
-        return $this;
+        throw new \BadMethodCallException('The code cannot be modified anymore.');
     }
 
-    public function getName(): ?string
+    public function getName(): string
     {
         return $this->name;
     }
 
     public function setName(string $name): self
     {
-        $this->name = $name;
-
-        return $this;
+        throw new \BadMethodCallException('The name cannot be modified anymore.');
     }
 
     public function getChildren(): Collection

@@ -17,18 +17,12 @@ abstract class AbstractRegionTest extends TestCase
 
     protected function setUp(): void
     {
-        $district = new Region();
-        $district->setCode('111000');
-        $district->setName('baz');
+        $district = new Region('111000', 'baz');
 
-        $city = new Region();
-        $city->setCode('110000');
-        $city->setName('bar');
+        $city = new Region('110000', 'bar');
         $city->addChild($district);
 
-        $province = new Region();
-        $province->setCode('100000');
-        $province->setName('foo');
+        $province = new Region('100000', 'foo');
         $province->addChild($city);
 
         $regionRepository = $this->createMock(RegionRepository::class);

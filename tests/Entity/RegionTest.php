@@ -10,16 +10,10 @@ final class RegionTest extends AbstractRegionTest
 {
     public function testRegion(): void
     {
-        $region = new Region();
+        $region = new Region('100000', 'foo');
 
-        static::assertNull($region->getCode());
-        static::assertNull($region->getName());
-
-        $region->setCode('1');
-        $region->setName('abcabcabcabcabcabcabcabcabcabcabcabcabc');
-
-        static::assertSame('1', $region->getCode());
-        static::assertSame('abcabcabcabcabcabcabcabcabcabcabcabcabc', $region->getName());
+        static::assertSame('100000', $region->getCode());
+        static::assertSame('foo', $region->getName());
     }
 
     public function testParentConflictException(): void
