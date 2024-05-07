@@ -11,7 +11,9 @@ document.addEventListener('DOMContentLoaded', () => {
       }
 
       if (event.target.value) {
-        const response = await fetch(`${siganRegionUrl}?parent=${event.target.value}`)
+        const response = await fetch(`${siganRegionUrl}?parent=${event.target.value}`, {
+          headers: { Accept: 'application/json' }
+        })
         regions.push(...await response.json())
       }
 
