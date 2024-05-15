@@ -6,20 +6,16 @@ namespace Siganushka\RegionBundle\Controller;
 
 use Siganushka\RegionBundle\Repository\RegionRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Serializer\SerializerInterface;
 
 class RegionController extends AbstractController
 {
-    protected SerializerInterface $serializer;
     protected RegionRepository $regionRepository;
 
-    public function __construct(SerializerInterface $serializer, RegionRepository $regionRepository)
+    public function __construct(RegionRepository $regionRepository)
     {
-        $this->serializer = $serializer;
         $this->regionRepository = $regionRepository;
     }
 
@@ -57,8 +53,7 @@ class RegionController extends AbstractController
     protected function createResponse($data = null, int $statusCode = Response::HTTP_OK, array $headers = []): Response
     {
         $attributes = ['code', 'name', 'root', 'leaf', 'depth'];
-        $json = $this->serializer->serialize($data, 'json', compact('attributes'));
 
-        return JsonResponse::fromJsonString($json, $statusCode, $headers);
+        return $this->json($data, $statusCode, $headers, compact('attributes'));
     }
 }

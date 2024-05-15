@@ -6,6 +6,7 @@ namespace Siganushka\RegionBundle\Tests\Controller;
 
 use Siganushka\RegionBundle\Controller\RegionController;
 use Siganushka\RegionBundle\Tests\Entity\AbstractRegionTest;
+use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
@@ -20,11 +21,11 @@ final class RegionControllerTest extends AbstractRegionTest
     {
         parent::setUp();
 
-        $encoders = [new JsonEncoder()];
-        $normalizers = [new ObjectNormalizer()];
-        $serializer = new Serializer($normalizers, $encoders);
+        $container = new Container();
+        $container->set('serializer', new Serializer([new ObjectNormalizer()], [new JsonEncoder()]));
 
-        $this->controller = new RegionController($serializer, $this->regionRepository);
+        $this->controller = new RegionController($this->regionRepository);
+        $this->controller->setContainer($container);
     }
 
     protected function tearDown(): void
