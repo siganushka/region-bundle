@@ -8,8 +8,8 @@ use Siganushka\RegionBundle\Entity\Region;
 use Siganushka\RegionBundle\Repository\RegionRepository;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Extension\Extension;
 use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
-use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 
 class SiganushkaRegionExtension extends Extension
 {

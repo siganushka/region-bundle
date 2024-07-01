@@ -4,12 +4,17 @@ declare(strict_types=1);
 
 namespace Siganushka\RegionBundle\Controller;
 
+use Siganushka\RegionBundle\Entity\Region;
 use Siganushka\RegionBundle\Repository\RegionRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
+/**
+ * @psalm-suppress PropertyNotSetInConstructor
+ */
+#[Route('/regions')]
 class RegionController extends AbstractController
 {
     protected RegionRepository $regionRepository;
@@ -19,9 +24,7 @@ class RegionController extends AbstractController
         $this->regionRepository = $regionRepository;
     }
 
-    /**
-     * @Route("/regions", methods={"GET"})
-     */
+    #[Route(methods: 'GET')]
     public function getCollection(Request $request): Response
     {
         $parent = $request->query->get('parent');
@@ -34,9 +37,7 @@ class RegionController extends AbstractController
         return $this->createResponse($regions);
     }
 
-    /**
-     * @Route("/regions/{code}", methods={"GET"})
-     */
+    #[Route('/{code}', methods: 'GET')]
     public function getItem(string $code): Response
     {
         $entity = $this->regionRepository->find($code);
@@ -47,10 +48,7 @@ class RegionController extends AbstractController
         return $this->createResponse($entity);
     }
 
-    /**
-     * @param mixed $data
-     */
-    protected function createResponse($data = null, int $statusCode = Response::HTTP_OK, array $headers = []): Response
+    protected function createResponse(array|Region $data, int $statusCode = Response::HTTP_OK, array $headers = []): Response
     {
         $attributes = ['code', 'name', 'root', 'leaf', 'depth'];
 

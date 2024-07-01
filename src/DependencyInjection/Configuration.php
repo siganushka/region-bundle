@@ -22,7 +22,7 @@ class Configuration implements ConfigurationInterface
                 ->scalarNode('region_class')
                     ->defaultValue(Region::class)
                     ->validate()
-                        ->ifTrue(fn ($v) => !is_a($v, Region::class, true))
+                        ->ifTrue(fn (mixed $v) => !is_a($v, Region::class, true))
                         ->thenInvalid('The %s class must extends '.Region::class.' for using the "region_class".')
                     ->end()
                 ->end()

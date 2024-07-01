@@ -12,37 +12,26 @@ use Siganushka\Contracts\Doctrine\TimestampableTrait;
 use Siganushka\RegionBundle\IdGenerator\RegionIdGenerator;
 use Siganushka\RegionBundle\Repository\RegionRepository;
 
-/**
- * @ORM\Entity(repositoryClass=RegionRepository::class)
- */
+#[ORM\Entity(repositoryClass: RegionRepository::class)]
 class Region implements TimestampableInterface
 {
     use TimestampableTrait;
 
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue(strategy="CUSTOM")
-     * @ORM\CustomIdGenerator(class=RegionIdGenerator::class)
-     * @ORM\Column(type="string")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
+    #[ORM\CustomIdGenerator(class: RegionIdGenerator::class)]
+    #[ORM\Column]
     private string $id;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Region::class, inversedBy="children", cascade={"all"})
-     */
+    #[ORM\ManyToOne(targetEntity: self::class, inversedBy: 'children', cascade: ['all'])]
     private ?Region $parent = null;
 
-    /**
-     * @ORM\Column(type="string", length=32)
-     */
+    #[ORM\Column]
     private string $name;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Region::class, mappedBy="parent", cascade={"all"})
-     * @ORM\OrderBy({"parent": "ASC", "id": "ASC"})
-     *
-     * @var Collection<int, Region>
-     */
+    /** @var Collection<int, Region> */
+    #[ORM\OneToMany(targetEntity: self::class, mappedBy: 'parent', cascade: ['all'])]
+    #[ORM\OrderBy(['parent' => 'ASC', 'id' => 'ASC'])]
     private Collection $children;
 
     public function __construct(string $code, string $name)
@@ -57,7 +46,7 @@ class Region implements TimestampableInterface
         return $this->parent;
     }
 
-    public function setParent(?self $parent): self
+    public function setParent(?self $parent): static
     {
         if ($parent && $parent === $this) {
             throw new \InvalidArgumentException('The parent conflict has been detected.');
@@ -77,7 +66,7 @@ class Region implements TimestampableInterface
         return $this->id;
     }
 
-    public function setCode(string $code): self
+    public function setCode(string $code): static
     {
         throw new \BadMethodCallException('The code cannot be modified anymore.');
     }
@@ -87,7 +76,7 @@ class Region implements TimestampableInterface
         return $this->name;
     }
 
-    public function setName(string $name): self
+    public function setName(string $name): static
     {
         throw new \BadMethodCallException('The name cannot be modified anymore.');
     }
@@ -97,7 +86,7 @@ class Region implements TimestampableInterface
         return $this->children;
     }
 
-    public function addChild(self $child): self
+    public function addChild(self $child): static
     {
         if (!$this->children->contains($child)) {
             $this->children[] = $child;
@@ -107,7 +96,7 @@ class Region implements TimestampableInterface
         return $this;
     }
 
-    public function removeChild(self $child): self
+    public function removeChild(self $child): static
     {
         if ($this->children->removeElement($child)) {
             if ($child->getParent() === $this) {
@@ -118,9 +107,9 @@ class Region implements TimestampableInterface
         return $this;
     }
 
-    public function getAncestors(bool $includeSelf = false): array
+    public function getAncestors(bool $includestatic = false): array
     {
-        $parents = $includeSelf ? [$this] : [];
+        $parents = $includestatic ? [$this] : [];
         $node = $this;
 
         while ($parent = $node->getParent()) {
@@ -131,7 +120,7 @@ class Region implements TimestampableInterface
         return $parents;
     }
 
-    public function getSiblings(bool $includeSelf = false): array
+    public function getSiblings(bool $includestatic = false): array
     {
         if (null === $this->parent) {
             return [];
@@ -139,7 +128,7 @@ class Region implements TimestampableInterface
 
         $siblings = [];
         foreach ($this->parent->getChildren() as $child) {
-            if ($includeSelf || $child !== $this) {
+            if ($includestatic || $child !== $this) {
                 $siblings[] = $child;
             }
         }
@@ -147,9 +136,9 @@ class Region implements TimestampableInterface
         return $siblings;
     }
 
-    public function getDescendants(bool $includeSelf = false): array
+    public function getDescendants(bool $includestatic = false): array
     {
-        $descendants = $includeSelf ? [$this] : [];
+        $descendants = $includestatic ? [$this] : [];
 
         foreach ($this->children as $child) {
             $descendants[] = $child;

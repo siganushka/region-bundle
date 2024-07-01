@@ -12,7 +12,7 @@ use Symfony\Component\Form\FormFactoryBuilder;
 
 abstract class AbstractRegionTypeTest extends AbstractRegionTest
 {
-    protected function createFormBuilder(string $type = FormType::class, $data = null, array $options = []): FormBuilderInterface
+    protected function createFormBuilder(string $type = FormType::class, mixed $data = null, array $options = []): FormBuilderInterface
     {
         $formFactoryBuilder = new FormFactoryBuilder();
         $formFactoryBuilder->addType(new RegionType($this->regionRepository));

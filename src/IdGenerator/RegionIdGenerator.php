@@ -10,7 +10,7 @@ use Siganushka\RegionBundle\Entity\Region;
 
 class RegionIdGenerator extends AbstractIdGenerator
 {
-    public function generateId(EntityManagerInterface $em, $entity): ?string
+    public function generateId(EntityManagerInterface $em, ?object $entity): ?string
     {
         return $entity instanceof Region
             ? $entity->getCode()
