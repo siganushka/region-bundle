@@ -10,7 +10,7 @@
 ### 安装
 
 ```bash
-$ composer require siganushka/region-bundle --dev-main
+$ composer require siganushka/region-bundle
 ```
 
 ### 使用
@@ -18,10 +18,10 @@ $ composer require siganushka/region-bundle --dev-main
 更新数据库映射信息：
 
 ```bash
-$ php bin/console doctrine:schema:update --complete --force
+$ php bin/console doctrine:schema:update --force
 ```
 
-更新行政区划数据：
+更新行政区划数据源：
 
 ```bash
 $ php bin/console siganushka:region:update
@@ -41,7 +41,7 @@ siganushka_region:
 
 > 导入后可通过 `php bin/console debug:route` 查看已导入路由。
 
-### Twig
+### Twig（可选）
 
 导出前端资源到项目：
 

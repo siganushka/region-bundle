@@ -17,9 +17,6 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
  */
 class RegionUpdateCommand extends Command
 {
-    protected static $defaultName = 'siganushka:region:update';
-    protected static $defaultDescription = '更新行政区划数据，来源 https://github.com/modood/Administrative-divisions-of-China';
-
     private HttpClientInterface $httpClient;
     private EntityManagerInterface $entityManager;
 
@@ -33,7 +30,11 @@ class RegionUpdateCommand extends Command
 
     protected function configure(): void
     {
-        $this->addOption('with-street', null, InputOption::VALUE_NONE, '是否包含乡/街道数据？');
+        $this
+            ->setName('siganushka:region:update')
+            ->setDescription('更新行政区划数据，来源 https://github.com/modood/Administrative-divisions-of-China')
+            ->addOption('with-street', null, InputOption::VALUE_NONE, '是否包含乡/街道数据？')
+        ;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int

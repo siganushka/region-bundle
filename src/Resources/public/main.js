@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const { siganRegionTarget, siganRegionUrl } = event.target.dataset
     const target = document.getElementById(siganRegionTarget)
     if (target) {
-      let regions = []
+      const regions = []
 
       const placeholder = target.querySelector('option[value=""]')
       if (placeholder) {
@@ -11,9 +11,8 @@ document.addEventListener('DOMContentLoaded', () => {
       }
 
       if (event.target.value) {
-        const response = await fetch(`${siganRegionUrl}?parent=${event.target.value}`, {
-          headers: { Accept: 'application/json' }
-        })
+        const headers = { Accept: 'application/json' }
+        const response = await fetch(`${siganRegionUrl}?parent=${event.target.value}`, { headers })
         regions.push(...await response.json())
       }
 
