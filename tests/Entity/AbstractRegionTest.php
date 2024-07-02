@@ -10,10 +10,14 @@ use Siganushka\RegionBundle\Repository\RegionRepository;
 
 abstract class AbstractRegionTest extends TestCase
 {
-    protected ?RegionRepository $regionRepository = null;
-    protected ?Region $province = null;
-    protected ?Region $city = null;
-    protected ?Region $district = null;
+    /** @psalm-suppress PropertyNotSetInConstructor */
+    protected RegionRepository $regionRepository;
+    /** @psalm-suppress PropertyNotSetInConstructor */
+    protected Region $province;
+    /** @psalm-suppress PropertyNotSetInConstructor */
+    protected Region $city;
+    /** @psalm-suppress PropertyNotSetInConstructor */
+    protected Region $district;
 
     protected function setUp(): void
     {
@@ -62,13 +66,5 @@ abstract class AbstractRegionTest extends TestCase
         $this->province = $province;
         $this->city = $city;
         $this->district = $district;
-    }
-
-    protected function tearDown(): void
-    {
-        $this->regionRepository = null;
-        $this->province = null;
-        $this->city = null;
-        $this->district = null;
     }
 }

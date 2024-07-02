@@ -15,19 +15,15 @@ use Symfony\Component\Config\Definition\Processor;
 
 final class ConfigurationTest extends TestCase
 {
-    private ?ConfigurationInterface $configuration = null;
-    private ?Processor $processor = null;
+    /** @psalm-suppress PropertyNotSetInConstructor */
+    private ConfigurationInterface $configuration;
+    /** @psalm-suppress PropertyNotSetInConstructor */
+    private Processor $processor;
 
     protected function setUp(): void
     {
         $this->configuration = new Configuration();
         $this->processor = new Processor();
-    }
-
-    protected function tearDown(): void
-    {
-        $this->configuration = null;
-        $this->processor = null;
     }
 
     public function testDefaultConfig(): void

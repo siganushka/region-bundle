@@ -15,7 +15,8 @@ use Symfony\Component\Serializer\Serializer;
 
 final class RegionControllerTest extends AbstractRegionTest
 {
-    protected ?RegionController $controller = null;
+    /** @psalm-suppress PropertyNotSetInConstructor */
+    protected RegionController $controller;
 
     protected function setUp(): void
     {
@@ -26,13 +27,6 @@ final class RegionControllerTest extends AbstractRegionTest
 
         $this->controller = new RegionController($this->regionRepository);
         $this->controller->setContainer($container);
-    }
-
-    protected function tearDown(): void
-    {
-        parent::tearDown();
-
-        $this->controller = null;
     }
 
     public function testGetCollection(): void
