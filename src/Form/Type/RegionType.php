@@ -13,11 +13,8 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class RegionType extends AbstractType
 {
-    private RegionRepository $regionRepository;
-
-    public function __construct(RegionRepository $regionRepository)
+    public function __construct(private readonly RegionRepository $regionRepository)
     {
-        $this->regionRepository = $regionRepository;
     }
 
     public function configureOptions(OptionsResolver $resolver): void

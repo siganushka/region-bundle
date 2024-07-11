@@ -8,7 +8,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Id\AbstractIdGenerator;
 use Siganushka\RegionBundle\Entity\Region;
 
-class RegionIdGenerator extends AbstractIdGenerator
+class RegionCodeGenerator extends AbstractIdGenerator
 {
     public function generateId(EntityManagerInterface $em, ?object $entity): ?string
     {

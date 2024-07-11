@@ -17,11 +17,8 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route('/regions')]
 class RegionController extends AbstractController
 {
-    protected RegionRepository $regionRepository;
-
-    public function __construct(RegionRepository $regionRepository)
+    public function __construct(protected readonly RegionRepository $regionRepository)
     {
-        $this->regionRepository = $regionRepository;
     }
 
     #[Route(methods: 'GET')]

@@ -17,14 +17,8 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
  */
 class RegionUpdateCommand extends Command
 {
-    private HttpClientInterface $httpClient;
-    private EntityManagerInterface $entityManager;
-
-    public function __construct(HttpClientInterface $httpClient, EntityManagerInterface $entityManager)
+    public function __construct(private readonly HttpClientInterface $httpClient, private readonly EntityManagerInterface $entityManager)
     {
-        $this->httpClient = $httpClient;
-        $this->entityManager = $entityManager;
-
         parent::__construct();
     }
 

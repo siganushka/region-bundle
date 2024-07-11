@@ -9,7 +9,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Siganushka\Contracts\Doctrine\TimestampableInterface;
 use Siganushka\Contracts\Doctrine\TimestampableTrait;
-use Siganushka\RegionBundle\IdGenerator\RegionIdGenerator;
+use Siganushka\RegionBundle\IdGenerator\RegionCodeGenerator;
 use Siganushka\RegionBundle\Repository\RegionRepository;
 
 #[ORM\Entity(repositoryClass: RegionRepository::class)]
@@ -19,7 +19,7 @@ class Region implements TimestampableInterface
 
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]
-    #[ORM\CustomIdGenerator(class: RegionIdGenerator::class)]
+    #[ORM\CustomIdGenerator(class: RegionCodeGenerator::class)]
     #[ORM\Column]
     private string $id;
 
@@ -107,9 +107,9 @@ class Region implements TimestampableInterface
         return $this;
     }
 
-    public function getAncestors(bool $includestatic = false): array
+    public function getAncestors(bool $includeSelf = false): array
     {
-        $parents = $includestatic ? [$this] : [];
+        $parents = $includeSelf ? [$this] : [];
         $node = $this;
 
         while ($parent = $node->getParent()) {
@@ -120,7 +120,7 @@ class Region implements TimestampableInterface
         return $parents;
     }
 
-    public function getSiblings(bool $includestatic = false): array
+    public function getSiblings(bool $includeSelf = false): array
     {
         if (null === $this->parent) {
             return [];
@@ -128,7 +128,7 @@ class Region implements TimestampableInterface
 
         $siblings = [];
         foreach ($this->parent->getChildren() as $child) {
-            if ($includestatic || $child !== $this) {
+            if ($includeSelf || $child !== $this) {
                 $siblings[] = $child;
             }
         }
@@ -136,9 +136,9 @@ class Region implements TimestampableInterface
         return $siblings;
     }
 
-    public function getDescendants(bool $includestatic = false): array
+    public function getDescendants(bool $includeSelf = false): array
     {
-        $descendants = $includestatic ? [$this] : [];
+        $descendants = $includeSelf ? [$this] : [];
 
         foreach ($this->children as $child) {
             $descendants[] = $child;
