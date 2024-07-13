@@ -20,7 +20,7 @@ class Region implements TimestampableInterface
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]
     #[ORM\CustomIdGenerator(class: RegionCodeGenerator::class)]
-    #[ORM\Column]
+    #[ORM\Column(length: 16, options: ['fixed' => true])]
     private string $id;
 
     #[ORM\ManyToOne(targetEntity: self::class, inversedBy: 'children', cascade: ['all'])]
