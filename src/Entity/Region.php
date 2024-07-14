@@ -9,7 +9,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Siganushka\Contracts\Doctrine\TimestampableInterface;
 use Siganushka\Contracts\Doctrine\TimestampableTrait;
-use Siganushka\RegionBundle\IdGenerator\RegionCodeGenerator;
+use Siganushka\RegionBundle\Doctrine\ORM\Id\RegionCodeGenerator;
 use Siganushka\RegionBundle\Repository\RegionRepository;
 
 #[ORM\Entity(repositoryClass: RegionRepository::class)]

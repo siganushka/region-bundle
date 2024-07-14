@@ -8,7 +8,5 @@ use Siganushka\RegionBundle\SiganushkaRegionBundle;
 use Symfony\Component\Routing\Loader\Configurator\RoutingConfigurator;
 
 return static function (RoutingConfigurator $routes): void {
-    $ref = new \ReflectionClass(SiganushkaRegionBundle::class);
-
-    $routes->import(\dirname($ref->getFileName()).'/Controller', 'attribute');
+    $routes->import('../src/Controller', 'attribute');
 };

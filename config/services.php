@@ -14,13 +14,13 @@ return static function (ContainerConfigurator $container): void {
     ;
 
     $ref = new \ReflectionClass(SiganushkaRegionBundle::class);
-    $services->load($ref->getNamespaceName().'\\', '../../')
+    $services->load($ref->getNamespaceName().'\\', '../src/')
         ->exclude([
-            '../../DependencyInjection/',
-            '../../Entity/',
-            '../../Event/',
-            '../../IdGenerator/',
-            '../../Resources/',
-            '../../SiganushkaRegionBundle.php',
+            '../src/DependencyInjection/',
+            '../src/Entity/',
+            '../src/Event/',
+            '../src/IdGenerator/',
+            '../src/Resources/',
+            '../src/SiganushkaRegionBundle.php',
         ]);
 };

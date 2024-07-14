@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Siganushka\RegionBundle\IdGenerator;
+namespace Siganushka\RegionBundle\Doctrine\ORM\Id;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Id\AbstractIdGenerator;
