@@ -35,7 +35,7 @@ $ php bin/console siganushka:region:update
 # ./config/routes.yaml
 
 siganushka_region:
-    resource: "@SiganushkaRegionBundle/Resources/config/routes.php"
+    resource: "@SiganushkaRegionBundle/config/routes.php"
     prefix: /api
 ```
 
@@ -52,7 +52,7 @@ $ php bin/console assets:install
 页面中引用前端资源：
 
 ```html
-<script src="/bundles/siganushkaregion/main.js"></script>
+<script src="{{ asset('bundles/siganushkaregion/js/main.js') }}"></script>
 ```
 
 > main.js 依赖 [fetch API](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API)，如果你的浏览器不支持，请使用 [fetch polyfill](https://github.com/JakeChampion/fetch) 。
