@@ -6,6 +6,9 @@ namespace Siganushka\RegionBundle\Tests\Entity;
 
 use Siganushka\RegionBundle\Entity\Region;
 
+/**
+ * @psalm-suppress PropertyNotSetInConstructor
+ */
 final class RegionTest extends AbstractRegionTest
 {
     public function testRegion(): void

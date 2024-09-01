@@ -13,11 +13,12 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
 use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 use Symfony\Component\Config\Definition\Processor;
 
+/**
+ * @psalm-suppress PropertyNotSetInConstructor
+ */
 final class ConfigurationTest extends TestCase
 {
-    /** @psalm-suppress PropertyNotSetInConstructor */
     private ConfigurationInterface $configuration;
-    /** @psalm-suppress PropertyNotSetInConstructor */
     private Processor $processor;
 
     protected function setUp(): void
@@ -48,9 +49,9 @@ final class ConfigurationTest extends TestCase
     public function testRegionClassInvalidConfigurationException(): void
     {
         $this->expectException(InvalidConfigurationException::class);
-        $this->expectExceptionMessage(sprintf('The "invalid_class" class must extends %s for using the "region_class".', Region::class));
+        $this->expectExceptionMessage(\sprintf('The value must be instanceof %s, "stdClass" given.', Region::class));
 
-        $config = ['region_class' => 'invalid_class'];
+        $config = ['region_class' => \stdClass::class];
         $this->processor->processConfiguration($this->configuration, [$config]);
     }
 }

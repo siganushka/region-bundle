@@ -56,7 +56,7 @@ class RegionUpdateCommand extends Command
             $region = new Region($value['code'], $value['name']);
             $region->setParent($parent);
 
-            $messages = sprintf('[%s] %s', $region->getCode(), $region->getName());
+            $messages = \sprintf('[%s] %s', $region->getCode(), $region->getName());
 
             $newParent = $this->entityManager->find(Region::class, $region->getCode());
             if ($newParent) {

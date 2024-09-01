@@ -32,7 +32,7 @@ class RegionTypeExtension extends AbstractTypeExtension
     public function buildView(FormView $view, FormInterface $form, array $options): void
     {
         if ($options['cascader_target']) {
-            $view->vars['attr']['data-sigan-region-target'] = sprintf('%s_%s', $view->parent->vars['id'] ?? '', $options['cascader_target']);
+            $view->vars['attr']['data-sigan-region-target'] = \sprintf('%s_%s', $view->parent->vars['id'] ?? '', $options['cascader_target']);
             $view->vars['attr']['data-sigan-region-url'] = $this->urlGenerator->generate('siganushka_region_region_getcollection', [], UrlGeneratorInterface::ABSOLUTE_URL);
         }
     }

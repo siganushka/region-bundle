@@ -22,13 +22,11 @@ class Configuration implements ConfigurationInterface
                 ->scalarNode('region_class')
                     ->defaultValue(Region::class)
                     ->validate()
-                        ->ifTrue(fn (mixed $v) => !is_a($v, Region::class, true))
-                        ->thenInvalid('The %s class must extends '.Region::class.' for using the "region_class".')
+                        ->ifTrue(static fn (mixed $v): bool => !is_a($v, Region::class, true))
+                        ->thenInvalid('The value must be instanceof '.Region::class.', %s given.')
                     ->end()
                 ->end()
         ;
-
-        return $treeBuilder;
 
         return $treeBuilder;
     }

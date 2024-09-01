@@ -39,7 +39,7 @@ class RegionController extends AbstractController
     {
         $entity = $this->regionRepository->find($code);
         if (!$entity) {
-            throw $this->createNotFoundException(sprintf('Resource #%s not found.', $code));
+            throw $this->createNotFoundException(\sprintf('Resource #%s not found.', $code));
         }
 
         return $this->createResponse($entity);
