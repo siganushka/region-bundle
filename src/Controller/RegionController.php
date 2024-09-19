@@ -14,14 +14,13 @@ use Symfony\Component\Routing\Annotation\Route;
 /**
  * @psalm-suppress PropertyNotSetInConstructor
  */
-#[Route('/regions')]
 class RegionController extends AbstractController
 {
     public function __construct(protected readonly RegionRepository $regionRepository)
     {
     }
 
-    #[Route(methods: 'GET')]
+    #[Route('/regions', methods: 'GET')]
     public function getCollection(Request $request): Response
     {
         $parent = $request->query->get('parent');
@@ -34,7 +33,7 @@ class RegionController extends AbstractController
         return $this->createResponse($regions);
     }
 
-    #[Route('/{code}', methods: 'GET')]
+    #[Route('/regions/{code}', methods: 'GET')]
     public function getItem(string $code): Response
     {
         $entity = $this->regionRepository->find($code);
