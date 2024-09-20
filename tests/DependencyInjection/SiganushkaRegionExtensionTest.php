@@ -11,7 +11,7 @@ use Siganushka\RegionBundle\DependencyInjection\SiganushkaRegionExtension;
 use Siganushka\RegionBundle\Entity\Region;
 use Siganushka\RegionBundle\Form\Type\RegionType;
 use Siganushka\RegionBundle\Repository\RegionRepository;
-use Siganushka\RegionBundle\Tests\Mock\FooRegion;
+use Siganushka\RegionBundle\Tests\Fixtures\FooRegion;
 use Symfony\Component\DependencyInjection\Compiler\ResolveChildDefinitionsPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 

@@ -7,7 +7,7 @@ namespace Siganushka\RegionBundle\Tests\DependencyInjection;
 use PHPUnit\Framework\TestCase;
 use Siganushka\RegionBundle\DependencyInjection\Configuration;
 use Siganushka\RegionBundle\Entity\Region;
-use Siganushka\RegionBundle\Tests\Mock\FooRegion;
+use Siganushka\RegionBundle\Tests\Fixtures\FooRegion;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
