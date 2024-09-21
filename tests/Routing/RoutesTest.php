@@ -12,7 +12,7 @@ use Symfony\Component\Config\Loader\LoaderResolver;
 use Symfony\Component\Routing\Loader\AttributeDirectoryLoader;
 use Symfony\Component\Routing\Loader\PhpFileLoader;
 
-class LoaderTest extends TestCase
+class RoutesTest extends TestCase
 {
     public function testRotues(): void
     {
