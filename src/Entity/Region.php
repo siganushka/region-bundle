@@ -18,9 +18,9 @@ class Region implements TimestampableInterface
     use TimestampableTrait;
 
     #[ORM\Id]
+    #[ORM\Column(length: 16, options: ['fixed' => true])]
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]
     #[ORM\CustomIdGenerator(class: RegionCodeGenerator::class)]
-    #[ORM\Column(length: 16, options: ['fixed' => true])]
     private string $id;
 
     #[ORM\ManyToOne(targetEntity: self::class, inversedBy: 'children', cascade: ['all'])]
