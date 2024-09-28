@@ -4,14 +4,13 @@ declare(strict_types=1);
 
 namespace Siganushka\RegionBundle\DependencyInjection;
 
-use Siganushka\RegionBundle\Entity\Region;
-use Siganushka\RegionBundle\Repository\RegionRepository;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\Extension;
+use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
 use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
 
-class SiganushkaRegionExtension extends Extension
+class SiganushkaRegionExtension extends Extension implements PrependExtensionInterface
 {
     public function load(array $configs, ContainerBuilder $container): void
     {
@@ -21,28 +20,28 @@ class SiganushkaRegionExtension extends Extension
         $configuration = new Configuration();
         $config = $this->processConfiguration($configuration, $configs);
 
-        $regionRepositoryDef = $container->findDefinition(RegionRepository::class);
-        $regionRepositoryDef->setArgument('$entityClass', $config['region_class']);
+        foreach (Configuration::$resourceMapping as $configName => [, $repositoryClass]) {
+            $repositoryDef = $container->findDefinition($repositoryClass);
+            $repositoryDef->setArgument('$entityClass', $config[$configName]);
+        }
     }
 
     public function prepend(ContainerBuilder $container): void
     {
-        if (!$container->hasExtension('siganushka_region')) {
-            return;
-        }
-
         $configs = $container->getExtensionConfig($this->getAlias());
 
         $configuration = new Configuration();
         $config = $this->processConfiguration($configuration, $configs);
 
         $overrideMappings = [];
-        if (Region::class !== $config['region_class']) {
-            $overrideMappings[] = Region::class;
+        foreach (Configuration::$resourceMapping as $configName => [$entityClass]) {
+            if ($config[$configName] !== $entityClass) {
+                $overrideMappings[$entityClass] = $config[$configName];
+            }
         }
 
         $container->prependExtensionConfig('siganushka_generic', [
-            'doctrine' => ['entity_to_superclass' => $overrideMappings],
+            'doctrine' => ['mapping_override' => $overrideMappings],
         ]);
     }
 }

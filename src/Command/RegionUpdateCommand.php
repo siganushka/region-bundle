@@ -6,6 +6,7 @@ namespace Siganushka\RegionBundle\Command;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Siganushka\RegionBundle\Entity\Region;
+use Siganushka\RegionBundle\Repository\RegionRepository;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -17,8 +18,11 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
  */
 class RegionUpdateCommand extends Command
 {
-    public function __construct(private readonly HttpClientInterface $httpClient, private readonly EntityManagerInterface $entityManager)
-    {
+    public function __construct(
+        private readonly HttpClientInterface $httpClient,
+        private readonly EntityManagerInterface $entityManager,
+        private readonly RegionRepository $regionRepository,
+    ) {
         parent::__construct();
     }
 
@@ -53,7 +57,7 @@ class RegionUpdateCommand extends Command
     protected function import(OutputInterface $output, array $data, Region $parent = null): void
     {
         foreach ($data as $value) {
-            $region = new Region($value['code'], $value['name']);
+            $region = $this->regionRepository->createNew($value['code'], $value['name']);
             $region->setParent($parent);
 
             $messages = \sprintf('[%s] %s', $region->getCode(), $region->getName());
