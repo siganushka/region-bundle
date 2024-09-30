@@ -33,15 +33,15 @@ class SiganushkaRegionExtension extends Extension implements PrependExtensionInt
         $configuration = new Configuration();
         $config = $this->processConfiguration($configuration, $configs);
 
-        $overrideMappings = [];
+        $mappingOverride = [];
         foreach (Configuration::$resourceMapping as $configName => [$entityClass]) {
             if ($config[$configName] !== $entityClass) {
-                $overrideMappings[$entityClass] = $config[$configName];
+                $mappingOverride[$entityClass] = $config[$configName];
             }
         }
 
         $container->prependExtensionConfig('siganushka_generic', [
-            'doctrine' => ['mapping_override' => $overrideMappings],
+            'doctrine' => ['mapping_override' => $mappingOverride],
         ]);
     }
 }
