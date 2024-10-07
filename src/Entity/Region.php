@@ -21,18 +21,18 @@ class Region implements TimestampableInterface
     #[ORM\Column(length: 16, options: ['fixed' => true])]
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]
     #[ORM\CustomIdGenerator(class: RegionCodeGenerator::class)]
-    private string $id;
+    protected string $id;
 
     #[ORM\ManyToOne(targetEntity: self::class, inversedBy: 'children', cascade: ['all'])]
-    private ?Region $parent = null;
+    protected ?Region $parent = null;
 
     #[ORM\Column]
-    private string $name;
+    protected string $name;
 
     /** @var Collection<int, Region> */
     #[ORM\OneToMany(targetEntity: self::class, mappedBy: 'parent', cascade: ['all'])]
     #[ORM\OrderBy(['parent' => 'ASC', 'id' => 'ASC'])]
-    private Collection $children;
+    protected Collection $children;
 
     public function __construct(string $code, string $name)
     {
