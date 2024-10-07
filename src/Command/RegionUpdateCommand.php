@@ -18,10 +18,16 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
  */
 class RegionUpdateCommand extends Command
 {
+    /**
+     * @var Region[]
+     */
+    protected array $cachedRegions = [];
+    protected bool $loaded = false;
+
     public function __construct(
         private readonly HttpClientInterface $httpClient,
         private readonly EntityManagerInterface $entityManager,
-        private readonly RegionRepository $regionRepository,
+        private readonly RegionRepository $repository,
     ) {
         parent::__construct();
     }
@@ -37,7 +43,7 @@ class RegionUpdateCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        ini_set('memory_limit', '1024M');
+        ini_set('memory_limit', '2048M');
 
         $json = $input->getOption('with-street')
             ? 'pcas-code.json'
@@ -57,12 +63,12 @@ class RegionUpdateCommand extends Command
     protected function import(OutputInterface $output, array $data, Region $parent = null): void
     {
         foreach ($data as $value) {
-            $region = $this->regionRepository->createNew($value['code'], $value['name']);
+            $region = $this->repository->createNew($value['code'], $value['name']);
             $region->setParent($parent);
 
             $messages = \sprintf('[%s] %s', $region->getCode(), $region->getName());
 
-            $newParent = $this->entityManager->find(Region::class, $region->getCode());
+            $newParent = $this->findRegion($region->getCode());
             if ($newParent) {
                 $output->writeln("<comment>{$messages} 已存在！</comment>");
             } else {
@@ -74,5 +80,21 @@ class RegionUpdateCommand extends Command
                 $this->import($output, $value['children'], $newParent ?: $region);
             }
         }
+    }
+
+    protected function findRegion(string $code): ?Region
+    {
+        if (!$this->loaded) {
+            $this->cachedRegions = $this->repository->findAll();
+            $this->loaded = true;
+        }
+
+        foreach ($this->cachedRegions as $region) {
+            if ($code === $region->getCode()) {
+                return $region;
+            }
+        }
+
+        return null;
     }
 }
