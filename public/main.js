@@ -1,32 +1,29 @@
-const siganushkaRegion = () => {
+document.addEventListener('DOMContentLoaded', () => {
   const change = async (event) => {
-    const { siganRegionTarget, siganRegionUrl } = event.target.dataset
-    const target = document.getElementById(siganRegionTarget)
-    if (target) {
-      const regions = []
-  
-      const placeholder = target.querySelector('option[value=""]')
+    console.log('change...', event.target.dataset)
+    const { regionCascaderValue, regionUrlValue } = event.target.dataset
+    const cascaderEl = document.getElementById(regionCascaderValue)
+    if (!cascaderEl) return
+
+    fetch(`${regionUrlValue}?parent=${event.target.value}`,{
+      headers: { Accept: 'application/json' },
+    }).then(response => {
+      return response.ok
+        ? response.json()
+        : Promise.reject(`${response.status} ${response.statusText}`)
+    }).then(res => {
+      const options = res.map(el => `<option value="${el.code}">${el.name}</option>`)
+
+      const placeholder = cascaderEl.querySelector('option[value=""]')
       if (placeholder) {
-        regions.push({ code: '', name: placeholder.textContent })
+        options.unshift(placeholder.outerHTML)
       }
-  
-      if (event.target.value) {
-        const headers = { Accept: 'application/json' }
-        const response = await fetch(`${siganRegionUrl}?parent=${event.target.value}`, { headers })
-        regions.push(... await response.json())
-      }
-  
-      const options = regions.map(el => `<option value="${el.code}">${el.name}</option>`)
-      target.innerHTML = options.join('')
-      target.dispatchEvent(new Event('change'))
-    }
+
+      cascaderEl.innerHTML = options.join('')
+      cascaderEl.dispatchEvent(new Event('change'))
+    }).catch(err => alert(err))
   }
 
-  const elements = document.querySelectorAll('[data-sigan-region-target]')
+  const elements = document.querySelectorAll('[data-controller="region"]')
   elements.forEach(element => element.addEventListener('change', change))
-}
-
-// Native event
-document.addEventListener('DOMContentLoaded', siganushkaRegion)
-// Hotwire turbo event
-document.addEventListener('turbo:render', siganushkaRegion)
+})
