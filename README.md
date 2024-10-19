@@ -50,12 +50,6 @@ siganushka_region:
 
 ### Twig（可选）
 
-导出前端资源到项目：
-
-```bash
-$ php bin/console assets:install
-```
-
 页面中引用前端资源：
 
 ```html
