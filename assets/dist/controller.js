@@ -1,25 +1,21 @@
 import { Controller } from '@hotwired/stimulus';
 
-/*
-* The following line makes this controller "lazy": it won't be downloaded until needed
-* See https://github.com/symfony/stimulus-bridge#lazy-controllers
-*/
 /* stimulusFetch: 'lazy' */
 export default class extends Controller {
   static values = {
-    url: String,
     cascader: String,
+    url: String,
   }
 
   connect() {
-    this.element.addEventListener('change', this.handleChange.bind(this))
+    this.element.addEventListener('change', this.change.bind(this))
   }
 
   disconnect() {
-    this.element.removeEventListener('change', this.handleChange.bind(this))
+    this.element.removeEventListener('change', this.change.bind(this))
   }
 
-  handleChange(event) {
+  change(event) {
     const cascaderEl = document.getElementById(this.cascaderValue)
     if (!cascaderEl) return
 

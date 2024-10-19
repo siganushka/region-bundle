@@ -5,7 +5,14 @@
 [![Latest Unstable Version](https://poser.pugx.org/siganushka/region-bundle/v/unstable)](https://packagist.org/packages/siganushka/region-bundle)
 [![License](https://poser.pugx.org/siganushka/region-bundle/license)](https://packagist.org/packages/siganushka/region-bundle)
 
-国内行政区划（省、市、区、乡/街道联动） [Bundle](https://symfony.com/doc/current/bundles.html)，数据来源 [Administrative-divisions-of-China](https://github.com/modood/Administrative-divisions-of-China)
+国内行政区划四级联动 [Bundle](https://symfony.com/doc/current/bundles.html)，数据来源 [Administrative-divisions-of-China](https://github.com/modood/Administrative-divisions-of-China)
+
+### 说明
+
+- 一级：省、自治区、直辖市
+- 二级：市、县、自治州、自治县
+- 三级：区、县
+- 四级：乡镇/街道
 
 ### 安装
 
@@ -21,13 +28,13 @@ $ composer require siganushka/region-bundle
 $ php bin/console doctrine:schema:update --force
 ```
 
-更新行政区划数据源：
+更新行政区划数据源（默认为三级）：
 
 ```bash
 $ php bin/console siganushka:region:update
 ```
 
-> 默认仅导入省、市、区三级，可使用 `--with-street` 参数导入乡/街道四级。
+> 使用 `php bin/console siganushka:region:update --with-street` 参数导入四级。
 
 导入路由：
 
@@ -59,7 +66,7 @@ $ php bin/console assets:install
 
 ### 示例
 
-例如用户地址实体，包含省、市、区、乡/街道四级联动：
+例如用户地址实体，包含省、市、区、乡镇/街道四级联动：
 
 ```php
 // src/Entity/UserAddress.php

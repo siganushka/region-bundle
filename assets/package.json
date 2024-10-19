@@ -1,0 +1,17 @@
+{
+    "name": "@siganushka/region-bundle",
+    "description": "Region bundle integration for Symfony",
+    "license": "MIT",
+    "version": "0.1.0",
+    "symfony": {
+        "controllers": {
+            "region": {
+                "main": "dist/controller.js",
+                "name": "region",
+                "webpackMode": "eager",
+                "fetch": "eager",
+                "enabled": true
+            }
+        }
+    }
+}

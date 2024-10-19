@@ -1,6 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
-  const change = async (event) => {
-    console.log('change...', event.target.dataset)
+  const change = (event) => {
     const { regionCascaderValue, regionUrlValue } = event.target.dataset
     const cascaderEl = document.getElementById(regionCascaderValue)
     if (!cascaderEl) return

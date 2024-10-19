@@ -1,7 +1,7 @@
 {
     "name": "siganushka/region-bundle",
     "description": "Region bundle for symfony.",
-    "keywords": ["region-bundle"],
+    "keywords": ["region-bundle", "symfony-ux"],
     "homepage": "https://github.com/siganushka/region-bundle",
     "type": "symfony-bundle",
     "license": "MIT",
