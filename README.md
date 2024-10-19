@@ -28,13 +28,13 @@ $ composer require siganushka/region-bundle dev-main
 $ php bin/console doctrine:schema:update --force
 ```
 
-导入行政区划数据（默认仅导入三级）：
+导入行政区划数据：
 
 ```bash
 $ php bin/console siganushka:region:update
 ```
 
-> 使用 `php bin/console siganushka:region:update --with-street` 参数导入四级数据。
+> 默认仅导入三级，使用 `--with-street` 参数可导入四级数据。
 
 导入路由：
 
@@ -48,9 +48,11 @@ siganushka_region:
 
 > 导入后可通过 `php bin/console debug:route` 查看已导入路由。
 
-### Twig（可选）
+### Twig
 
-该项目已集成到 [Symfony UX](https://ux.symfony.com/)，如果你的项目使用了 [AssetMapper](https://symfony.com/doc/current/frontend/asset_mapper.html) 和 [StimulusBundle](https://symfony.com/bundles/StimulusBundle/current/index.html)，那么前端资源文件将自动导入成功。否则还需要手在页面中引用前端资源以实现前端的联动效果：
+该项目已集成到 [Symfony UX](https://ux.symfony.com/)，如果你的项目使用了 [AssetMapper](https://symfony.com/doc/current/frontend/asset_mapper.html) 和 [StimulusBundle](https://symfony.com/bundles/StimulusBundle/current/index.html)，那么前端资源文件将自动导入成功！
+
+如果你的项目未使用 ``AssetMapper`` 和 ``StimulusBundle``，则还需要手在页面中引用前端资源以实现前端的联动效果：
 
 ```html
 <script src="{{ asset('bundles/siganushkaregion/main.js') }}"></script>
@@ -124,4 +126,4 @@ class UserAddressType extends AbstractType
 }
 ```
 
-> 表单选项 `cascader_target` 指定了此字段联动的下一级字段，不管是三级还是四级，只需要指定该参数即可，此功能在 `main.js` 中实现，如果你需要自己实现联动，则不需要导入 `main.js`。
+> 选项 `cascader_target` 指定了要联动的下一级字段，不管是二级、三级还是四级，只需要指定该参数即可。前端联动效果在 `main.js` 中实现。
