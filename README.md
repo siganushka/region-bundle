@@ -17,7 +17,7 @@
 ### 安装
 
 ```bash
-$ composer require siganushka/region-bundle
+$ composer require siganushka/region-bundle dev-main
 ```
 
 ### 使用
@@ -28,13 +28,13 @@ $ composer require siganushka/region-bundle
 $ php bin/console doctrine:schema:update --force
 ```
 
-更新行政区划数据源（默认为三级）：
+导入行政区划数据（默认仅导入三级）：
 
 ```bash
 $ php bin/console siganushka:region:update
 ```
 
-> 使用 `php bin/console siganushka:region:update --with-street` 参数导入四级。
+> 使用 `php bin/console siganushka:region:update --with-street` 参数导入四级数据。
 
 导入路由：
 
@@ -50,7 +50,7 @@ siganushka_region:
 
 ### Twig（可选）
 
-页面中引用前端资源：
+该项目已集成到 [Symfony UX](https://ux.symfony.com/)，如果你的项目使用了 [AssetMapper](https://symfony.com/doc/current/frontend/asset_mapper.html) 和 [StimulusBundle](https://symfony.com/bundles/StimulusBundle/current/index.html)，那么前端资源文件将自动导入成功。否则还需要手在页面中引用前端资源以实现前端的联动效果：
 
 ```html
 <script src="{{ asset('bundles/siganushkaregion/main.js') }}"></script>
@@ -60,7 +60,7 @@ siganushka_region:
 
 ### 示例
 
-例如用户地址实体，包含省、市、区、乡镇/街道四级联动：
+实体对象：
 
 ```php
 // src/Entity/UserAddress.php
