@@ -45,6 +45,7 @@ class SiganushkaRegionExtension extends Extension implements PrependExtensionInt
             'doctrine' => ['mapping_override' => $mappingOverride],
         ]);
 
+        // @see https://symfony.com/doc/current/frontend/create_ux_bundle.html#specifics-for-asset-mapper
         if ($this->isAssetMapperAvailable($container)) {
             $container->prependExtensionConfig('framework', [
                 'asset_mapper' => [

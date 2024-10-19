@@ -23,6 +23,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }).catch(err => alert(err))
   }
 
-  const elements = document.querySelectorAll('[data-controller="region"]')
+  const elements = document.querySelectorAll('[data-controller="sigan-region"]')
   elements.forEach(element => element.addEventListener('change', change))
 })

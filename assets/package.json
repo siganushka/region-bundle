@@ -7,11 +7,17 @@
         "controllers": {
             "region": {
                 "main": "dist/controller.js",
-                "name": "region",
+                "name": "sigan-region",
                 "webpackMode": "eager",
                 "fetch": "eager",
                 "enabled": true
             }
+        },
+        "importmap": {
+            "@hotwired/stimulus": "^3.0.0"
         }
+    },
+    "peerDependencies": {
+        "@hotwired/stimulus": "^3.0.0"
     }
 }
