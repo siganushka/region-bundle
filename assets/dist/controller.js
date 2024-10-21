@@ -3,28 +3,21 @@ import { Controller } from '@hotwired/stimulus';
 /* stimulusFetch: 'lazy' */
 export default class extends Controller {
   static values = {
-    cascader: String,
     url: String,
-  }
-
-  connect() {
-    this.element.addEventListener('change', this.change.bind(this))
-  }
-
-  disconnect() {
-    this.element.removeEventListener('change', this.change.bind(this))
+    cascader: String,
   }
 
   change(event) {
     const cascaderEl = document.getElementById(this.cascaderValue)
     if (!cascaderEl) return
 
-    fetch(`${this.urlValue}?parent=${event.target.value}`,{
+    fetch(`${this.urlValue}?parent=${event.target.value}`, {
       headers: { Accept: 'application/json' },
-    }).then(response => {
+    }).then(async response => {
+      const json = await response.json()
       return response.ok
-        ? response.json()
-        : Promise.reject(`${response.status} ${response.statusText}`)
+        ? Promise.resolve(json)
+        : Promise.reject(json.detail || json.message || response.statusText)
     }).then(res => {
       const options = res.map(el => `<option value="${el.code}">${el.name}</option>`)
 

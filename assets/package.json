@@ -7,9 +7,9 @@
         "controllers": {
             "region": {
                 "main": "dist/controller.js",
-                "name": "sigan-region",
+                "name": "siganushka-region",
                 "webpackMode": "eager",
-                "fetch": "eager",
+                "fetch": "lazy",
                 "enabled": true
             }
         },

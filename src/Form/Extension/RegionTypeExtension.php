@@ -32,10 +32,11 @@ class RegionTypeExtension extends AbstractTypeExtension
     public function buildView(FormView $view, FormInterface $form, array $options): void
     {
         if ($options['cascader_target']) {
-            $controllerName = 'sigan-region';
+            $controllerName = 'siganushka-region';
 
             $view->vars['attr']['data-controller'] = $controllerName;
-            $view->vars['attr']["data-{$controllerName}-url-value"] = $this->urlGenerator->generate('siganushka_region_region_getcollection', [], UrlGeneratorInterface::ABSOLUTE_URL);
+            $view->vars['attr']['data-action'] = \sprintf('change->%s#change', $controllerName);
+            $view->vars['attr']["data-{$controllerName}-url-value"] = $this->urlGenerator->generate('siganushka_region_region_getcollection');
             $view->vars['attr']["data-{$controllerName}-cascader-value"] = \sprintf('%s_%s', $view->parent->vars['id'] ?? '', $options['cascader_target']);
         }
     }
