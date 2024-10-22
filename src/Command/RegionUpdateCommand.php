@@ -36,8 +36,8 @@ class RegionUpdateCommand extends Command
     {
         $this
             ->setName('siganushka:region:update')
-            ->setDescription('更新行政区划数据，来源 https://github.com/modood/Administrative-divisions-of-China')
-            ->addOption('with-street', null, InputOption::VALUE_NONE, '是否包含乡/街道数据？')
+            ->setDescription('Update administrative divisions data to database.')
+            ->addOption('with-street', null, InputOption::VALUE_NONE, 'Whether to include streets?')
         ;
     }
 
