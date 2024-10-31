@@ -9,7 +9,7 @@
                 "main": "dist/controller.js",
                 "name": "siganushka-region",
                 "webpackMode": "eager",
-                "fetch": "lazy",
+                "fetch": "eager",
                 "enabled": true
             }
         },
