@@ -18,7 +18,7 @@ class Region implements TimestampableInterface
     use TimestampableTrait;
 
     #[ORM\Id]
-    #[ORM\Column(length: 9, options: ['fixed' => true])]
+    #[ORM\Column(length: 9)]
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]
     #[ORM\CustomIdGenerator(class: RegionCodeGenerator::class)]
     protected string $id;
