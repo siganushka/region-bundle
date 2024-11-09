@@ -13,9 +13,6 @@ use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\Serializer;
 
-/**
- * @psalm-suppress PropertyNotSetInConstructor
- */
 final class RegionControllerTest extends AbstractRegionTest
 {
     protected RegionController $controller;

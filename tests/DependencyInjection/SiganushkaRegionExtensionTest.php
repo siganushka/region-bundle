@@ -20,7 +20,6 @@ final class SiganushkaRegionExtensionTest extends TestCase
     public function testDefaultConfig(): void
     {
         $container = $this->createContainerWithConfig();
-        // dd($container->getServiceIds(), $container->getAliases());
 
         static::assertTrue($container->hasDefinition(RegionUpdateCommand::class));
         static::assertTrue($container->hasDefinition(RegionController::class));

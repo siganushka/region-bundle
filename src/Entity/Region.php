@@ -81,6 +81,9 @@ class Region implements TimestampableInterface
         throw new \BadMethodCallException('The name cannot be modified anymore.');
     }
 
+    /**
+     * @return Collection<int, Region>
+     */
     public function getChildren(): Collection
     {
         return $this->children;

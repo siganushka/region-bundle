@@ -29,6 +29,9 @@ class RegionTypeExtension extends AbstractTypeExtension
         }
     }
 
+    /**
+     * @param array{ cascader_target: string|null } $options
+     */
     public function buildView(FormView $view, FormInterface $form, array $options): void
     {
         if ($options['cascader_target']) {
@@ -55,6 +58,7 @@ class RegionTypeExtension extends AbstractTypeExtension
             return;
         }
 
+        /** @var string */
         $targetName = $form->getConfig()->getOption('cascader_target');
         $parentData = $event instanceof PostSubmitEvent
             ? $event->getForm()->getData()

@@ -8,9 +8,6 @@ use PHPUnit\Framework\TestCase;
 use Siganushka\RegionBundle\Entity\Region;
 use Siganushka\RegionBundle\Repository\RegionRepository;
 
-/**
- * @psalm-suppress PropertyNotSetInConstructor
- */
 abstract class AbstractRegionTest extends TestCase
 {
     protected RegionRepository $regionRepository;
