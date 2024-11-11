@@ -6,6 +6,7 @@ namespace Siganushka\RegionBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Siganushka\Contracts\Doctrine\TimestampableInterface;
 use Siganushka\Contracts\Doctrine\TimestampableTrait;
@@ -18,7 +19,7 @@ class Region implements TimestampableInterface
     use TimestampableTrait;
 
     #[ORM\Id]
-    #[ORM\Column]
+    #[ORM\Column(type: Types::STRING, length: 9)]
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]
     #[ORM\CustomIdGenerator(class: RegionCodeGenerator::class)]
     protected string $id;
