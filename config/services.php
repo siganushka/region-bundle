@@ -20,7 +20,6 @@ return static function (ContainerConfigurator $container): void {
             '../src/Entity/',
             '../src/Event/',
             '../src/IdGenerator/',
-            '../src/Resources/',
             '../src/SiganushkaRegionBundle.php',
         ]);
 };
