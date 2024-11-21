@@ -22,8 +22,8 @@ class SiganushkaRegionExtension extends Extension implements PrependExtensionInt
         $config = $this->processConfiguration($configuration, $configs);
 
         foreach (Configuration::$resourceMapping as $configName => [, $repositoryClass]) {
-            $repositoryDef = $container->findDefinition($repositoryClass);
-            $repositoryDef->setArgument('$entityClass', $config[$configName]);
+            $repository = $container->findDefinition($repositoryClass);
+            $repository->setArgument('$entityClass', $config[$configName]);
         }
     }
 

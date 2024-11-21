@@ -26,16 +26,16 @@ final class SiganushkaRegionExtensionTest extends TestCase
         static::assertTrue($container->hasDefinition(RegionType::class));
         static::assertTrue($container->hasDefinition(RegionRepository::class));
 
-        $regionRepositoryDef = $container->getDefinition(RegionRepository::class);
-        static::assertSame(Region::class, $regionRepositoryDef->getArgument('$entityClass'));
+        $regionRepository = $container->getDefinition(RegionRepository::class);
+        static::assertSame(Region::class, $regionRepository->getArgument('$entityClass'));
     }
 
     public function testCustomRegionClass(): void
     {
         $container = $this->createContainerWithConfig(['region_class' => FooRegion::class]);
 
-        $regionRepositoryDef = $container->getDefinition(RegionRepository::class);
-        static::assertSame(FooRegion::class, $regionRepositoryDef->getArgument('$entityClass'));
+        $regionRepository = $container->getDefinition(RegionRepository::class);
+        static::assertSame(FooRegion::class, $regionRepository->getArgument('$entityClass'));
     }
 
     private function createContainerWithConfig(array $config = []): ContainerBuilder
