@@ -60,7 +60,7 @@ class RegionUpdateCommand extends Command
         return Command::SUCCESS;
     }
 
-    protected function import(OutputInterface $output, array $data, Region $parent = null): void
+    protected function import(OutputInterface $output, array $data, ?Region $parent = null): void
     {
         foreach ($data as $value) {
             $region = $this->repository->createNew($value['code'], $value['name']);
