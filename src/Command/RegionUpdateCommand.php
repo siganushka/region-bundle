@@ -14,10 +14,7 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
-#[AsCommand(
-    name: 'siganushka:region:update',
-    description: 'Update administrative divisions data to database.',
-)]
+#[AsCommand('siganushka:region:update', 'Update administrative divisions data to database.')]
 class RegionUpdateCommand extends Command
 {
     /**
