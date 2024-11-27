@@ -7,15 +7,17 @@ namespace Siganushka\RegionBundle\Command;
 use Doctrine\ORM\EntityManagerInterface;
 use Siganushka\RegionBundle\Entity\Region;
 use Siganushka\RegionBundle\Repository\RegionRepository;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
-/**
- * @see https://github.com/modood/Administrative-divisions-of-China
- */
+#[AsCommand(
+    name: 'siganushka:region:update',
+    description: 'Update administrative divisions data to database.',
+)]
 class RegionUpdateCommand extends Command
 {
     /**
@@ -34,13 +36,12 @@ class RegionUpdateCommand extends Command
 
     protected function configure(): void
     {
-        $this
-            ->setName('siganushka:region:update')
-            ->setDescription('Update administrative divisions data to database.')
-            ->addOption('with-street', null, InputOption::VALUE_NONE, 'Whether to include streets?')
-        ;
+        $this->addOption('with-street', null, InputOption::VALUE_NONE, 'Whether to include streets?');
     }
 
+    /**
+     * @see https://github.com/modood/Administrative-divisions-of-China
+     */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         ini_set('memory_limit', '2048M');
