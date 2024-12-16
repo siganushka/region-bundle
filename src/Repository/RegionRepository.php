@@ -8,7 +8,9 @@ use Siganushka\GenericBundle\Repository\GenericEntityRepository;
 use Siganushka\RegionBundle\Entity\Region;
 
 /**
- * @extends GenericEntityRepository<Region>
+ * @template T of Region = Region
+ *
+ * @extends GenericEntityRepository<T>
  */
 class RegionRepository extends GenericEntityRepository
 {
