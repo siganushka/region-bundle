@@ -8,15 +8,15 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use Siganushka\Contracts\Doctrine\TimestampableInterface;
-use Siganushka\Contracts\Doctrine\TimestampableTrait;
+use Siganushka\Contracts\Doctrine\CreatableInterface;
+use Siganushka\Contracts\Doctrine\CreatableTrait;
 use Siganushka\RegionBundle\Doctrine\ORM\Id\RegionCodeGenerator;
 use Siganushka\RegionBundle\Repository\RegionRepository;
 
 #[ORM\Entity(repositoryClass: RegionRepository::class)]
-class Region implements TimestampableInterface
+class Region implements CreatableInterface
 {
-    use TimestampableTrait;
+    use CreatableTrait;
 
     #[ORM\Id]
     #[ORM\Column(type: Types::STRING, length: 9)]

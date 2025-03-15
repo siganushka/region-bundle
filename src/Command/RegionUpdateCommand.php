@@ -26,7 +26,7 @@ class RegionUpdateCommand extends Command
     public function __construct(
         private readonly HttpClientInterface $httpClient,
         private readonly EntityManagerInterface $entityManager,
-        private readonly RegionRepository $repository,
+        private readonly RegionRepository $regionRepository,
     ) {
         parent::__construct();
     }
@@ -61,7 +61,7 @@ class RegionUpdateCommand extends Command
     protected function import(OutputInterface $output, array $data, ?Region $parent = null): void
     {
         foreach ($data as $value) {
-            $region = $this->repository->createNew($value['code'], $value['name']);
+            $region = $this->regionRepository->createNew($value['code'], $value['name']);
             $region->setParent($parent);
 
             $messages = \sprintf('[%s] %s', $region->getCode(), $region->getName());
@@ -83,7 +83,7 @@ class RegionUpdateCommand extends Command
     protected function findRegion(string $code): ?Region
     {
         if (!$this->loaded) {
-            $this->cachedRegions = $this->repository->findAll();
+            $this->cachedRegions = $this->regionRepository->findAll();
             $this->loaded = true;
         }
 
