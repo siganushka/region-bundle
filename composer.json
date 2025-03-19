@@ -20,7 +20,8 @@
         "symfony/http-client": "^6.4|^7.0"
     },
     "require-dev": {
-        "symfony/serializer": "^6.4|^7.0"
+        "symfony/serializer": "^6.4|^7.0",
+        "doctrine/doctrine-bundle": "^2.7"
     },
     "autoload": {
         "psr-4": {
