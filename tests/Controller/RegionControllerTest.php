@@ -61,7 +61,7 @@ final class RegionControllerTest extends AbstractRegionTest
     public function testGetItemNotFoundHttpException(): void
     {
         $this->expectException(NotFoundHttpException::class);
-        $this->expectExceptionMessage('Resource #invalid_code not found.');
+        $this->expectExceptionMessage('Not Found');
 
         $this->controller->getItem('invalid_code');
     }

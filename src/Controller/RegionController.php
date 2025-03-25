@@ -33,10 +33,8 @@ class RegionController extends AbstractController
     #[Route('/regions/{code}', methods: 'GET')]
     public function getItem(string $code): Response
     {
-        $entity = $this->regionRepository->find($code);
-        if (!$entity) {
-            throw $this->createNotFoundException(\sprintf('Resource #%s not found.', $code));
-        }
+        $entity = $this->regionRepository->find($code)
+            ?? throw $this->createNotFoundException();
 
         return $this->createResponse($entity);
     }
