@@ -83,7 +83,7 @@ class UserAddress
 }
 ```
 
-> 为保证此 bundle 的独立、可复用性，你的实体关联到 ``Region::class`` 时必需为单向关系，不要指定 `inversedBy` 参数。
+> 为保证独立和可复用性，关联到 `Region::class` 时必需为单向关系，不要指定 `inversedBy` 参数。
 
 表单类型：
 
