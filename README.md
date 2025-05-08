@@ -17,7 +17,7 @@
 ### 安装
 
 ```bash
-$ composer require siganushka/region-bundle dev-main
+$ composer require siganushka/region-bundle
 ```
 
 ### 使用
