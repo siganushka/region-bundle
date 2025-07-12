@@ -72,7 +72,7 @@ class RegionUpdateCommand extends Command
             }
 
             if (isset($value['children'])) {
-                $this->import($output, $value['children'], $newParent ?: $region);
+                $this->import($output, $value['children'], $newParent ?? $region);
             }
         }
     }
