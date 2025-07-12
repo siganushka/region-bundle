@@ -20,8 +20,7 @@ class RegionUpdateCommand extends Command
     /**
      * @var Region[]
      */
-    protected array $cachedRegions = [];
-    protected bool $loaded = false;
+    private array $cachedRegions;
 
     public function __construct(
         private readonly HttpClientInterface $httpClient,
@@ -41,8 +40,6 @@ class RegionUpdateCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        ini_set('memory_limit', '2048M');
-
         $json = $input->getOption('with-street')
             ? 'pcas-code.json'
             : 'pca-code.json';
@@ -66,7 +63,7 @@ class RegionUpdateCommand extends Command
 
             $messages = \sprintf('[%s] %s', $region->getCode(), $region->getName());
 
-            $newParent = $this->findRegion($region->getCode());
+            $newParent = $this->findRegionByCode($region->getCode());
             if ($newParent) {
                 $output->writeln("<comment>{$messages} 已存在！</comment>");
             } else {
@@ -80,19 +77,12 @@ class RegionUpdateCommand extends Command
         }
     }
 
-    protected function findRegion(string $code): ?Region
+    protected function findRegionByCode(string $code): ?Region
     {
-        if (!$this->loaded) {
+        if (!isset($this->cachedRegions)) {
             $this->cachedRegions = $this->regionRepository->findAll();
-            $this->loaded = true;
         }
 
-        foreach ($this->cachedRegions as $region) {
-            if ($code === $region->getCode()) {
-                return $region;
-            }
-        }
-
-        return null;
+        return array_find($this->cachedRegions, fn (Region $item) => $code === $item->getCode());
     }
 }
