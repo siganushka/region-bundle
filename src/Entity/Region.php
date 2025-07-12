@@ -161,15 +161,11 @@ class Region implements CreatableInterface
 
     public function isLeaf(): bool
     {
-        return 0 === \count($this->children);
+        return $this->children->isEmpty();
     }
 
     public function getDepth(): int
     {
-        if (null === $this->parent) {
-            return 0;
-        }
-
-        return $this->parent->getDepth() + 1;
+        return $this->parent ? $this->parent->getDepth() + 1 : 0;
     }
 }
