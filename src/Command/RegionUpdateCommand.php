@@ -32,7 +32,7 @@ class RegionUpdateCommand extends Command
 
     protected function configure(): void
     {
-        $this->addOption('with-street', null, InputOption::VALUE_NONE, 'Whether to include streets?');
+        $this->addOption('level', null, InputOption::VALUE_REQUIRED, 'How many levels of data should be updated?', '3');
     }
 
     /**
@@ -40,9 +40,14 @@ class RegionUpdateCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $json = $input->getOption('with-street')
-            ? 'pcas-code.json'
-            : 'pca-code.json';
+        /** @var string */
+        $level = $input->getOption('level');
+        $json = match ($level) {
+            '2' => 'pc-code.json',
+            '3' => 'pca-code.json',
+            '4' => 'pcas-code.json',
+            default => throw new \InvalidArgumentException(\sprintf('The option "level" with value "%s" is invalid (2, 3, 4).', $level)),
+        };
 
         $output->writeln('<info>下载数据...</info>');
 
