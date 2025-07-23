@@ -34,7 +34,7 @@ $ php bin/console doctrine:schema:update --force
 $ php bin/console siganushka:region:update
 ```
 
-> 默认仅导入三级，使用 `--with-street` 参数可导入四级数据。
+> 默认导入 3 级数据，可使用 `--level=2/3/4` 参数自定义数据等级。
 
 导入路由：
 
