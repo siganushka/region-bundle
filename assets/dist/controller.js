@@ -17,7 +17,7 @@ export default class extends Controller {
       const json = await response.json()
       return response.ok
         ? Promise.resolve(json)
-        : Promise.reject(json.detail || json.message || response.statusText)
+        : Promise.reject(json.detail || response.statusText)
     }).then(res => {
       const options = res.map(el => `<option value="${el.code}">${el.name}</option>`)
 
