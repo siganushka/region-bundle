@@ -41,6 +41,8 @@ class RegionTypeExtension extends AbstractTypeExtension
             $view->vars['attr']['data-action'] = \sprintf('change->%s#change', $controllerName);
             $view->vars['attr']["data-{$controllerName}-url-value"] = $this->urlGenerator->generate('siganushka_region_region_getcollection');
             $view->vars['attr']["data-{$controllerName}-cascader-value"] = \sprintf('%s_%s', $view->parent->vars['id'] ?? '', $options['cascader_target']);
+
+            unset($controllerName);
         }
     }
 

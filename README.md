@@ -59,31 +59,27 @@ use Siganushka\RegionBundle\Entity\Region;
 
 class UserAddress
 {
-    /**
-     * @ORM\ManyToOne(targetEntity=Region::class)
-     */
+    #[ORM\ManyToOne]
+    #[ORM\JoinColumn('province_code', referencedColumnName: 'code')]
     private ?Region $province = null;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Region::class)
-     */
+    #[ORM\ManyToOne]
+    #[ORM\JoinColumn('city_code', referencedColumnName: 'code')]
     private ?Region $city = null;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Region::class)
-     */
+    #[ORM\ManyToOne]
+    #[ORM\JoinColumn('district_code', referencedColumnName: 'code')]
     private ?Region $district = null;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Region::class)
-     */
+    #[ORM\ManyToOne]
+    #[ORM\JoinColumn('street_code', referencedColumnName: 'code')]
     private ?Region $street = null;
 
     // ...
 }
 ```
 
-> 为保证独立和可复用性，关联到 `Region::class` 时必需为单向关系，不要指定 `inversedBy` 参数。
+> 注意 `Region` 主键为 `code`，同时为保证独立和可复用性，关联时必需为单向关系，不要指定 `inversedBy` 参数。
 
 表单类型：
 

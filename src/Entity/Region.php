@@ -4,67 +4,41 @@ declare(strict_types=1);
 
 namespace Siganushka\RegionBundle\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
-use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Siganushka\Contracts\Doctrine\CreatableInterface;
 use Siganushka\Contracts\Doctrine\CreatableTrait;
+use Siganushka\GenericBundle\Entity\Nestable;
 use Siganushka\RegionBundle\Doctrine\ORM\Id\RegionCodeGenerator;
 use Siganushka\RegionBundle\Repository\RegionRepository;
 
+/**
+ * @extends Nestable<Region>
+ */
 #[ORM\Entity(repositoryClass: RegionRepository::class)]
-class Region implements CreatableInterface
+class Region extends Nestable implements CreatableInterface
 {
     use CreatableTrait;
 
     #[ORM\Id]
-    #[ORM\Column(type: Types::STRING, length: 9)]
+    #[ORM\Column(length: 9)]
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]
     #[ORM\CustomIdGenerator(class: RegionCodeGenerator::class)]
-    protected string $id;
-
-    #[ORM\ManyToOne(targetEntity: self::class, inversedBy: 'children', cascade: ['all'])]
-    protected ?Region $parent = null;
+    protected string $code;
 
     #[ORM\Column]
     protected string $name;
 
-    /** @var Collection<int, Region> */
-    #[ORM\OneToMany(targetEntity: self::class, mappedBy: 'parent', cascade: ['all'])]
-    #[ORM\OrderBy(['parent' => 'ASC', 'id' => 'ASC'])]
-    protected Collection $children;
-
     public function __construct(string $code, string $name)
     {
-        $this->id = $code;
+        $this->code = $code;
         $this->name = $name;
-        $this->children = new ArrayCollection();
-    }
 
-    public function getParent(): ?self
-    {
-        return $this->parent;
-    }
-
-    public function setParent(?self $parent): static
-    {
-        if ($parent && $parent === $this) {
-            throw new \InvalidArgumentException('The parent conflict has been detected.');
-        }
-
-        if ($parent && \in_array($parent, $this->getDescendants(), true)) {
-            throw new \InvalidArgumentException('The descendants conflict has been detected.');
-        }
-
-        $this->parent = $parent;
-
-        return $this;
+        parent::__construct();
     }
 
     public function getCode(): string
     {
-        return $this->id;
+        return $this->code;
     }
 
     public function setCode(string $code): static
@@ -80,92 +54,5 @@ class Region implements CreatableInterface
     public function setName(string $name): static
     {
         throw new \BadMethodCallException('The name cannot be modified anymore.');
-    }
-
-    /**
-     * @return Collection<int, Region>
-     */
-    public function getChildren(): Collection
-    {
-        return $this->children;
-    }
-
-    public function addChild(self $child): static
-    {
-        if (!$this->children->contains($child)) {
-            $this->children[] = $child;
-            $child->setParent($this);
-        }
-
-        return $this;
-    }
-
-    public function removeChild(self $child): static
-    {
-        if ($this->children->removeElement($child)) {
-            if ($child->getParent() === $this) {
-                $child->setParent(null);
-            }
-        }
-
-        return $this;
-    }
-
-    public function getAncestors(bool $includeSelf = false): array
-    {
-        $parents = $includeSelf ? [$this] : [];
-        $node = $this;
-
-        while ($parent = $node->getParent()) {
-            array_unshift($parents, $parent);
-            $node = $parent;
-        }
-
-        return $parents;
-    }
-
-    public function getSiblings(bool $includeSelf = false): array
-    {
-        if (null === $this->parent) {
-            return [];
-        }
-
-        $siblings = [];
-        foreach ($this->parent->getChildren() as $child) {
-            if ($includeSelf || $child !== $this) {
-                $siblings[] = $child;
-            }
-        }
-
-        return $siblings;
-    }
-
-    public function getDescendants(bool $includeSelf = false): array
-    {
-        $descendants = $includeSelf ? [$this] : [];
-
-        foreach ($this->children as $child) {
-            $descendants[] = $child;
-            if (!$child->isLeaf()) {
-                $descendants = array_merge($descendants, $child->getDescendants());
-            }
-        }
-
-        return $descendants;
-    }
-
-    public function isRoot(): bool
-    {
-        return null === $this->parent;
-    }
-
-    public function isLeaf(): bool
-    {
-        return $this->children->isEmpty();
-    }
-
-    public function getDepth(): int
-    {
-        return $this->parent ? $this->parent->getDepth() + 1 : 0;
     }
 }

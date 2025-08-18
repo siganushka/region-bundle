@@ -10,6 +10,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 
 class RegionController extends AbstractController
 {
@@ -21,13 +22,9 @@ class RegionController extends AbstractController
     public function getCollection(Request $request): Response
     {
         $parent = $request->query->get('parent');
+        $result = $this->regionRepository->findByParent($parent, ['parent' => 'ASC', 'code' => 'ASC']);
 
-        $criteria = compact('parent');
-        $orderBy = ['parent' => 'ASC', 'id' => 'ASC'];
-
-        $regions = $this->regionRepository->findBy($criteria, $orderBy);
-
-        return $this->createResponse($regions);
+        return $this->createResponse($result);
     }
 
     #[Route('/regions/{code}', methods: 'GET')]
@@ -41,8 +38,8 @@ class RegionController extends AbstractController
 
     protected function createResponse(array|Region $data, int $statusCode = Response::HTTP_OK, array $headers = []): Response
     {
-        $attributes = ['code', 'name', 'root', 'leaf', 'depth'];
-
-        return $this->json($data, $statusCode, $headers, compact('attributes'));
+        return $this->json($data, $statusCode, $headers, [
+            ObjectNormalizer::IGNORED_ATTRIBUTES => ['parent', 'children', 'siblings', 'descendants', 'ancestors'],
+        ]);
     }
 }

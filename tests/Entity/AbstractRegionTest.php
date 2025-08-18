@@ -28,9 +28,8 @@ abstract class AbstractRegionTest extends TestCase
         $regionRepository = $this->createMock(RegionRepository::class);
 
         $regionRepository->expects(static::any())
-            ->method('findBy')
-            ->willReturnCallback(function (array $criteria) use ($province, $city, $district): array {
-                $parent = $criteria['parent'] ?? null;
+            ->method('findByParent')
+            ->willReturnCallback(function (?string $parent) use ($province, $city, $district): array {
                 if (null === $parent) {
                     return [$province];
                 } elseif ('100000' === $parent) {
@@ -45,12 +44,12 @@ abstract class AbstractRegionTest extends TestCase
 
         $regionRepository->expects(static::any())
             ->method('find')
-            ->willReturnCallback(function (string $id) use ($province, $city, $district): ?Region {
-                if ('100000' === $id) {
+            ->willReturnCallback(function (string $code) use ($province, $city, $district): ?Region {
+                if ('100000' === $code) {
                     return $province;
-                } elseif ('110000' === $id) {
+                } elseif ('110000' === $code) {
                     return $city;
-                } elseif ('111000' === $id) {
+                } elseif ('111000' === $code) {
                     return $district;
                 } else {
                     return null;

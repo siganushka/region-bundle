@@ -22,11 +22,11 @@ class RegionType extends AbstractType
         $choicesNormalizer = function (Options $options): iterable {
             /** @var Region|null */
             $parent = $options['parent'];
-            if ($options['root_on_null_parent'] && !$parent) {
-                return $this->regionRepository->findBy(['parent' => null]);
+            if ($options['root_on_null_parent'] && null === $parent) {
+                return $this->regionRepository->findByParent(null);
             }
 
-            return $parent ? $parent->getChildren() : [];
+            return $parent?->getChildren() ?? [];
         };
 
         $rootOnNullParentNormalizer = function (Options $options, bool $rootOnNullParent): bool {

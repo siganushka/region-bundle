@@ -31,13 +31,13 @@ final class RegionControllerTest extends AbstractRegionTest
     public function testGetCollection(): void
     {
         $response = $this->controller->getCollection(new Request());
-        static::assertSame('[{"code":"100000","name":"foo","root":true,"leaf":false,"depth":0}]', $response->getContent());
+        static::assertSame('[{"code":"100000","name":"foo","root":true,"leaf":false,"depth":0,"createdAt":null}]', $response->getContent());
 
         $response = $this->controller->getCollection(new Request(['parent' => '100000']));
-        static::assertSame('[{"code":"110000","name":"bar","root":false,"leaf":false,"depth":1}]', $response->getContent());
+        static::assertSame('[{"code":"110000","name":"bar","root":false,"leaf":false,"depth":1,"createdAt":null}]', $response->getContent());
 
         $response = $this->controller->getCollection(new Request(['parent' => '110000']));
-        static::assertSame('[{"code":"111000","name":"baz","root":false,"leaf":true,"depth":2}]', $response->getContent());
+        static::assertSame('[{"code":"111000","name":"baz","root":false,"leaf":true,"depth":2,"createdAt":null}]', $response->getContent());
 
         $response = $this->controller->getCollection(new Request(['parent' => 'invalid']));
         static::assertSame('[]', $response->getContent());
@@ -49,13 +49,13 @@ final class RegionControllerTest extends AbstractRegionTest
     public function testGetItem(): void
     {
         $response = $this->controller->getItem('100000');
-        static::assertSame('{"code":"100000","name":"foo","root":true,"leaf":false,"depth":0}', $response->getContent());
+        static::assertSame('{"code":"100000","name":"foo","root":true,"leaf":false,"depth":0,"createdAt":null}', $response->getContent());
 
         $response = $this->controller->getItem('110000');
-        static::assertSame('{"code":"110000","name":"bar","root":false,"leaf":false,"depth":1}', $response->getContent());
+        static::assertSame('{"code":"110000","name":"bar","root":false,"leaf":false,"depth":1,"createdAt":null}', $response->getContent());
 
         $response = $this->controller->getItem('111000');
-        static::assertSame('{"code":"111000","name":"baz","root":false,"leaf":true,"depth":2}', $response->getContent());
+        static::assertSame('{"code":"111000","name":"baz","root":false,"leaf":true,"depth":2,"createdAt":null}', $response->getContent());
     }
 
     public function testGetItemNotFoundHttpException(): void
