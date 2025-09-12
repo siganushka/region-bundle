@@ -4,13 +4,12 @@ declare(strict_types=1);
 
 namespace Siganushka\RegionBundle\Controller;
 
-use Siganushka\RegionBundle\Entity\Region;
 use Siganushka\RegionBundle\Repository\RegionRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
-use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
+use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 
 class RegionController extends AbstractController
 {
@@ -24,7 +23,9 @@ class RegionController extends AbstractController
         $parent = $request->query->get('parent');
         $result = $this->regionRepository->findByParent($parent, ['parent' => 'ASC', 'code' => 'ASC']);
 
-        return $this->createResponse($result);
+        return $this->json($result, context: [
+            AbstractNormalizer::GROUPS => ['region:collection'],
+        ]);
     }
 
     #[Route('/regions/{code}', methods: 'GET')]
@@ -33,13 +34,8 @@ class RegionController extends AbstractController
         $entity = $this->regionRepository->find($code)
             ?? throw $this->createNotFoundException();
 
-        return $this->createResponse($entity);
-    }
-
-    protected function createResponse(array|Region $data, int $statusCode = Response::HTTP_OK, array $headers = []): Response
-    {
-        return $this->json($data, $statusCode, $headers, [
-            ObjectNormalizer::IGNORED_ATTRIBUTES => ['parent', 'children', 'siblings', 'descendants', 'ancestors'],
+        return $this->json($entity, context: [
+            AbstractNormalizer::GROUPS => ['region:item'],
         ]);
     }
 }

@@ -10,6 +10,8 @@ use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
+use Symfony\Component\Serializer\Mapping\Factory\ClassMetadataFactory;
+use Symfony\Component\Serializer\Mapping\Loader\YamlFileLoader;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\Serializer;
 
@@ -21,8 +23,11 @@ final class RegionControllerTest extends AbstractRegionTest
     {
         parent::setUp();
 
+        $loader = new YamlFileLoader(__DIR__.'/../../config/serialization/Region.yaml');
+        $factory = new ClassMetadataFactory($loader);
+
         $container = new Container();
-        $container->set('serializer', new Serializer([new ObjectNormalizer()], [new JsonEncoder()]));
+        $container->set('serializer', new Serializer([new ObjectNormalizer($factory)], [new JsonEncoder()]));
 
         $this->controller = new RegionController($this->regionRepository);
         $this->controller->setContainer($container);

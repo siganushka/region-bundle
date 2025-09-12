@@ -1,0 +1,14 @@
+Siganushka\RegionBundle\Entity\Region:
+    attributes:
+        code:
+            groups: ['region:item', 'region:collection']
+        name:
+            groups: ['region:item', 'region:collection']
+        root:
+            groups: ['region:item', 'region:collection']
+        leaf:
+            groups: ['region:item', 'region:collection']
+        depth:
+            groups: ['region:item', 'region:collection']
+        createdAt:
+            groups: ['region:item', 'region:collection']
