@@ -24,7 +24,7 @@ class RegionController extends AbstractController
         $result = $this->regionRepository->findByParent($parent, ['parent' => 'ASC', 'code' => 'ASC']);
 
         return $this->json($result, context: [
-            AbstractNormalizer::GROUPS => ['region:collection'],
+            AbstractNormalizer::GROUPS => ['collection'],
         ]);
     }
 
@@ -35,7 +35,7 @@ class RegionController extends AbstractController
             ?? throw $this->createNotFoundException();
 
         return $this->json($entity, context: [
-            AbstractNormalizer::GROUPS => ['region:item'],
+            AbstractNormalizer::GROUPS => ['item'],
         ]);
     }
 }

@@ -10,8 +10,9 @@ use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
-use Symfony\Component\Serializer\Mapping\Factory\ClassMetadataFactory;
-use Symfony\Component\Serializer\Mapping\Loader\YamlFileLoader;
+use Symfony\Component\Serializer\Mapping\AttributeMetadata;
+use Symfony\Component\Serializer\Mapping\ClassMetadata;
+use Symfony\Component\Serializer\Mapping\Factory\ClassMetadataFactoryInterface;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\Serializer;
 
@@ -23,8 +24,24 @@ final class RegionControllerTest extends AbstractRegionTest
     {
         parent::setUp();
 
-        $loader = new YamlFileLoader(__DIR__.'/../../config/serialization/Region.yaml');
-        $factory = new ClassMetadataFactory($loader);
+        $attributesMetadata = [];
+        foreach (['code', 'name', 'root', 'leaf', 'depth'] as $attribute) {
+            $attributesMetadata[$attribute] = new AttributeMetadata($attribute);
+            $attributesMetadata[$attribute]->addGroup('item');
+            $attributesMetadata[$attribute]->addGroup('collection');
+        }
+
+        $metadata = $this->createMock(ClassMetadata::class);
+        $metadata->expects(static::any())
+            ->method('getAttributesMetadata')
+            ->willReturn($attributesMetadata)
+        ;
+
+        $factory = $this->createMock(ClassMetadataFactoryInterface::class);
+        $factory->expects(static::any())
+            ->method('getMetadataFor')
+            ->willReturn($metadata)
+        ;
 
         $container = new Container();
         $container->set('serializer', new Serializer([new ObjectNormalizer($factory)], [new JsonEncoder()]));
@@ -36,13 +53,13 @@ final class RegionControllerTest extends AbstractRegionTest
     public function testGetCollection(): void
     {
         $response = $this->controller->getCollection(new Request());
-        static::assertSame('[{"code":"100000","name":"foo","root":true,"leaf":false,"depth":0,"createdAt":null}]', $response->getContent());
+        static::assertSame('[{"code":"100000","name":"foo","root":true,"leaf":false,"depth":0}]', $response->getContent());
 
         $response = $this->controller->getCollection(new Request(['parent' => '100000']));
-        static::assertSame('[{"code":"110000","name":"bar","root":false,"leaf":false,"depth":1,"createdAt":null}]', $response->getContent());
+        static::assertSame('[{"code":"110000","name":"bar","root":false,"leaf":false,"depth":1}]', $response->getContent());
 
         $response = $this->controller->getCollection(new Request(['parent' => '110000']));
-        static::assertSame('[{"code":"111000","name":"baz","root":false,"leaf":true,"depth":2,"createdAt":null}]', $response->getContent());
+        static::assertSame('[{"code":"111000","name":"baz","root":false,"leaf":true,"depth":2}]', $response->getContent());
 
         $response = $this->controller->getCollection(new Request(['parent' => 'invalid']));
         static::assertSame('[]', $response->getContent());
@@ -54,13 +71,13 @@ final class RegionControllerTest extends AbstractRegionTest
     public function testGetItem(): void
     {
         $response = $this->controller->getItem('100000');
-        static::assertSame('{"code":"100000","name":"foo","root":true,"leaf":false,"depth":0,"createdAt":null}', $response->getContent());
+        static::assertSame('{"code":"100000","name":"foo","root":true,"leaf":false,"depth":0}', $response->getContent());
 
         $response = $this->controller->getItem('110000');
-        static::assertSame('{"code":"110000","name":"bar","root":false,"leaf":false,"depth":1,"createdAt":null}', $response->getContent());
+        static::assertSame('{"code":"110000","name":"bar","root":false,"leaf":false,"depth":1}', $response->getContent());
 
         $response = $this->controller->getItem('111000');
-        static::assertSame('{"code":"111000","name":"baz","root":false,"leaf":true,"depth":2,"createdAt":null}', $response->getContent());
+        static::assertSame('{"code":"111000","name":"baz","root":false,"leaf":true,"depth":2}', $response->getContent());
     }
 
     public function testGetItemNotFoundHttpException(): void
