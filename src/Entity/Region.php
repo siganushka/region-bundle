@@ -5,8 +5,6 @@ declare(strict_types=1);
 namespace Siganushka\RegionBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Siganushka\Contracts\Doctrine\CreatableInterface;
-use Siganushka\Contracts\Doctrine\CreatableTrait;
 use Siganushka\GenericBundle\Entity\Nestable;
 use Siganushka\RegionBundle\Doctrine\ORM\Id\RegionCodeGenerator;
 use Siganushka\RegionBundle\Repository\RegionRepository;
@@ -15,10 +13,8 @@ use Siganushka\RegionBundle\Repository\RegionRepository;
  * @extends Nestable<Region>
  */
 #[ORM\Entity(repositoryClass: RegionRepository::class)]
-class Region extends Nestable implements CreatableInterface
+class Region extends Nestable
 {
-    use CreatableTrait;
-
     #[ORM\Id]
     #[ORM\Column(length: 9)]
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]
