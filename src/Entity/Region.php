@@ -13,6 +13,7 @@ use Siganushka\RegionBundle\Repository\RegionRepository;
  * @extends Nestable<Region>
  */
 #[ORM\Entity(repositoryClass: RegionRepository::class)]
+#[ORM\Cache(usage: 'NONSTRICT_READ_WRITE')]
 class Region extends Nestable
 {
     #[ORM\Id]
