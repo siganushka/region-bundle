@@ -10,4 +10,4 @@ parameters:
     ignoreErrors:
         - '#no value type specified in iterable type array#'
         - '#no value type specified in iterable type iterable#'
-        - { message: '#Node\(\) on an unknown class#', path: src/DependencyInjection/Configuration.php }
+        - { message: '#contains generic type#', path: src/DependencyInjection/Configuration.php }
