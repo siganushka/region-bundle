@@ -27,10 +27,10 @@ class Region extends Nestable
     protected string $name;
 
     #[ORM\Column]
-    protected ?string $fullname = null;
+    protected string $fullname;
 
     #[ORM\Column]
-    protected ?int $level = null;
+    protected int $level;
 
     public function __construct(string $code, string $name)
     {
