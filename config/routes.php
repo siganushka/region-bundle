@@ -11,12 +11,10 @@ return static function (RoutingConfigurator $routes): void {
     $routes->add('siganushka_region_getcollection', '/regions')
         ->controller([RegionController::class, 'getCollection'])
         ->methods(['GET'])
-        ->stateless(true)
     ;
 
     $routes->add('siganushka_region_getitem', '/regions/{code<\d{2,9}>}')
         ->controller([RegionController::class, 'getItem'])
         ->methods(['GET'])
-        ->stateless(true)
     ;
 };
