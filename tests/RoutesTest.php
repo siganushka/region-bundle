@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Siganushka\RegionBundle\Tests;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Siganushka\RegionBundle\Controller\RegionController;
 use Symfony\Component\Config\FileLocator;
@@ -31,9 +32,7 @@ class RoutesTest extends TestCase
         static::assertSame($routeNames, array_keys($this->routes->all()));
     }
 
-    /**
-     * @dataProvider routesProvider
-     */
+    #[DataProvider('routesProvider')]
     public function testRotues(string $routeName, string $path, array $methods, array $controller): void
     {
         /** @var Route */

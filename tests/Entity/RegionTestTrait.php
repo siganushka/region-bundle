@@ -4,11 +4,10 @@ declare(strict_types=1);
 
 namespace Siganushka\RegionBundle\Tests\Entity;
 
-use PHPUnit\Framework\TestCase;
 use Siganushka\RegionBundle\Entity\Region;
 use Siganushka\RegionBundle\Repository\RegionRepository;
 
-abstract class AbstractRegionTest extends TestCase
+trait RegionTestTrait
 {
     protected RegionRepository $regionRepository;
     protected Region $province;

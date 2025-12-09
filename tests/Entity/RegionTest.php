@@ -4,10 +4,13 @@ declare(strict_types=1);
 
 namespace Siganushka\RegionBundle\Tests\Entity;
 
+use PHPUnit\Framework\TestCase;
 use Siganushka\RegionBundle\Entity\Region;
 
-final class RegionTest extends AbstractRegionTest
+class RegionTest extends TestCase
 {
+    use RegionTestTrait;
+
     public function testRegion(): void
     {
         $region = new Region('100000', 'foo');

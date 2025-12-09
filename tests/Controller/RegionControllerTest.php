@@ -4,8 +4,9 @@ declare(strict_types=1);
 
 namespace Siganushka\RegionBundle\Tests\Controller;
 
+use PHPUnit\Framework\TestCase;
 use Siganushka\RegionBundle\Controller\RegionController;
-use Siganushka\RegionBundle\Tests\Entity\AbstractRegionTest;
+use Siganushka\RegionBundle\Tests\Entity\RegionTestTrait;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -16,13 +17,15 @@ use Symfony\Component\Serializer\Mapping\Factory\ClassMetadataFactoryInterface;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\Serializer;
 
-final class RegionControllerTest extends AbstractRegionTest
+class RegionControllerTest extends TestCase
 {
+    use RegionTestTrait { setUp as __setUp; }
+
     protected RegionController $controller;
 
     protected function setUp(): void
     {
-        parent::setUp();
+        $this->__setUp();
 
         $attributesMetadata = [];
         foreach (['code', 'name', 'root', 'leaf', 'depth'] as $attribute) {
