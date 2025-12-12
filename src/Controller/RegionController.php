@@ -8,7 +8,6 @@ use Siganushka\RegionBundle\Repository\RegionRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 
 class RegionController extends AbstractController
 {
@@ -22,7 +21,7 @@ class RegionController extends AbstractController
         $result = $this->regionRepository->findByParent($parent, ['parent' => 'ASC', 'code' => 'ASC']);
 
         return $this->json($result, context: [
-            AbstractNormalizer::GROUPS => ['collection'],
+            'groups' => ['region:collection'],
         ]);
     }
 
@@ -32,7 +31,7 @@ class RegionController extends AbstractController
             ?? throw $this->createNotFoundException();
 
         return $this->json($entity, context: [
-            AbstractNormalizer::GROUPS => ['item'],
+            'groups' => ['region:item'],
         ]);
     }
 }

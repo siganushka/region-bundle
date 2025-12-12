@@ -30,8 +30,8 @@ class RegionControllerTest extends TestCase
         $attributesMetadata = [];
         foreach (['code', 'name', 'root', 'leaf', 'depth'] as $attribute) {
             $attributesMetadata[$attribute] = new AttributeMetadata($attribute);
-            $attributesMetadata[$attribute]->addGroup('item');
-            $attributesMetadata[$attribute]->addGroup('collection');
+            $attributesMetadata[$attribute]->addGroup('region:item');
+            $attributesMetadata[$attribute]->addGroup('region:collection');
         }
 
         $metadata = $this->createMock(ClassMetadata::class);
