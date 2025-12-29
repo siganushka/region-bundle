@@ -24,8 +24,8 @@ class RegionTypeExtension extends AbstractTypeExtension
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         if ($options['cascader_target']) {
-            $builder->addEventListener(FormEvents::PRE_SET_DATA, [$this, 'formModifier']);
-            $builder->addEventListener(FormEvents::POST_SUBMIT, [$this, 'formModifier']);
+            $builder->addEventListener(FormEvents::PRE_SET_DATA, $this->formModifier(...));
+            $builder->addEventListener(FormEvents::POST_SUBMIT, $this->formModifier(...));
         }
     }
 
