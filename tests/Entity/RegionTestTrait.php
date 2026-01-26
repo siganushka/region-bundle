@@ -28,31 +28,31 @@ trait RegionTestTrait
 
         $regionRepository->expects(static::any())
             ->method('findByParent')
-            ->willReturnCallback(function (?string $parent) use ($province, $city, $district): array {
+            ->willReturnCallback(static function (?string $parent) use ($province, $city, $district): array {
                 if (null === $parent) {
                     return [$province];
                 } elseif ('100000' === $parent) {
                     return [$city];
                 } elseif ('110000' === $parent) {
                     return [$district];
-                } else {
-                    return [];
                 }
+
+                return [];
             })
         ;
 
         $regionRepository->expects(static::any())
             ->method('find')
-            ->willReturnCallback(function (string $code) use ($province, $city, $district): ?Region {
+            ->willReturnCallback(static function (string $code) use ($province, $city, $district): ?Region {
                 if ('100000' === $code) {
                     return $province;
                 } elseif ('110000' === $code) {
                     return $city;
                 } elseif ('111000' === $code) {
                     return $district;
-                } else {
-                    return null;
                 }
+
+                return null;
             })
         ;
 

@@ -40,6 +40,30 @@ class Region extends Nestable
         parent::__construct();
     }
 
+    public function setParent(?Nestable $parent): static
+    {
+        parent::setParent($parent);
+        unset($this->fullname, $this->level);
+
+        return $this;
+    }
+
+    public function addChild(Nestable $child): static
+    {
+        parent::addChild($child);
+        unset($this->fullname, $this->level);
+
+        return $this;
+    }
+
+    public function removeChild(Nestable $child): static
+    {
+        parent::removeChild($child);
+        unset($this->fullname, $this->level);
+
+        return $this;
+    }
+
     public function getCode(): string
     {
         return $this->code;
@@ -60,9 +84,17 @@ class Region extends Nestable
         throw new \BadMethodCallException('The name cannot be modified anymore.');
     }
 
+    #[ORM\PrePersist]
     public function getFullname(): string
     {
-        return $this->fullname ?? $this->calculateFullname();
+        if (isset($this->fullname)) {
+            return $this->fullname;
+        }
+
+        $callback = static fn (Region $item) => $item->getName();
+        $ancestorNames = array_map($callback, $this->getAncestors(true));
+
+        return $this->fullname = implode('/', $ancestorNames);
     }
 
     public function setFullname(string $fullname): static
@@ -70,30 +102,18 @@ class Region extends Nestable
         throw new \BadMethodCallException('The fullname cannot be modified anymore.');
     }
 
+    #[ORM\PrePersist]
     public function getLevel(): int
     {
-        return $this->level ?? $this->calculateLevel();
+        if (isset($this->level)) {
+            return $this->level;
+        }
+
+        return $this->level = $this->getDepth() + 1;
     }
 
     public function setLevel(int $level): static
     {
         throw new \BadMethodCallException('The level cannot be modified anymore.');
-    }
-
-    #[ORM\PrePersist]
-    public function onPrePersist(): void
-    {
-        $this->fullname = $this->calculateFullname();
-        $this->level = $this->calculateLevel();
-    }
-
-    private function calculateFullname(): string
-    {
-        return implode('/', array_map(fn (Region $item) => $item->getName(), $this->getAncestors(true)));
-    }
-
-    private function calculateLevel(): int
-    {
-        return $this->getDepth() + 1;
     }
 }

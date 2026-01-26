@@ -29,7 +29,7 @@ class RegionType extends AbstractType
             return $parent?->getChildren() ?? [];
         };
 
-        $rootOnNullParentNormalizer = function (Options $options, bool $rootOnNullParent): bool {
+        $rootOnNullParentNormalizer = static function (Options $options, bool $rootOnNullParent): bool {
             if ($options['parent']) {
                 return false;
             }

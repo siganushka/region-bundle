@@ -11,7 +11,7 @@ class RegionTest extends TestCase
 {
     use RegionTestTrait;
 
-    public function testRegion(): void
+    public function testAll(): void
     {
         static::assertSame('100000', $this->province->getCode());
         static::assertSame('foo', $this->province->getName());
@@ -29,15 +29,30 @@ class RegionTest extends TestCase
         static::assertSame(3, $this->district->getLevel());
     }
 
-    public function testFullnameInitialized(): void
+    public function testLazyGetter(): void
     {
         $region = new Region('foo', 'bar');
 
-        $ref = new \ReflectionProperty($region, 'fullname');
-        static::assertFalse($ref->isInitialized($region));
+        $fullnameRef = new \ReflectionProperty($region, 'fullname');
+        $levelRef = new \ReflectionProperty($region, 'level');
+        static::assertFalse($fullnameRef->isInitialized($region));
+        static::assertFalse($levelRef->isInitialized($region));
+        static::assertSame('bar', $region->getFullname());
+        static::assertSame(1, $region->getLevel());
+        static::assertTrue($fullnameRef->isInitialized($region));
+        static::assertTrue($levelRef->isInitialized($region));
 
-        $region->onPrePersist();
-        static::assertTrue($ref->isInitialized($region));
+        $region->setParent(new Region('hello', 'hello'));
+        static::assertSame('hello/bar', $region->getFullname());
+        static::assertSame(2, $region->getLevel());
+
+        $region->addChild($child = new Region('world', 'world'));
+        static::assertSame('hello/bar/world', $child->getFullname());
+        static::assertSame(3, $child->getLevel());
+
+        $region->removeChild($child);
+        static::assertSame('hello/bar', $region->getFullname());
+        static::assertSame(2, $region->getLevel());
     }
 
     public function testParentConflictException(): void

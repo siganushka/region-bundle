@@ -88,6 +88,6 @@ class RegionUpdateCommand extends Command
             $this->cachedRegions = $this->regionRepository->findAll();
         }
 
-        return array_find($this->cachedRegions, fn (Region $item) => $code === $item->getCode());
+        return array_find($this->cachedRegions, static fn (Region $item) => $code === $item->getCode());
     }
 }
