@@ -35,12 +35,11 @@ class RegionTest extends TestCase
 
         $fullnameRef = new \ReflectionProperty($region, 'fullname');
         $levelRef = new \ReflectionProperty($region, 'level');
-        static::assertFalse($fullnameRef->isInitialized($region));
-        static::assertFalse($levelRef->isInitialized($region));
+        static::assertNull($fullnameRef->getValue($region));
+        static::assertNull($levelRef->getValue($region));
+
         static::assertSame('bar', $region->getFullname());
         static::assertSame(1, $region->getLevel());
-        static::assertTrue($fullnameRef->isInitialized($region));
-        static::assertTrue($levelRef->isInitialized($region));
 
         $region->setParent(new Region('hello', 'hello'));
         static::assertSame('hello/bar', $region->getFullname());

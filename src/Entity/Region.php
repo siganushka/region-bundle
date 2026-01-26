@@ -27,10 +27,10 @@ class Region extends Nestable
     protected string $name;
 
     #[ORM\Column]
-    protected string $fullname;
+    protected ?string $fullname = null;
 
     #[ORM\Column]
-    protected int $level;
+    protected ?int $level = null;
 
     public function __construct(string $code, string $name)
     {
@@ -43,7 +43,7 @@ class Region extends Nestable
     public function setParent(?Nestable $parent): static
     {
         parent::setParent($parent);
-        unset($this->fullname, $this->level);
+        $this->fullname = $this->level = null;
 
         return $this;
     }
@@ -51,7 +51,7 @@ class Region extends Nestable
     public function addChild(Nestable $child): static
     {
         parent::addChild($child);
-        unset($this->fullname, $this->level);
+        $this->fullname = $this->level = null;
 
         return $this;
     }
@@ -59,7 +59,7 @@ class Region extends Nestable
     public function removeChild(Nestable $child): static
     {
         parent::removeChild($child);
-        unset($this->fullname, $this->level);
+        $this->fullname = $this->level = null;
 
         return $this;
     }
@@ -84,17 +84,9 @@ class Region extends Nestable
         throw new \BadMethodCallException('The name cannot be modified anymore.');
     }
 
-    #[ORM\PrePersist]
     public function getFullname(): string
     {
-        if (isset($this->fullname)) {
-            return $this->fullname;
-        }
-
-        $callback = static fn (Region $item) => $item->getName();
-        $ancestorNames = array_map($callback, $this->getAncestors(true));
-
-        return $this->fullname = implode('/', $ancestorNames);
+        return $this->fullname ??= implode('/', array_map(static fn (self $item) => $item->getName(), $this->getAncestors(true)));
     }
 
     public function setFullname(string $fullname): static
@@ -102,18 +94,20 @@ class Region extends Nestable
         throw new \BadMethodCallException('The fullname cannot be modified anymore.');
     }
 
-    #[ORM\PrePersist]
     public function getLevel(): int
     {
-        if (isset($this->level)) {
-            return $this->level;
-        }
-
-        return $this->level = $this->getDepth() + 1;
+        return $this->level ??= $this->getDepth() + 1;
     }
 
     public function setLevel(int $level): static
     {
         throw new \BadMethodCallException('The level cannot be modified anymore.');
+    }
+
+    #[ORM\PrePersist]
+    public function onPrePersist(): void
+    {
+        $this->getFullname();
+        $this->getLevel();
     }
 }
