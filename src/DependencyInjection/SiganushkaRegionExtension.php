@@ -41,6 +41,10 @@ class SiganushkaRegionExtension extends Extension implements PrependExtensionInt
             }
         }
 
+        $container->prependExtensionConfig('doctrine', [
+            'orm' => ['resolve_target_entities' => $mappingOverride],
+        ]);
+
         $container->prependExtensionConfig('siganushka_generic', [
             'doctrine' => ['mapping_override' => $mappingOverride],
         ]);
