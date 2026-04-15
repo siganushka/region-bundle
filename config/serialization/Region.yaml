@@ -4,9 +4,7 @@ Siganushka\RegionBundle\Entity\Region:
             groups: ['region:item', 'region:collection']
         name:
             groups: ['region:item', 'region:collection']
-        fullname:
-            groups: ['region:item', 'region:collection']
-        level:
+        depth:
             groups: ['region:item', 'region:collection']
         root:
             groups: ['region:item', 'region:collection']
