@@ -13,6 +13,7 @@
     ],
     "require": {
         "php": ">=8.2",
+        "doctrine/doctrine-bundle": "^2.8",
         "siganushka/doctrine-contracts": "^1.2",
         "siganushka/generic-bundle": "^1.2",
         "symfony/form": "^7.4|^8.0",
