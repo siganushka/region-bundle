@@ -5,7 +5,7 @@
 [![Latest Unstable Version](https://poser.pugx.org/siganushka/region-bundle/v/unstable)](https://packagist.org/packages/siganushka/region-bundle)
 [![License](https://poser.pugx.org/siganushka/region-bundle/license)](https://packagist.org/packages/siganushka/region-bundle)
 
-国内行政区划四级联动 [Bundle](https://symfony.com/doc/current/bundles.html)，数据来源 [Administrative-divisions-of-China](https://github.com/modood/Administrative-divisions-of-China)
+提供国内行政区划四级联动，数据来源 [Administrative-divisions-of-China](https://github.com/modood/Administrative-divisions-of-China)
 
 ### 说明
 
