@@ -49,13 +49,10 @@ class SiganushkaRegionExtension extends Extension implements PrependExtensionInt
             'doctrine' => ['mapping_override' => $mappingOverride],
         ]);
 
-        // @see https://symfony.com/doc/current/frontend/create_ux_bundle.html#specifics-for-asset-mapper
         if ($this->isAssetMapperAvailable($container)) {
             $container->prependExtensionConfig('framework', [
                 'asset_mapper' => [
-                    'paths' => [
-                        __DIR__.'/../../assets/dist' => '@siganushka/region-bundle',
-                    ],
+                    'paths' => [__DIR__.'/../../assets/dist' => '@siganushka/region-bundle'],
                 ],
             ]);
         }
@@ -67,7 +64,6 @@ class SiganushkaRegionExtension extends Extension implements PrependExtensionInt
             return false;
         }
 
-        /** @var array */
         $bundlesMetadata = $container->getParameter('kernel.bundles_metadata');
         if (!isset($bundlesMetadata['FrameworkBundle'])) {
             return false;
