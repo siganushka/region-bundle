@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Siganushka\RegionBundle\Command;
 
 use Doctrine\ORM\EntityManagerInterface;
-use Siganushka\RegionBundle\Entity\Region;
+use Siganushka\RegionBundle\Entity\AbstractRegion;
 use Siganushka\RegionBundle\Repository\RegionRepository;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
@@ -18,7 +18,7 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
 class RegionUpdateCommand extends Command
 {
     /**
-     * @var Region[]
+     * @var AbstractRegion[]
      */
     private array $cachedRegions;
 
@@ -60,7 +60,7 @@ class RegionUpdateCommand extends Command
         return Command::SUCCESS;
     }
 
-    protected function import(OutputInterface $output, array $data, ?Region $parent = null): void
+    protected function import(OutputInterface $output, array $data, ?AbstractRegion $parent = null): void
     {
         foreach ($data as $value) {
             $region = $this->regionRepository->createNew($value['code'], $value['name']);
@@ -82,12 +82,12 @@ class RegionUpdateCommand extends Command
         }
     }
 
-    protected function findRegionByCode(string $code): ?Region
+    protected function findRegionByCode(string $code): ?AbstractRegion
     {
         if (!isset($this->cachedRegions)) {
             $this->cachedRegions = $this->regionRepository->findAll();
         }
 
-        return array_find($this->cachedRegions, static fn (Region $item) => $code === $item->getCode());
+        return array_find($this->cachedRegions, static fn (AbstractRegion $item) => $code === $item->getCode());
     }
 }

@@ -4,11 +4,10 @@ declare(strict_types=1);
 
 namespace Siganushka\RegionBundle\Tests\Controller;
 
-use PHPUnit\Framework\TestCase;
 use Siganushka\RegionBundle\Controller\RegionController;
-use Siganushka\RegionBundle\Tests\Entity\RegionTestTrait;
+use Siganushka\RegionBundle\Dto\RegionQueryDto;
+use Siganushka\RegionBundle\Tests\Entity\AbstractRegionTestCase;
 use Symfony\Component\DependencyInjection\Container;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Mapping\Factory\ClassMetadataFactory;
@@ -16,15 +15,13 @@ use Symfony\Component\Serializer\Mapping\Loader\YamlFileLoader;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\Serializer;
 
-class RegionControllerTest extends TestCase
+class RegionControllerTest extends AbstractRegionTestCase
 {
-    use RegionTestTrait { setUp as __setUp; }
-
     protected RegionController $controller;
 
     protected function setUp(): void
     {
-        $this->__setUp();
+        parent::setUp();
 
         $loader = new YamlFileLoader(__DIR__.'/../../config/serialization/Region.yaml');
         $factory = new ClassMetadataFactory($loader);
@@ -38,19 +35,19 @@ class RegionControllerTest extends TestCase
 
     public function testGetCollection(): void
     {
-        $response = $this->controller->getCollection(new Request());
+        $response = $this->controller->getCollection(new RegionQueryDto(null, null));
         static::assertSame('[{"code":"100000","name":"foo","depth":0,"root":true,"leaf":false}]', $response->getContent());
 
-        $response = $this->controller->getCollection(new Request(['parent' => '100000']));
+        $response = $this->controller->getCollection(new RegionQueryDto('100000', null));
         static::assertSame('[{"code":"110000","name":"bar","depth":1,"root":false,"leaf":false}]', $response->getContent());
 
-        $response = $this->controller->getCollection(new Request(['parent' => '110000']));
+        $response = $this->controller->getCollection(new RegionQueryDto('110000', null));
         static::assertSame('[{"code":"111000","name":"baz","depth":2,"root":false,"leaf":true}]', $response->getContent());
 
-        $response = $this->controller->getCollection(new Request(['parent' => 'invalid']));
+        $response = $this->controller->getCollection(new RegionQueryDto('111000', null));
         static::assertSame('[]', $response->getContent());
 
-        $response = $this->controller->getCollection(new Request(['parent' => '']));
+        $response = $this->controller->getCollection(new RegionQueryDto('123', null));
         static::assertSame('[]', $response->getContent());
     }
 

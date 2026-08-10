@@ -4,12 +4,8 @@ declare(strict_types=1);
 
 namespace Siganushka\RegionBundle\Tests\Entity;
 
-use PHPUnit\Framework\TestCase;
-
-class RegionTest extends TestCase
+class RegionTest extends AbstractRegionTestCase
 {
-    use RegionTestTrait;
-
     public function testAll(): void
     {
         static::assertSame('100000', $this->province->getCode());
@@ -20,6 +16,16 @@ class RegionTest extends TestCase
 
         static::assertSame('111000', $this->district->getCode());
         static::assertSame('baz', $this->district->getName());
+
+        static::assertSame([$this->province], $this->regionRepository->findByParent(null));
+        static::assertSame([$this->city], $this->regionRepository->findByParent('100000'));
+        static::assertSame([$this->district], $this->regionRepository->findByParent('110000'));
+        static::assertSame([], $this->regionRepository->findByParent('123'));
+
+        static::assertSame($this->province, $this->regionRepository->find('100000'));
+        static::assertSame($this->city, $this->regionRepository->find('110000'));
+        static::assertSame($this->district, $this->regionRepository->find('111000'));
+        static::assertNull($this->regionRepository->find('123'));
     }
 
     public function testParentConflictException(): void

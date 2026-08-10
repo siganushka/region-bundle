@@ -4,10 +4,11 @@ declare(strict_types=1);
 
 namespace Siganushka\RegionBundle\Controller;
 
+use Siganushka\RegionBundle\Dto\RegionQueryDto;
 use Siganushka\RegionBundle\Repository\RegionRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Attribute\MapQueryString;
 
 class RegionController extends AbstractController
 {
@@ -15,10 +16,10 @@ class RegionController extends AbstractController
     {
     }
 
-    public function getCollection(Request $request): Response
+    public function getCollection(#[MapQueryString] RegionQueryDto $dto): Response
     {
-        $parent = $request->query->get('parent');
-        $result = $this->regionRepository->findByParent($parent, ['parent' => 'ASC', 'code' => 'ASC']);
+        $qb = $this->regionRepository->createQueryBuilderByDto('r', $dto);
+        $result = $qb->getQuery()->getResult();
 
         return $this->json($result, context: [
             'groups' => ['region.collection'],

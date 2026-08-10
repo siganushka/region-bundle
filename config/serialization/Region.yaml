@@ -1,4 +1,4 @@
-Siganushka\RegionBundle\Entity\Region:
+Siganushka\RegionBundle\Entity\AbstractRegion:
     attributes:
         code:
             groups: [region.item, region.collection]

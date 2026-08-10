@@ -8,49 +8,59 @@ use PHPUnit\Framework\TestCase;
 use Siganushka\RegionBundle\Command\RegionUpdateCommand;
 use Siganushka\RegionBundle\Controller\RegionController;
 use Siganushka\RegionBundle\DependencyInjection\SiganushkaRegionExtension;
-use Siganushka\RegionBundle\Entity\Region;
+use Siganushka\RegionBundle\Doctrine\ORM\Id\RegionCodeGenerator;
+use Siganushka\RegionBundle\Entity\AbstractRegion;
+use Siganushka\RegionBundle\Form\Extension\RegionTypeExtension;
 use Siganushka\RegionBundle\Form\Type\RegionType;
 use Siganushka\RegionBundle\Repository\RegionRepository;
 use Siganushka\RegionBundle\Tests\Fixtures\FooRegion;
-use Symfony\Component\DependencyInjection\Compiler\ResolveChildDefinitionsPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 final class SiganushkaRegionExtensionTest extends TestCase
 {
-    public function testDefaultConfig(): void
+    public function testLoad(): void
     {
-        $container = $this->createContainerWithConfig();
+        $container = new ContainerBuilder();
+
+        $extension = new SiganushkaRegionExtension();
+        $extension->load([['region_class' => FooRegion::class]], $container);
 
         static::assertTrue($container->hasDefinition(RegionUpdateCommand::class));
         static::assertTrue($container->hasDefinition(RegionController::class));
+        static::assertTrue($container->hasDefinition(RegionCodeGenerator::class));
+        static::assertTrue($container->hasDefinition(RegionTypeExtension::class));
         static::assertTrue($container->hasDefinition(RegionType::class));
         static::assertTrue($container->hasDefinition(RegionRepository::class));
-
-        $regionRepository = $container->getDefinition(RegionRepository::class);
-        static::assertSame(Region::class, $regionRepository->getArgument('$entityClass'));
-    }
-
-    public function testCustomRegionClass(): void
-    {
-        $container = $this->createContainerWithConfig(['region_class' => FooRegion::class]);
 
         $regionRepository = $container->getDefinition(RegionRepository::class);
         static::assertSame(FooRegion::class, $regionRepository->getArgument('$entityClass'));
     }
 
-    private function createContainerWithConfig(array $config = []): ContainerBuilder
+    public function testPrepend(): void
     {
-        $extension = new SiganushkaRegionExtension();
-
         $container = new ContainerBuilder();
-        $container->registerExtension($extension);
-        $container->loadFromExtension($extension->getAlias(), $config);
 
-        $container->getCompilerPassConfig()->setOptimizationPasses([new ResolveChildDefinitionsPass()]);
-        $container->getCompilerPassConfig()->setRemovingPasses([]);
-        $container->getCompilerPassConfig()->setAfterRemovingPasses([]);
-        $container->compile();
+        $extension = new SiganushkaRegionExtension();
+        $extension->prepend($container);
 
-        return $container;
+        static::assertSame([], $container->getExtensionConfig('doctrine'));
+
+        $container->prependExtensionConfig('siganushka_region', ['region_class1' => 'foo']);
+        $container->prependExtensionConfig('siganushka_region', ['region_class2' => 'bar']);
+        $extension->prepend($container);
+
+        static::assertSame([], $container->getExtensionConfig('doctrine'));
+
+        $container->prependExtensionConfig('siganushka_region', ['region_class' => 'x']);
+        $container->prependExtensionConfig('siganushka_region', ['region_class' => 'y']);
+        $extension->prepend($container);
+
+        static::assertSame([
+            [
+                'orm' => [
+                    'resolve_target_entities' => [AbstractRegion::class => 'x'],
+                ],
+            ],
+        ], $container->getExtensionConfig('doctrine'));
     }
 }

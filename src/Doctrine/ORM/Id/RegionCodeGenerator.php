@@ -6,13 +6,13 @@ namespace Siganushka\RegionBundle\Doctrine\ORM\Id;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Id\AbstractIdGenerator;
-use Siganushka\RegionBundle\Entity\Region;
+use Siganushka\RegionBundle\Entity\AbstractRegion;
 
 class RegionCodeGenerator extends AbstractIdGenerator
 {
     public function generateId(EntityManagerInterface $em, ?object $entity): ?string
     {
-        return $entity instanceof Region
+        return $entity instanceof AbstractRegion
             ? $entity->getCode()
             : null;
     }

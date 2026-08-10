@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Siganushka\RegionBundle\DependencyInjection;
 
+use Doctrine\ORM\Mapping\MappedSuperclass;
 use Symfony\Component\AssetMapper\AssetMapperInterface;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -21,33 +22,30 @@ class SiganushkaRegionExtension extends Extension implements PrependExtensionInt
         $configuration = new Configuration();
         $config = $this->processConfiguration($configuration, $configs);
 
-        foreach (Configuration::$resourceMapping as $configName => [, $repositoryClass]) {
-            $repository = $container->findDefinition($repositoryClass);
-            $repository->setArgument('$entityClass', $config[$configName]);
+        foreach (Configuration::RESOURCE_MAPPING as $configName => $abstractClass) {
+            $ref = new \ReflectionClass($abstractClass);
+            if ($repositoryClass = ($ref->getAttributes(MappedSuperclass::class)[0]->getArguments()['repositoryClass'] ?? null)) {
+                $repository = $container->findDefinition($repositoryClass);
+                $repository->setArgument('$entityClass', $config[$configName]);
+            }
         }
     }
 
     public function prepend(ContainerBuilder $container): void
     {
         $configs = $container->getExtensionConfig($this->getAlias());
+        $config = array_merge(...$configs);
 
-        $configuration = new Configuration();
-        $config = $this->processConfiguration($configuration, $configs);
-
-        $mappingOverride = [];
-        foreach (Configuration::$resourceMapping as $configName => [$entityClass]) {
-            if ($config[$configName] !== $entityClass) {
-                $mappingOverride[$entityClass] = $config[$configName];
-            }
+        $resolveTargetEntities = [];
+        foreach (Configuration::RESOURCE_MAPPING as $configName => $abstractClass) {
+            $resolveTargetEntities[$abstractClass] = $config[$configName] ?? null;
         }
 
-        $container->prependExtensionConfig('doctrine', [
-            'orm' => ['resolve_target_entities' => $mappingOverride],
-        ]);
-
-        $container->prependExtensionConfig('siganushka_generic', [
-            'doctrine' => ['mapping_override' => $mappingOverride],
-        ]);
+        if (\count($r = array_filter($resolveTargetEntities))) {
+            $container->prependExtensionConfig('doctrine', [
+                'orm' => ['resolve_target_entities' => $r],
+            ]);
+        }
 
         if ($this->isAssetMapperAvailable($container)) {
             $container->prependExtensionConfig('framework', [
