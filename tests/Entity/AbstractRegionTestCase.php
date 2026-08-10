@@ -10,7 +10,7 @@ use PHPUnit\Framework\TestCase;
 use Siganushka\RegionBundle\Dto\RegionQueryDto;
 use Siganushka\RegionBundle\Entity\AbstractRegion;
 use Siganushka\RegionBundle\Repository\RegionRepository;
-use Siganushka\RegionBundle\Tests\Fixtures\FooRegion;
+use Siganushka\RegionBundle\Tests\Fixtures\TestRegion;
 
 abstract class AbstractRegionTestCase extends TestCase
 {
@@ -22,12 +22,12 @@ abstract class AbstractRegionTestCase extends TestCase
 
     protected function setUp(): void
     {
-        $district = new FooRegion('111000', 'baz');
+        $district = new TestRegion('111000', 'baz');
 
-        $city = new FooRegion('110000', 'bar');
+        $city = new TestRegion('110000', 'bar');
         $city->addChild($district);
 
-        $province = new FooRegion('100000', 'foo');
+        $province = new TestRegion('100000', 'foo');
         $province->addChild($city);
 
         $regionRepository = $this->createMock(RegionRepository::class);

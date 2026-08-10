@@ -6,6 +6,6 @@ namespace Siganushka\RegionBundle\Tests\Fixtures;
 
 use Siganushka\RegionBundle\Entity\AbstractRegion;
 
-class FooRegion extends AbstractRegion
+class TestRegion extends AbstractRegion
 {
 }

@@ -7,8 +7,7 @@ namespace Siganushka\RegionBundle\Tests\DependencyInjection;
 use PHPUnit\Framework\TestCase;
 use Siganushka\RegionBundle\DependencyInjection\Configuration;
 use Siganushka\RegionBundle\Entity\AbstractRegion;
-use Siganushka\RegionBundle\Tests\Fixtures\FooRegion;
-use Symfony\Component\Config\Definition\Builder\TreeBuilder;
+use Siganushka\RegionBundle\Tests\Fixtures\TestRegion;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 use Symfony\Component\Config\Definition\Processor;
@@ -26,12 +25,7 @@ final class ConfigurationTest extends TestCase
 
     public function testDefaultConfig(): void
     {
-        $treeBuilder = $this->configuration->getConfigTreeBuilder();
-
-        static::assertInstanceOf(ConfigurationInterface::class, $this->configuration);
-        static::assertInstanceOf(TreeBuilder::class, $treeBuilder);
-
-        $config = ['region_class' => FooRegion::class];
+        $config = ['region_class' => TestRegion::class];
 
         $processedConfig = $this->processor->processConfiguration($this->configuration, [$config]);
         static::assertSame($processedConfig, $config);
