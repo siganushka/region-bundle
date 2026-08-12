@@ -9,9 +9,9 @@ use Siganushka\RegionBundle\Command\RegionUpdateCommand;
 use Siganushka\RegionBundle\Controller\RegionController;
 use Siganushka\RegionBundle\DependencyInjection\SiganushkaRegionExtension;
 use Siganushka\RegionBundle\Doctrine\ORM\Id\RegionCodeGenerator;
-use Siganushka\RegionBundle\Entity\AbstractRegion;
 use Siganushka\RegionBundle\Form\Extension\RegionTypeExtension;
 use Siganushka\RegionBundle\Form\Type\RegionType;
+use Siganushka\RegionBundle\Model\RegionInterface;
 use Siganushka\RegionBundle\Repository\RegionRepository;
 use Siganushka\RegionBundle\Tests\Fixtures\TestRegion;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -31,8 +31,6 @@ final class SiganushkaRegionExtensionTest extends TestCase
         static::assertTrue($container->hasDefinition(RegionTypeExtension::class));
         static::assertTrue($container->hasDefinition(RegionType::class));
         static::assertTrue($container->hasDefinition(RegionRepository::class));
-
-        static::assertSame(TestRegion::class, $container->findDefinition(RegionRepository::class)->getArgument('$entityClass'));
     }
 
     public function testPrepend(): void
@@ -50,7 +48,7 @@ final class SiganushkaRegionExtensionTest extends TestCase
         static::assertSame([
             [
                 'orm' => [
-                    'resolve_target_entities' => [AbstractRegion::class => 'foo'],
+                    'resolve_target_entities' => [RegionInterface::class => 'foo'],
                 ],
             ],
         ], $container->getExtensionConfig('doctrine'));

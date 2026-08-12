@@ -7,13 +7,11 @@ namespace Siganushka\RegionBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Siganushka\GenericBundle\Entity\AbstractNestable;
 use Siganushka\RegionBundle\Doctrine\ORM\Id\RegionCodeGenerator;
+use Siganushka\RegionBundle\Model\RegionInterface;
 use Siganushka\RegionBundle\Repository\RegionRepository;
 
-/**
- * @extends AbstractNestable<AbstractRegion>
- */
 #[ORM\MappedSuperclass(repositoryClass: RegionRepository::class)]
-abstract class AbstractRegion extends AbstractNestable
+abstract class AbstractRegion extends AbstractNestable implements RegionInterface
 {
     #[ORM\Id]
     #[ORM\Column(length: 9)]

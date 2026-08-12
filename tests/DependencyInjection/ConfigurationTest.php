@@ -6,7 +6,7 @@ namespace Siganushka\RegionBundle\Tests\DependencyInjection;
 
 use PHPUnit\Framework\TestCase;
 use Siganushka\RegionBundle\DependencyInjection\Configuration;
-use Siganushka\RegionBundle\Entity\AbstractRegion;
+use Siganushka\RegionBundle\Model\RegionInterface;
 use Siganushka\RegionBundle\Tests\Fixtures\TestRegion;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
@@ -34,7 +34,7 @@ final class ConfigurationTest extends TestCase
     public function testRegionClassInvalidConfigurationException(): void
     {
         $this->expectException(InvalidConfigurationException::class);
-        $this->expectExceptionMessage(\sprintf('The value must be instanceof %s, "stdClass" given.', AbstractRegion::class));
+        $this->expectExceptionMessage(\sprintf('The value must be instanceof %s, "stdClass" given.', RegionInterface::class));
 
         $config = ['region_class' => \stdClass::class];
 

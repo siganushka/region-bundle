@@ -42,8 +42,6 @@ class RegionRepositoryTest extends TestCase
 
     /**
      * @param class-string<TestRegion> $entityClass
-     *
-     * @return RegionRepository<TestRegion>
      */
     private function createRepository(string $entityClass): RegionRepository
     {

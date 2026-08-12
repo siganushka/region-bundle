@@ -8,15 +8,14 @@ use Doctrine\ORM\Query;
 use Doctrine\ORM\QueryBuilder;
 use PHPUnit\Framework\TestCase;
 use Siganushka\RegionBundle\Dto\RegionQueryDto;
-use Siganushka\RegionBundle\Entity\AbstractRegion;
 use Siganushka\RegionBundle\Repository\RegionRepository;
 use Siganushka\RegionBundle\Tests\Fixtures\TestRegion;
 
 abstract class AbstractRegionTestCase extends TestCase
 {
-    protected AbstractRegion $province;
-    protected AbstractRegion $city;
-    protected AbstractRegion $district;
+    protected TestRegion $province;
+    protected TestRegion $city;
+    protected TestRegion $district;
 
     protected RegionRepository $regionRepository;
 
@@ -65,7 +64,7 @@ abstract class AbstractRegionTestCase extends TestCase
         ;
 
         $regionRepository->method('find')
-            ->willReturnCallback(static fn (mixed $code): ?AbstractRegion => match (true) {
+            ->willReturnCallback(static fn (mixed $code): ?TestRegion => match (true) {
                 '100000' === $code => $province,
                 '110000' === $code => $city,
                 '111000' === $code => $district,

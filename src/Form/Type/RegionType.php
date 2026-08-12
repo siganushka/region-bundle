@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Siganushka\RegionBundle\Form\Type;
 
-use Siganushka\RegionBundle\Entity\AbstractRegion;
+use Siganushka\RegionBundle\Model\RegionInterface;
 use Siganushka\RegionBundle\Repository\RegionRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -20,7 +20,7 @@ class RegionType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $choicesNormalizer = function (Options $options): iterable {
-            /** @var AbstractRegion|null */
+            /** @var RegionInterface|null */
             $parent = $options['parent'];
             if ($options['root_on_null_parent'] && null === $parent) {
                 return $this->regionRepository->findByParent(null);
@@ -46,7 +46,7 @@ class RegionType extends AbstractType
             'root_on_null_parent' => true,
         ]);
 
-        $resolver->setAllowedTypes('parent', ['null', AbstractRegion::class]);
+        $resolver->setAllowedTypes('parent', ['null', RegionInterface::class]);
         $resolver->setAllowedTypes('root_on_null_parent', 'bool');
 
         $resolver->setNormalizer('choices', $choicesNormalizer);

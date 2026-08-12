@@ -9,10 +9,10 @@ use Doctrine\Common\Collections\Order;
 use Doctrine\ORM\QueryBuilder;
 use Siganushka\GenericBundle\Repository\NestableRepository;
 use Siganushka\RegionBundle\Dto\RegionQueryDto;
-use Siganushka\RegionBundle\Entity\AbstractRegion;
+use Siganushka\RegionBundle\Model\RegionInterface;
 
 /**
- * @template T of AbstractRegion = AbstractRegion
+ * @template T of RegionInterface = RegionInterface
  *
  * @extends NestableRepository<T>
  */
