@@ -31,7 +31,7 @@ class RegionRepository extends NestableRepository
             $criteria->andWhere(Criteria::expr()->contains('name', $dto->name));
         }
 
-        $qb = $this->createQueryBuilderWithOrderBy($alias);
+        $qb = $this->createQueryBuilder($alias);
         $qb->addCriteria($criteria);
 
         return $qb;
