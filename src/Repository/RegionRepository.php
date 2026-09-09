@@ -20,7 +20,7 @@ class RegionRepository extends NestableRepository
 {
     public function createQueryBuilderByDto(string $alias, RegionQueryDto $dto): QueryBuilder
     {
-        $criteria = new Criteria(firstResult: 0, accessRawFieldValues: true);
+        $criteria = Criteria::create();
         $criteria->orderBy(['parent' => Order::Ascending, 'code' => Order::Ascending]);
 
         if ($dto->parent || !$dto->name) {
