@@ -31,7 +31,7 @@ abstract class AbstractRegionTestCase extends TestCase
 
         $regionRepository = $this->createMock(RegionRepository::class);
 
-        $regionRepository->method('createQueryBuilderByDto')
+        $regionRepository->method('createQueryBuilderFromDto')
             ->willReturnCallback(function ($_, RegionQueryDto $dto): QueryBuilder {
                 $query = $this->createMock(Query::class);
 

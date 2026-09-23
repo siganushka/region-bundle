@@ -18,7 +18,7 @@ class RegionController extends AbstractController
 
     public function getCollection(#[MapQueryString] RegionQueryDto $dto): Response
     {
-        $qb = $this->regionRepository->createQueryBuilderByDto('r', $dto);
+        $qb = $this->regionRepository->createQueryBuilderFromDto('r', $dto);
         $result = $qb->getQuery()->getResult();
 
         return $this->json($result, context: [

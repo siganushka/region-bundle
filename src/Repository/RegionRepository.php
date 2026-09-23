@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Siganushka\RegionBundle\Repository;
 
-use Doctrine\Common\Collections\Criteria;
-use Doctrine\Common\Collections\Order;
 use Doctrine\ORM\QueryBuilder;
 use Siganushka\GenericBundle\Repository\NestableRepository;
 use Siganushka\RegionBundle\Dto\RegionQueryDto;
@@ -18,18 +16,11 @@ use Siganushka\RegionBundle\Model\RegionInterface;
  */
 class RegionRepository extends NestableRepository
 {
-    public function createQueryBuilderByDto(string $alias, RegionQueryDto $dto): QueryBuilder
+    public function createQueryBuilderFromDto(string $alias, RegionQueryDto $dto): QueryBuilder
     {
-        $criteria = Criteria::create();
-        $criteria->orderBy(['parent' => Order::Ascending, 'code' => Order::Ascending]);
-
-        if ($dto->parent || !$dto->name) {
-            $criteria->andWhere(Criteria::expr()->eq('parent', $dto->parent));
-        }
-
-        if ($dto->name) {
-            $criteria->andWhere(Criteria::expr()->contains('name', $dto->name));
-        }
+        $criteria = self::createCriteriaFromDto($dto);
+        $criteria->orderBy(['parent' => \SortDirection::Ascending, 'code' => \SortDirection::Ascending]);
+        $criteria->setMaxResults(100);
 
         $qb = $this->createQueryBuilder($alias);
         $qb->addCriteria($criteria);
