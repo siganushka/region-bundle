@@ -31,6 +31,11 @@ final class SiganushkaRegionExtensionTest extends TestCase
         static::assertTrue($container->hasDefinition(RegionTypeExtension::class));
         static::assertTrue($container->hasDefinition(RegionType::class));
         static::assertTrue($container->hasDefinition(RegionRepository::class));
+
+        static::assertSame(
+            TestRegion::class,
+            $container->getDefinition(RegionRepository::class)->getArgument('$entityClass')
+        );
     }
 
     public function testPrepend(): void

@@ -31,6 +31,14 @@ final class ConfigurationTest extends TestCase
         static::assertSame($processedConfig, $config);
     }
 
+    public function testRegionClassRequired(): void
+    {
+        $this->expectException(InvalidConfigurationException::class);
+        $this->expectExceptionMessage('The child config "region_class" under "siganushka_region" must be configured.');
+
+        $this->processor->processConfiguration($this->configuration, [[]]);
+    }
+
     public function testRegionClassInvalidConfigurationException(): void
     {
         $this->expectException(InvalidConfigurationException::class);
